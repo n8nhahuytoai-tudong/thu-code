@@ -1,0 +1,686 @@
+{
+  "project": "T-Rex vs Pteranodon - Epic Battle",
+  "version": "1.0",
+  "date": "2025-11-07",
+  "purpose": "Character consistency enforcement for AI video generation and VFX",
+
+  "characters": {
+    "trex": {
+      "name": "Rex (Tyrannosaurus Rex)",
+      "role": "Protagonist/Defender",
+
+      "physical_constants": {
+        "height": "4.5m (hip), 6m (head upright)",
+        "length": "12m (nose to tail)",
+        "weight": "8000kg",
+        "proportions": {
+          "head_to_body_ratio": 0.125,
+          "tail_to_body_ratio": 0.375,
+          "leg_to_body_ratio": 0.125
+        }
+      },
+
+      "appearance_locked": {
+        "must_never_change": [
+          "Eye color: Amber yellow #FFB000",
+          "Base skin: Forest green #2D4A3E",
+          "Tooth color: Ivory white #FFFFF0",
+          "Tooth count: 58 visible teeth",
+          "Front claws: 2 per arm",
+          "Hind claws: 3 per foot",
+          "Dorsal plates: 32 along spine",
+          "Scale pattern: Hexagonal on head, overlapping on body"
+        ],
+
+        "color_palette": {
+          "base": "#2D4A3E",
+          "secondary": "#4A5D45",
+          "accent_brown": "#6B5D4F",
+          "accent_tan": "#8B7355",
+          "shadow": "#1A2E26",
+          "highlight": "#95A688",
+          "eye_iris": "#FFB000",
+          "eye_pupil": "#000000",
+          "teeth": "#FFFFF0",
+          "gums": "#4A1E2A",
+          "claws": "#1C1C1C",
+          "tongue": "#8B0000"
+        },
+
+        "texture_specs": {
+          "head_scales": {
+            "size": "5-8cm diameter",
+            "pattern": "hexagonal",
+            "roughness": 0.7,
+            "bump_depth": "3mm"
+          },
+          "body_scales": {
+            "size": "2-4cm",
+            "pattern": "overlapping",
+            "roughness": 0.6
+          },
+          "belly_scales": {
+            "size": "8-12cm",
+            "pattern": "smooth",
+            "roughness": 0.4
+          },
+          "dorsal_osteoderms": {
+            "count": 32,
+            "size": "15-20cm diameter",
+            "height": "8cm raised",
+            "spacing": "evenly along spine"
+          }
+        },
+
+        "facial_features": {
+          "eyes": {
+            "diameter": "12cm",
+            "iris_color": "#FFB000",
+            "pupil_type": "vertical slit",
+            "pupil_length": "4cm",
+            "sclera": "#FFF8DC",
+            "position": "forward-facing (binocular)",
+            "eyelids": "upper and lower, dark gray",
+            "consistency_rule": "MUST maintain amber color in ALL lighting"
+          },
+          "teeth": {
+            "count": 58,
+            "length_range": "15-30cm",
+            "color": "#FFFFF0",
+            "staining": "yellow at gum line",
+            "serrations": "2mm serrations on edges",
+            "consistency_rule": "Same teeth visible in all close-ups"
+          },
+          "nostrils": {
+            "position": "end of snout",
+            "size": "8cm diameter each",
+            "always_show": "slight moisture/steam"
+          }
+        }
+      },
+
+      "movement_constants": {
+        "walking": {
+          "speed": "5-8 km/h",
+          "stride_length": "3.5m",
+          "head_bob": "30cm vertical per step",
+          "tail_sway": "50cm horizontal opposite head",
+          "ground_shake": "REQUIRED on each footstep",
+          "dust_cloud": "kick up on impact"
+        },
+        "running": {
+          "speed": "25-30 km/h max",
+          "stride_length": "4.5-5m",
+          "airborne_phase": "0.2s brief",
+          "impact_effect": "heavy ground impact + dust",
+          "breathing": "visible labor, steam from nostrils"
+        },
+        "turning": {
+          "radius": "8-10m minimum",
+          "tail_follows": "0.5s delay",
+          "body_lean": "slight into turn"
+        },
+        "head_tracking": {
+          "speed": "medium (not instant)",
+          "range": "180 degrees horizontal",
+          "focus": "locks onto target when hunting"
+        }
+      },
+
+      "expressions_library": {
+        "neutral": {
+          "eyes": "half-open, alert",
+          "mouth": "closed, slight tooth show",
+          "brow": "relaxed",
+          "nostrils": "normal flare",
+          "use_in": "scenes 1, 2, 10"
+        },
+        "fear": {
+          "eyes": "wide open, pupils dilated 150%",
+          "mouth": "closed, jaw tension",
+          "brow": "furrowed, wrinkles above eyes",
+          "nostrils": "rapid flaring, 2x breath rate",
+          "sweat": "moisture beads 3-5mm on snout",
+          "special_lighting": "backlight to catch sweat",
+          "use_in": "scene 6 (close-up fear shot)"
+        },
+        "aggressive_roar": {
+          "eyes": "narrowed to slits",
+          "mouth": "open 95% (1.14m gape)",
+          "teeth": "all visible, gums exposed",
+          "tongue": "partially visible, dark red",
+          "throat": "deep shadow",
+          "head_tilt": "back 15 degrees",
+          "neck_muscles": "tensed, visible bulge",
+          "sound_sync": "roar starts 0.5s into shot",
+          "use_in": "scenes 12, 16"
+        },
+        "determined": {
+          "eyes": "focused, pupils normal",
+          "mouth": "closed, slight snarl",
+          "brow": "set, determined",
+          "body": "shoulders squared",
+          "use_in": "scenes 10, 19"
+        },
+        "pain_reaction": {
+          "eyes": "squeezed shut momentarily",
+          "mouth": "grimace, teeth bared",
+          "body": "flinch away from impact",
+          "use_in": "scene 15 (if hit)"
+        }
+      },
+
+      "per_scene_consistency": {
+        "scene_2": {
+          "expression": "neutral",
+          "visible_details": ["teeth (front 12)", "right eye", "front right claw"],
+          "lighting": "dappled through trees",
+          "movement": "slow walk, heavy footfalls"
+        },
+        "scene_5": {
+          "expression": "fear (building)",
+          "visible_details": ["full body", "tail", "running posture"],
+          "lighting": "forest shade, dynamic",
+          "movement": "running, 25km/h, dust clouds"
+        },
+        "scene_6": {
+          "expression": "fear (peak)",
+          "visible_details": ["eyes CLOSE-UP", "sweat beads", "dilated pupils"],
+          "lighting": "backlight for moisture, key light on eyes",
+          "camera": "macro close-up on eye, 85mm portrait lens",
+          "critical": "MUST show amber eye color clearly"
+        },
+        "scene_8": {
+          "expression": "determined/panicked",
+          "visible_details": ["legs", "claws", "dust kick-up", "tail"],
+          "lighting": "side light catching dust",
+          "movement": "sharp turn, lean into direction"
+        },
+        "scene_10": {
+          "expression": "determined",
+          "visible_details": ["full body turn", "head swivel", "eye contact with Pteranodon"],
+          "lighting": "three-quarter front",
+          "movement": "stop, pivot 180°, stance change"
+        },
+        "scene_12": {
+          "expression": "aggressive_roar",
+          "visible_details": ["mouth WIDE OPEN", "all teeth", "throat", "jaw muscles"],
+          "lighting": "dramatic uplight + rim",
+          "camera": "low angle looking up",
+          "sound": "roar peaks at 1.5s",
+          "critical": "Teeth must be ivory white, count accurate"
+        },
+        "scene_13": {
+          "expression": "aggressive",
+          "visible_details": ["head/jaws right side", "teeth closing", "eye focused"],
+          "lighting": "impact flash, high contrast",
+          "movement": "jaw snap motion, head lunge forward"
+        }
+      },
+
+      "lighting_requirements": {
+        "key_light": {
+          "angle": "45° from front, 30° above",
+          "intensity": "80%",
+          "color_temp": "5600K daylight",
+          "purpose": "defines muscle form, scale texture"
+        },
+        "rim_light": {
+          "position": "135° behind, slightly above",
+          "intensity": "60%",
+          "color_temp": "4500K warm golden",
+          "must_hit": "dorsal osteoderms for relief"
+        },
+        "eye_light": {
+          "required": "ALL close-ups with face",
+          "position": "on camera axis",
+          "size": "small source (1ft softbox equivalent)",
+          "purpose": "catchlight in amber eyes"
+        },
+        "subsurface_scattering": {
+          "mouth_interior": "pink-red glow",
+          "nostrils": "slight red glow (blood vessels)"
+        }
+      },
+
+      "vfx_requirements": {
+        "ground_interaction": {
+          "footstep_impact": {
+            "dust_cloud": "brown #6B5D4F, 2m diameter",
+            "ground_shake": "camera shake 5%, radial from foot",
+            "debris": "small rocks, dirt clumps flying up",
+            "sound": "deep thud, 60Hz bass"
+          },
+          "footprint": {
+            "depth": "15cm depression",
+            "shape": "three-toed, clear claw marks",
+            "persist": "visible for 3-5 subsequent shots"
+          }
+        },
+        "breathing_effects": {
+          "steam_from_nostrils": "when breathing hard (scenes 5, 9, 18)",
+          "visible_chest_movement": "1.5s inhale, 1.8s exhale cycle"
+        },
+        "sweat_moisture": {
+          "when": "scenes 6 (fear), 18 (exhaustion)",
+          "location": "snout, around eyes, neck",
+          "appearance": "3-5mm beads, glistening",
+          "shader": "high spec, slight refraction"
+        }
+      }
+    },
+
+    "pteranodon": {
+      "name": "Terror (Pteranodon)",
+      "role": "Antagonist/Hunter",
+
+      "physical_constants": {
+        "wingspan": "7.0m (tip to tip)",
+        "body_length": "2.5m (head to tail)",
+        "height_standing": "2.0m",
+        "weight": "25kg",
+        "wing_area": "12 square meters",
+        "head_crest_length": "80cm total"
+      },
+
+      "appearance_locked": {
+        "must_never_change": [
+          "Wingspan: 7.0m exactly",
+          "Eye color: Purple-red #A52A52",
+          "Beak color: Deep orange #D86F2A",
+          "Crest color: Dark crimson #8B2835",
+          "Wing membrane: Blue-gray #8FA5A8, 40% translucent",
+          "Body: Fuzzy pycnofibers 3-5mm",
+          "Talons: 4 per foot (3 front, 1 back)",
+          "Beak: Toothless (edentulous)",
+          "Wing claws: 3 per wing"
+        ],
+
+        "color_palette": {
+          "body_base": "#5A6B6E",
+          "wing_membrane": "#8FA5A8",
+          "beak": "#D86F2A",
+          "crest": "#8B2835",
+          "eye_iris": "#A52A52",
+          "eye_gold_ring": "#DAA520",
+          "claws": "#2C2C2C",
+          "shadow": "#4A5456",
+          "wing_veins": "#4A5456"
+        },
+
+        "texture_specs": {
+          "body_pycnofibers": {
+            "length": "3-5mm",
+            "density": "high (hides skin)",
+            "appearance": "soft, downy",
+            "color": "body base gray"
+          },
+          "wing_membrane": {
+            "thickness": "1.5mm",
+            "translucency": 0.4,
+            "roughness": 0.3,
+            "sss_color": "red #8B0000",
+            "sss_distance": "0.5cm",
+            "vein_pattern": "tree-branch, radial",
+            "vein_count": "7 primary per wing",
+            "vein_diameter": "2-3mm"
+          },
+          "beak_keratin": {
+            "surface": "smooth with growth lines",
+            "roughness": 0.25,
+            "specular": 0.5
+          },
+          "crest": {
+            "surface": "smooth bony",
+            "striations": "darker lines visible",
+            "finish": "matte"
+          }
+        },
+
+        "facial_features": {
+          "eyes": {
+            "diameter": "5cm",
+            "iris_color": "#A52A52",
+            "gold_ring": "#DAA520",
+            "pupil": "round (avian), 2cm",
+            "position": "forward-facing binocular",
+            "brow_ridge": "pronounced, shadowed",
+            "consistency_rule": "Predatory focus in ALL shots"
+          },
+          "beak": {
+            "length": "45cm",
+            "teeth": "none (edentulous)",
+            "color": "#D86F2A darker at tip",
+            "shape": "spear-like point",
+            "consistency_rule": "No teeth ever visible"
+          },
+          "crest": {
+            "total_length": "80cm (skull 45cm + crest 35cm)",
+            "shape": "blade-like, backward",
+            "color": "#8B2835 with darker striations",
+            "consistency_rule": "Shape must match all angles"
+          }
+        }
+      },
+
+      "wing_mechanics": {
+        "bone_structure": {
+          "humerus": "25cm",
+          "radius_ulna": "35cm",
+          "wing_finger": "1.5m (longest)",
+          "finger_1": "8cm",
+          "finger_2": "6cm",
+          "finger_3": "5cm",
+          "visibility": "visible through membrane when backlit"
+        },
+        "membrane_deformation": {
+          "flexed_flying": "taut, minimal wrinkles",
+          "folded_perched": "accordion folds along arm bones",
+          "flapping_upstroke": "partially folded",
+          "flapping_downstroke": "full extension"
+        },
+        "flight_positions": {
+          "glide": {
+            "wingspan": "7m fully extended",
+            "dihedral": "5° up from horizontal",
+            "body": "horizontal",
+            "tail": "extended rudder",
+            "speed": "15-20 m/s"
+          },
+          "power_flap": {
+            "upstroke": {
+              "angle": "45° above horizontal",
+              "duration": "0.3s",
+              "membrane": "partially folded"
+            },
+            "downstroke": {
+              "angle": "30° below horizontal",
+              "duration": "0.4s",
+              "membrane": "fully extended",
+              "thrust": "generated here"
+            },
+            "frequency": "1.4 flaps/sec normal, 2.0 flaps/sec chase"
+          },
+          "dive_attack": {
+            "wings": "50% folded span",
+            "dive_angle": "45°",
+            "body": "streamlined",
+            "claws": "extended forward",
+            "speed": "30-35 m/s",
+            "use_in": "scene 4"
+          },
+          "banking_turn": {
+            "inner_wing": "lowered 20°",
+            "outer_wing": "raised 20°",
+            "tail": "twisted toward turn",
+            "bank_angle": "30-45° max",
+            "turn_rate": "90° per 2 seconds"
+          }
+        }
+      },
+
+      "movement_constants": {
+        "aerial_default": {
+          "flap_rate": "1.4 per second",
+          "glide_ratio": "high efficiency",
+          "turning": "graceful, wide arcs",
+          "sound": "whisper of wind through wings"
+        },
+        "aggressive_chase": {
+          "flap_rate": "2.0 per second",
+          "speed": "30 m/s",
+          "maneuvers": "tight banks, sudden dives",
+          "vocalizations": "screeches during attack",
+          "use_in": "scenes 4, 7, 11"
+        },
+        "ground": {
+          "gait": "quadrupedal, awkward waddle",
+          "speed": "2-3 km/h slow",
+          "wing_claws": "used for support",
+          "appearance": "clumsy, vulnerable"
+        },
+        "takeoff": {
+          "wing_flaps": "3-4 powerful strokes",
+          "leg_push": "0.5m vertical jump",
+          "transition": "clumsy to graceful in 1-2s"
+        },
+        "landing": {
+          "approach": "wings spread wide (air brake)",
+          "feet": "forward, talons extended",
+          "impact": "slight bounce, light body"
+        }
+      },
+
+      "expressions_library": {
+        "hunting_focus": {
+          "eyes": "locked forward, unblinking",
+          "pupils": "slightly dilated",
+          "beak": "closed, pointed forward",
+          "crest": "steady",
+          "neck": "extended, scanning",
+          "use_in": "scene 3"
+        },
+        "aggressive_attack": {
+          "eyes": "wide, intense",
+          "beak": "open 30° (screech)",
+          "tongue": "visible, dark pink",
+          "crest": "slightly raised (arousal)",
+          "claws": "fully extended",
+          "wings": "swept back (speed)",
+          "use_in": "scenes 11, 13"
+        },
+        "damaged_retreat": {
+          "eyes": "narrowed, pained",
+          "beak": "partially open (labored breath)",
+          "crest": "drooped slightly",
+          "wings": "asymmetric (one lower if hit)",
+          "body": "tilted (compensating)",
+          "use_in": "scene 17"
+        }
+      },
+
+      "per_scene_consistency": {
+        "scene_3": {
+          "expression": "hunting_focus",
+          "visible_details": ["silhouette against sky", "wings spread", "head scanning"],
+          "lighting": "backlit by sky, halo effect",
+          "movement": "slow glide, scanning ground",
+          "wing_position": "full glide, steady"
+        },
+        "scene_4": {
+          "expression": "locked on target",
+          "visible_details": ["diving posture", "claws forward", "wings partly folded"],
+          "lighting": "top-down sun, shadows underneath",
+          "movement": "45° dive, accelerating",
+          "wing_position": "dive attack, 50% span",
+          "critical": "Wings must show translucency if backlit"
+        },
+        "scene_7": {
+          "expression": "aggressive",
+          "visible_details": ["talons gripping", "wings beating", "close to T-Rex"],
+          "lighting": "dynamic, forest canopy",
+          "movement": "fast flapping, 2.0/sec",
+          "wing_position": "power flap cycle"
+        },
+        "scene_11": {
+          "expression": "aggressive_attack",
+          "visible_details": ["beak open", "claws extended", "wings swept back"],
+          "lighting": "motion blur, speed lines",
+          "movement": "dive bomb, max speed 35m/s",
+          "sound": "screech peaks early in shot"
+        },
+        "scene_13": {
+          "expression": "aggressive",
+          "visible_details": ["beak/claws vs T-Rex mouth", "wing edges", "fierce eyes"],
+          "lighting": "impact flash, high contrast",
+          "movement": "collision, wings flare out",
+          "vfx": "impact sparks, dust explosion"
+        },
+        "scene_15": {
+          "expression": "damaged",
+          "visible_details": ["asymmetric wings", "struggling flight", "one wing lower"],
+          "lighting": "normal, shows struggle",
+          "movement": "unbalanced, working to recover",
+          "critical": "Show impact on flight mechanics"
+        },
+        "scene_17": {
+          "expression": "damaged_retreat",
+          "visible_details": ["labored wingbeats", "defensive posture", "pulling away"],
+          "lighting": "sun from side",
+          "movement": "banking turn upward, retreat",
+          "wing_position": "banking turn, compensating for injury"
+        }
+      },
+
+      "lighting_requirements": {
+        "aerial_lighting": {
+          "key_sun": {
+            "intensity": "100%",
+            "position": "varies with time of day",
+            "creates": "strong shadows on underside"
+          },
+          "sky_fill": {
+            "source": "sky dome, soft blue",
+            "intensity": "40%",
+            "from": "above and sides"
+          },
+          "rim_backlight": {
+            "source": "sun behind",
+            "catches": "wing membrane edges",
+            "effect": "glow through translucent wings",
+            "critical": "Must see veins in backlit shots"
+          }
+        },
+        "wing_membrane_shader": {
+          "translucency": 0.4,
+          "sss_color": "red #8B0000",
+          "sss_distance": "0.5cm",
+          "fresnel": 0.3,
+          "roughness": 0.3,
+          "specular": 0.4
+        }
+      },
+
+      "vfx_requirements": {
+        "wing_effects": {
+          "backlit": {
+            "veins_visible": "tree-branch pattern, darker",
+            "bones_silhouette": "arm and finger bones visible",
+            "translucency_glow": "red-tinted SSS",
+            "required_in": "scenes 3, 4, 20"
+          },
+          "motion": {
+            "flapping": "membrane ripple/flex during flaps",
+            "gliding": "taut, minimal movement",
+            "wind_flutter": "edges flutter slightly in wind"
+          }
+        },
+        "aerial_effects": {
+          "wingtip_vortices": "subtle air distortion at tips",
+          "dive_sound": "whistle/whoosh increasing with speed",
+          "screech": "harsh, raptor-like vocalization"
+        },
+        "ground_interaction": {
+          "landing_impact": "light, dust puff only",
+          "takeoff": "dust kicked by leg push + wing flaps",
+          "shadow": "dynamic wing shadow on ground/trees"
+        }
+      }
+    }
+  },
+
+  "interaction_consistency": {
+    "size_comparison": {
+      "t_rex_to_pteranodon_ratio": {
+        "weight": "320:1 (8000kg vs 25kg)",
+        "height": "2.25:1 (4.5m vs 2.0m)",
+        "length": "4.8:1 (12m vs 2.5m)",
+        "visual_dominance": "T-Rex massively larger on ground"
+      },
+      "forced_perspective_notes": "Pteranodon appears larger when in foreground/close to camera"
+    },
+
+    "scene_13_collision_specs": {
+      "participants": ["T-Rex (jaw/teeth)", "Pteranodon (beak/claws)"],
+      "camera_position": "5m from impact point",
+      "t_rex_position": "frame right, large in frame",
+      "pteranodon_position": "frame left, smaller but fast motion",
+      "impact_point": "center screen",
+      "effects": [
+        "impact flash (white #FFFFFF)",
+        "dust explosion (#6B5D4F brown)",
+        "motion blur on both",
+        "sound: massive impact, mixed roar/screech"
+      ],
+      "critical": "Maintain size ratio even in chaos"
+    },
+
+    "continuity_rules": {
+      "between_scenes": [
+        "Character colors must not shift",
+        "Wounds/damage must persist (if any)",
+        "Energy levels should logically deplete",
+        "Environmental effects (dust, debris) carry over briefly",
+        "Lighting time-of-day must be consistent"
+      ],
+      "character_state_tracking": {
+        "t_rex": {
+          "scenes_1-5": "fresh, full energy",
+          "scenes_6-12": "stressed, working hard",
+          "scenes_13-20": "battle-worn, determined"
+        },
+        "pteranodon": {
+          "scenes_1-7": "confident hunter",
+          "scenes_8-14": "aggressive attacker",
+          "scenes_15-20": "damaged, cautious"
+        }
+      }
+    }
+  },
+
+  "quality_control_checklist": {
+    "per_shot_verification": [
+      "✓ Character colors match palette exactly",
+      "✓ Anatomical proportions correct",
+      "✓ Scale/texture count accurate in close-ups",
+      "✓ Eyes: correct color with catchlights",
+      "✓ Movement follows physics/anatomical limits",
+      "✓ Lighting matches character material specs",
+      "✓ Expression matches assigned library entry",
+      "✓ Character state consistent with previous shot",
+      "✓ Size relationships accurate",
+      "✓ VFX elements present as specified"
+    ],
+    "render_approval_workflow": [
+      "1. Render test frame",
+      "2. Compare to character reference sheet",
+      "3. Check colors with eyedropper tool",
+      "4. Verify anatomical features count/size",
+      "5. Confirm lighting setup matches specs",
+      "6. Get VFX supervisor approval",
+      "7. Proceed with full shot render"
+    ]
+  },
+
+  "ai_generation_prompts": {
+    "t_rex_base_prompt": "Tyrannosaurus Rex, forest green skin (#2D4A3E), hexagonal scales, amber yellow eyes (#FFB000), ivory white teeth, 4.5 meters tall, 12 meters long, 32 dorsal plates along spine, massive powerful build, realistic Jurassic textures, cinematic lighting",
+
+    "t_rex_detailed_prompt": "Photo-realistic Tyrannosaurus Rex: Deep forest green skin base color (#2D4A3E) with brown mottling (#6B5D4F). Head covered in large hexagonal scales 5-8cm diameter with 3mm bump depth. Striking amber yellow eyes (#FFB000) with vertical slit pupils and pale yellow sclera, forward-facing for binocular vision, 12cm diameter with catchlight. 58 ivory white teeth (#FFFFF0) with yellow staining at gumline, 15-30cm long with 2mm serrations. Dark purple-red gums (#4A1E2A). Body covered in 2-4cm overlapping scales with tiger-stripe darker bands. 32 dorsal osteoderms along spine, 15-20cm diameter raised 8cm. Smooth belly scales 8-12cm lighter sage green (#95A688). Massive legs with defined muscles, 2 claws per front arm, 3 claws per hind foot, all black (#1C1C1C) 15-20cm long. Thick tail 4.5m long with heavy inertia. 4.5m tall at hip, 12m nose to tail, 8000kg. Lit with 5600K key light 45° front 30° above, 4500K rim light from behind catching dorsal plates, small eye light for catchlight. Photorealistic scales, subsurface scattering on nostrils and mouth, dappled forest lighting. 8K ultra detailed, Jurassic World quality, IMAX cinematic.",
+
+    "pteranodon_base_prompt": "Pteranodon, 7 meter wingspan, blue-gray body (#5A6B6E), translucent wing membrane, deep orange beak (#D86F2A), dark crimson crest (#8B2835), purple-red eyes (#A52A52), fuzzy body covering, sharp black talons, aerial predator, cinematic",
+
+    "pteranodon_detailed_prompt": "Photo-realistic Pteranodon: Blue-gray body (#5A6B6E) covered in fine 3-5mm fuzzy pycnofibers (proto-feathers). Exact 7.0 meter wingspan tip-to-tip. Translucent wing membrane light blue-gray (#8FA5A8) 1.5mm thick with 40% translucency showing tree-branch vein pattern (7 primary veins per wing 2-3mm diameter). Bones visible as silhouettes when backlit - humerus 25cm, radius/ulna 35cm, wing finger 1.5m longest. 80cm head with blade-like dark crimson crest (#8B2835) extending backward with darker striations. Deep orange beak (#D86F2A) 45cm long spear-like pointed, no teeth, smooth keratin with growth lines. Large 5cm eyes purple-red iris (#A52A52) with gold ring (#DAA520), round 2cm pupils, forward-facing predator placement with pronounced brow ridge. 3 small wing claws per wing 2-3cm black on leading edge. 4 talons per hind foot (3 front 1 back) 8-10cm long black curved raptor-like sharp points. Body compact 2.5m head-to-tail, 2m tall standing, 25kg weight. Flight posture: wings in power flap 1.4 strokes/second, glide with 5° dihedral, dive attack 45° with 50% folded wings. Aerial lighting: 100% sun key light from above creating strong underside shadows, 40% blue sky fill from sides, dramatic rim backlight through wing membranes showing red SSS (#8B0000) and vein structure. Wings show membrane flex and ripple during flaps, taut when gliding, accordion folds when perched. 8K ultra detailed, natural documentary style, cinematic aerial photography, IMAX quality.",
+
+    "consistency_enforcement_suffix": "CRITICAL CONSISTENCY REQUIREMENTS: [Character name] appearance MUST match exactly: [list specific locked features]. Use color picker to verify hex values. Anatomical proportions must be accurate. All specified details visible. Cross-reference with approved character sheet before generation."
+  },
+
+  "notes": {
+    "for_ai_video_generation": "Use detailed prompts with hex color codes and measurements. Specify 'photo-realistic', 'cinematic', '8K', 'IMAX quality' for best results. Always include lighting specs and material properties (translucency, roughness, SSS). Reference real films like Jurassic Park/World for quality benchmark.",
+
+    "for_vfx_artists": "This bible is the source of truth. Any deviation requires director approval and version update. Use eyedropper tool to verify colors. Count scales/features in close-ups. Maintain lighting setups per specs. Run QC checklist before every render approval.",
+
+    "for_directors": "This document locks character appearance for continuity. Changes require full team meeting and cascade updates. Focus creative notes on performance/emotion within these physical constraints.",
+
+    "version_control": "Any spec changes require new version number (currently 1.0). Document changes in changelog. Re-approve with full team. Update all downstream assets and renders."
+  }
+}
