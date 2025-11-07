@@ -1,0 +1,217 @@
+{
+  "description": "Ví dụ API requests cho n8n Video Script Generator",
+  "examples": [
+    {
+      "name": "YouTube Long-form Video",
+      "description": "Video hướng dẫn dài cho YouTube",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/video-script-generator",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "topic": "10 Mẹo Tăng Năng Suất Làm Việc Với AI",
+          "duration": "12-15 phút",
+          "platform": "YouTube",
+          "audience": "Dân văn phòng, freelancers, 25-45 tuổi",
+          "style": "Giáo dục, thực tế, có ví dụ cụ thể",
+          "tone": "Chuyên nghiệp nhưng thân thiện",
+          "language": "Tiếng Việt",
+          "include_seo": true,
+          "key_points": "5 công cụ AI hữu ích nhất"
+        }
+      }
+    },
+    {
+      "name": "TikTok Short Video",
+      "description": "Video ngắn viral cho TikTok",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/video-script-generator",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "topic": "3 Thủ Thuật ChatGPT Ít Người Biết",
+          "duration": "45-60 giây",
+          "platform": "TikTok",
+          "audience": "Gen Z, millennials, 18-30 tuổi",
+          "style": "Nhanh, năng động, visual-heavy",
+          "tone": "Vui vẻ, trendy, dễ hiểu",
+          "language": "Tiếng Việt",
+          "include_seo": false
+        }
+      },
+      "curl_example": "curl -X POST http://localhost:5678/webhook/video-script-generator \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"topic\": \"3 Thủ Thuật ChatGPT Ít Người Biết\",\n    \"duration\": \"45-60 giây\",\n    \"platform\": \"TikTok\",\n    \"audience\": \"Gen Z, millennials, 18-30 tuổi\",\n    \"style\": \"Nhanh, năng động, visual-heavy\",\n    \"tone\": \"Vui vẻ, trendy, dễ hiểu\",\n    \"language\": \"Tiếng Việt\"\n  }'"
+    },
+    {
+      "name": "Instagram Reels",
+      "description": "Video Instagram Reels về lifestyle",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/video-script-generator",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "topic": "Morning Routine Của Người Thành Công",
+          "duration": "30-45 giây",
+          "platform": "Instagram Reels",
+          "audience": "Người trẻ tự lực, 20-35 tuổi",
+          "style": "Cinematic, inspirational, aesthetic",
+          "tone": "Cảm hứng, động lực",
+          "language": "Tiếng Việt",
+          "include_seo": false
+        }
+      }
+    },
+    {
+      "name": "YouTube Shorts",
+      "description": "YouTube Shorts về tech tips",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/video-script-generator",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "topic": "Bí Mật Chụp Ảnh Đẹp Với iPhone",
+          "duration": "60 giây",
+          "platform": "YouTube Shorts",
+          "audience": "iPhone users, photography enthusiasts",
+          "style": "Quick tips, practical",
+          "tone": "Hữu ích, dễ làm theo",
+          "language": "Tiếng Việt",
+          "include_seo": true
+        }
+      }
+    },
+    {
+      "name": "Educational Video",
+      "description": "Video giáo dục về lập trình",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/video-script-generator",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "topic": "Giới Thiệu Python Cho Người Mới Bắt Đầu",
+          "duration": "20 phút",
+          "platform": "YouTube",
+          "audience": "Học sinh, sinh viên, người chuyển ngành",
+          "style": "Giáo dục, từng bước, có code examples",
+          "tone": "Kiên nhẫn, khuyến khích",
+          "language": "Tiếng Việt",
+          "include_seo": true,
+          "key_points": "Biến, vòng lặp, hàm cơ bản"
+        }
+      }
+    },
+    {
+      "name": "Product Review",
+      "description": "Video review sản phẩm công nghệ",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/video-script-generator",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "topic": "Review MacBook Air M3 - Có Đáng Mua?",
+          "duration": "10-12 phút",
+          "platform": "YouTube",
+          "audience": "Tech enthusiasts, người có nhu cầu mua laptop",
+          "style": "Honest review, pros & cons, comparison",
+          "tone": "Trung thực, chi tiết, có dẫn chứng",
+          "language": "Tiếng Việt",
+          "include_seo": true,
+          "key_points": "Performance, battery, design, price"
+        }
+      }
+    },
+    {
+      "name": "Cooking Tutorial",
+      "description": "Video hướng dẫn nấu ăn",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/video-script-generator",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "topic": "Cách Làm Phở Bò Chuẩn Vị Hà Nội",
+          "duration": "8-10 phút",
+          "platform": "YouTube",
+          "audience": "Người yêu nấu ăn, người Việt xa quê",
+          "style": "Step-by-step tutorial, tips & tricks",
+          "tone": "Ấm áp, gần gũi, dễ hiểu",
+          "language": "Tiếng Việt",
+          "include_seo": true,
+          "key_points": "Nguyên liệu, cách nấu nước dùng, tips"
+        }
+      }
+    },
+    {
+      "name": "Travel Vlog",
+      "description": "Video du lịch khám phá",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/video-script-generator",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "topic": "24 Giờ Khám Phá Đà Lạt - Hành Trình Không Ngủ",
+          "duration": "15 phút",
+          "platform": "YouTube",
+          "audience": "Du khách, người yêu du lịch, 18-35 tuổi",
+          "style": "Vlog style, personal, storytelling",
+          "tone": "Vui vẻ, năng động, nhiệt huyết",
+          "language": "Tiếng Việt",
+          "include_seo": true,
+          "key_points": "Địa điểm must-visit, đồ ăn, chi phí"
+        }
+      }
+    }
+  ],
+  "response_format": {
+    "description": "Format của response trả về từ workflow",
+    "example": {
+      "status": "success",
+      "message": "Kịch bản video đã được tạo thành công!",
+      "data": {
+        "script": "# KỊCH BẢN VIDEO\n\n## HOOK [00:00-00:15]\n...",
+        "metadata": {
+          "topic": "10 Mẹo Tăng Năng Suất Làm Việc Với AI",
+          "duration": "12-15 phút",
+          "platform": "YouTube",
+          "language": "Tiếng Việt",
+          "audience": "Dân văn phòng, freelancers",
+          "generated_at": "2025-11-07T10:30:00.000Z",
+          "word_count": 2847,
+          "estimated_speaking_time": "19 phút"
+        },
+        "quality": {
+          "score": 85,
+          "feedback": "✅ Good - Script tốt, có thể cải thiện một chút",
+          "suggestions": [
+            "Thêm gợi ý B-roll visuals"
+          ]
+        },
+        "files": {
+          "json": "video-script-10-meo-tang-nang-suat-lam-viec-voi-ai-2025-11-07-103000.json",
+          "markdown": "video-script-10-meo-tang-nang-suat-lam-viec-voi-ai-2025-11-07-103000.md"
+        }
+      }
+    }
+  },
+  "notes": [
+    "Tất cả các fields trong body đều là optional (có giá trị mặc định)",
+    "Platform hỗ trợ: YouTube, TikTok, Instagram Reels, YouTube Shorts, Facebook",
+    "Duration có thể là: '60 giây', '5-7 phút', '10 phút', etc.",
+    "Language: 'Tiếng Việt', 'English', '中文', '日本語', etc.",
+    "include_seo chỉ áp dụng cho YouTube (default: true)"
+  ]
+}

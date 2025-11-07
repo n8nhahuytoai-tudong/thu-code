@@ -1,0 +1,533 @@
+{
+  "name": "Video Script Generator Advanced - Phiên Bản Nâng Cao",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "video-script-generator",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger-001",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "video-script-webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "param-001",
+              "name": "topic",
+              "value": "={{ $json.body.topic || $json.body.video_topic || \"Chủ đề mặc định\" }}",
+              "type": "string"
+            },
+            {
+              "id": "param-002",
+              "name": "duration",
+              "value": "={{ $json.body.duration || $json.body.video_duration || \"5-7 phút\" }}",
+              "type": "string"
+            },
+            {
+              "id": "param-003",
+              "name": "audience",
+              "value": "={{ $json.body.audience || $json.body.target_audience || \"Người xem chung\" }}",
+              "type": "string"
+            },
+            {
+              "id": "param-004",
+              "name": "style",
+              "value": "={{ $json.body.style || $json.body.video_style || \"Chuyên nghiệp\" }}",
+              "type": "string"
+            },
+            {
+              "id": "param-005",
+              "name": "platform",
+              "value": "={{ $json.body.platform || \"YouTube\" }}",
+              "type": "string"
+            },
+            {
+              "id": "param-006",
+              "name": "language",
+              "value": "={{ $json.body.language || \"Tiếng Việt\" }}",
+              "type": "string"
+            },
+            {
+              "id": "param-007",
+              "name": "tone",
+              "value": "={{ $json.body.tone || \"Thân thiện, nhiệt tình\" }}",
+              "type": "string"
+            },
+            {
+              "id": "param-008",
+              "name": "include_seo",
+              "value": "={{ $json.body.include_seo || true }}",
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "id": "extract-params-001",
+      "name": "Extract Parameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "prompt-001",
+              "name": "ai_prompt",
+              "value": "=# NHIỆM VỤ: Viết Kịch Bản Video Chuyên Nghiệp\n\nBạn là một chuyên gia viết kịch bản video với 10+ năm kinh nghiệm.\n\n## THÔNG TIN VIDEO\n\n🎯 **Chủ đề**: {{ $json.topic }}\n⏱️ **Thời lượng**: {{ $json.duration }}\n👥 **Đối tượng**: {{ $json.audience }}\n🎨 **Phong cách**: {{ $json.style }}\n📱 **Platform**: {{ $json.platform }}\n🌍 **Ngôn ngữ**: {{ $json.language }}\n🎭 **Tone**: {{ $json.tone }}\n📊 **SEO**: {{ $json.include_seo ? 'Có' : 'Không' }}\n\n## CẤU TRÚC KỊCH BẢN YÊU CẦU\n\n### 1. METADATA\n- Tiêu đề video (catchy, có keyword)\n- Mô tả ngắn (2-3 câu)\n- Hashtags phù hợp\n- Thumbnail ideas\n{{ $json.include_seo ? '- SEO keywords chính và phụ\\n- Title alternatives (A/B testing)' : '' }}\n\n### 2. PRE-PRODUCTION NOTES\n- Thiết bị cần thiết\n- Địa điểm quay\n- Props/đồ dùng\n- Trang phục phù hợp\n\n### 3. SCRIPT CHÍNH\n\n#### A. HOOK (0-15 giây) ⚡\n- Pattern interrupt mạnh mẽ\n- Statement hoặc câu hỏi kích thích tò mò\n- Visual hook (gợi ý hình ảnh thu hút)\n\n**Format**:\n```\n[00:00-00:15] HOOK\nVisual: [Mô tả cảnh quay]\nVoiceover: \"[Lời thoại]\"\nText on screen: \"[Text overlay]\"\nMusic: [Kiểu nhạc phù hợp]\n```\n\n#### B. INTRO (15-45 giây) 👋\n- Giới thiệu bản thân/kênh (nếu cần)\n- Nêu vấn đề/giá trị video mang lại\n- Preview nội dung chính\n- CTA subscribe (nếu là YouTube)\n\n#### C. NỘI DUNG CHÍNH (60-80% thời lượng) 📚\n\nChia thành 3-5 phần rõ ràng:\n\n**Phần 1**: [Tiêu đề]\n- [MM:SS-MM:SS] \n- Nội dung chi tiết\n- Ví dụ cụ thể\n- B-roll suggestions\n- Transitions\n\n**Phần 2**: [Tiêu đề]\n...\n\n{{ $json.platform === 'TikTok' || $json.platform === 'YouTube Shorts' || $json.platform === 'Instagram Reels' ? '**LƯU Ý**: Format ngắn, dynamic cuts mỗi 2-3 giây, trending sounds' : '' }}\n\n#### D. KẾT LUẬN (30-60 giây) 🎁\n- Tóm tắt key takeaways\n- Reinforce main message\n- Emotional ending (nếu phù hợp)\n\n#### E. CALL TO ACTION (15-30 giây) 📢\n- Primary CTA (subscribe, follow, like)\n- Secondary CTA (comment, share, check description)\n- Teaser video tiếp theo (nếu có series)\n\n### 4. POST-PRODUCTION NOTES\n- Gợi ý màu grading\n- Music/SFX timing\n- Text animations\n- Transitions style\n- End screen elements\n\n### 5. ENGAGEMENT STRATEGY\n- Pinned comment suggestion\n- Community post ideas\n- Response template cho comments\n\n{{ $json.include_seo ? '### 6. SEO OPTIMIZATION\\n- Title (60-70 ký tự)\\n- Description (first 150 characters critical)\\n- Tags (10-15 tags)\\n- Chapters/Timestamps\\n- Custom thumbnail text' : '' }}\n\n## GUIDELINES\n\n✅ **Phải có**:\n- Timestamps chính xác cho mọi phần\n- Natural language (tránh quá kịch bản hóa)\n- Personality phù hợp với target audience\n- Clear pacing (không quá nhanh/chậm)\n- Visual variety (mix talking head, B-roll, graphics)\n\n❌ **Tránh**:\n- Generic opening (\"Hi guys, today...\")\n- Quá nhiều filler words\n- Mất focus chủ đề chính\n- CTA quá aggressive\n- Copyright music/content\n\n## OUTPUT FORMAT\n\nHãy output dưới dạng Markdown rõ ràng, dễ đọc, với:\n- Headers và subheaders rõ ràng\n- Bullet points\n- Timestamps format [MM:SS]\n- Bold/italic cho emphasis\n- Emoji phù hợp (nhưng không lạm dụng)\n\n---\n\n**BẮT ĐẦU TẠO KỊCH BẢN NGAY BÂY GIỜ!**",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "id": "build-prompt-001",
+      "name": "Build Advanced Prompt",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "id": "ai-provider-openai",
+              "leftValue": "={{ $json.platform }}",
+              "rightValue": "YouTube",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "route-by-platform-001",
+      "name": "Route by Platform",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "resource": "text",
+        "operation": "message",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4-turbo-preview",
+          "mode": "list"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "Bạn là chuyên gia viết kịch bản video với 10 năm kinh nghiệm. Bạn giỏi tạo content viral, engaging và có cấu trúc rõ ràng."
+            },
+            {
+              "role": "user",
+              "content": "={{ $('Build Advanced Prompt').item.json.ai_prompt }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 6000,
+          "topP": 0.9,
+          "frequencyPenalty": 0.3,
+          "presencePenalty": 0.3
+        }
+      },
+      "id": "openai-long-form-001",
+      "name": "OpenAI - Long Form",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.3,
+      "position": [1120, 200],
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "text",
+        "operation": "message",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4-turbo-preview",
+          "mode": "list"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "Bạn là chuyên gia tạo nội dung short-form video cho TikTok, Instagram Reels, YouTube Shorts. Bạn hiểu rõ trending formats, hooks viral, và cách giữ attention trong 60 giây."
+            },
+            {
+              "role": "user",
+              "content": "={{ $('Build Advanced Prompt').item.json.ai_prompt }}\n\nQUAN TRỌNG: Tối ưu hóa cho short-form video:\n- Hook trong 1-2 giây đầu tiên\n- Cut mỗi 2-3 giây\n- Text on screen for no-sound viewing\n- Trending music/sounds\n- Vertical format 9:16"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.9,
+          "maxTokens": 3000,
+          "topP": 0.95,
+          "frequencyPenalty": 0.5,
+          "presencePenalty": 0.4
+        }
+      },
+      "id": "openai-short-form-001",
+      "name": "OpenAI - Short Form",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.3,
+      "position": [1120, 400],
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "merge-scripts-001",
+      "name": "Merge Scripts",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "format-001",
+              "name": "script_content",
+              "value": "={{ $json.message?.content || $json.choices?.[0]?.message?.content || \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "format-002",
+              "name": "metadata",
+              "value": "={{ {\n  topic: $('Extract Parameters').item.json.topic,\n  duration: $('Extract Parameters').item.json.duration,\n  platform: $('Extract Parameters').item.json.platform,\n  language: $('Extract Parameters').item.json.language,\n  audience: $('Extract Parameters').item.json.audience,\n  style: $('Extract Parameters').item.json.style,\n  tone: $('Extract Parameters').item.json.tone,\n  generated_at: $now.toISO(),\n  word_count: ($json.message?.content || \"\").split(' ').length,\n  estimated_speaking_time: Math.round(($json.message?.content || \"\").split(' ').length / 150) + \" phút\"\n} }}",
+              "type": "object"
+            },
+            {
+              "id": "format-003",
+              "name": "file_name_base",
+              "value": "={{ 'video-script-' + $('Extract Parameters').item.json.topic.toLowerCase().replace(/[^a-z0-9]/g, '-').substring(0, 50) + '-' + $now.format('yyyy-MM-dd-HHmmss') }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "id": "format-output-001",
+      "name": "Format Output",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [1560, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "quality-check-001",
+              "name": "quality_score",
+              "value": "={{ \n  let score = 0;\n  const content = $json.script_content || \"\";\n  \n  // Check for timestamps\n  if (content.match(/\\[\\d{2}:\\d{2}/g)?.length > 3) score += 20;\n  \n  // Check for sections\n  if (content.match(/#{2,3}\\s/g)?.length > 3) score += 20;\n  \n  // Check for B-roll mentions\n  if (content.toLowerCase().includes('b-roll') || content.toLowerCase().includes('visual')) score += 15;\n  \n  // Check for CTA\n  if (content.toLowerCase().includes('call to action') || content.toLowerCase().includes('cta')) score += 15;\n  \n  // Check length\n  const wordCount = content.split(' ').length;\n  if (wordCount > 500 && wordCount < 3000) score += 15;\n  \n  // Check for Hook section\n  if (content.toLowerCase().includes('hook')) score += 15;\n  \n  return score;\n}}",
+              "type": "number"
+            },
+            {
+              "id": "quality-check-002",
+              "name": "quality_feedback",
+              "value": "={{ \n  const score = $json.quality_score || 0;\n  if (score >= 80) return '✅ Excellent - Script đạt chất lượng cao!';\n  if (score >= 60) return '✅ Good - Script tốt, có thể cải thiện một chút';\n  if (score >= 40) return '⚠️ Fair - Script cần bổ sung thêm chi tiết';\n  return '❌ Poor - Script cần viết lại';\n}}",
+              "type": "string"
+            },
+            {
+              "id": "quality-check-003",
+              "name": "suggestions",
+              "value": "={{ \n  const content = $json.script_content || \"\";\n  let suggestions = [];\n  \n  if (!content.toLowerCase().includes('hook')) suggestions.push('Thêm phần HOOK để thu hút người xem');\n  if (!content.match(/\\[\\d{2}:\\d{2}/g)) suggestions.push('Thêm timestamps cho các phần');\n  if (!content.toLowerCase().includes('b-roll')) suggestions.push('Thêm gợi ý B-roll visuals');\n  if (!content.toLowerCase().includes('cta') && !content.toLowerCase().includes('call to action')) suggestions.push('Thêm Call-to-Action rõ ràng');\n  \n  return suggestions.length > 0 ? suggestions : ['Không có gợi ý - Script đã hoàn thiện!'];\n}}",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "id": "quality-check-001",
+      "name": "Quality Check",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [1780, 300]
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "mode": "each",
+        "options": {
+          "fileName": "={{ $json.file_name_base }}.json"
+        }
+      },
+      "id": "save-json-001",
+      "name": "Save JSON",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [2000, 200]
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {
+          "fileName": "={{ $json.file_name_base }}.md"
+        }
+      },
+      "id": "save-markdown-001",
+      "name": "Save Markdown",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [2000, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "response-001",
+              "name": "status",
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "id": "response-002",
+              "name": "message",
+              "value": "Kịch bản video đã được tạo thành công!",
+              "type": "string"
+            },
+            {
+              "id": "response-003",
+              "name": "data",
+              "value": "={{ {\n  script: $('Format Output').item.json.script_content,\n  metadata: $('Format Output').item.json.metadata,\n  quality: {\n    score: $('Quality Check').item.json.quality_score,\n    feedback: $('Quality Check').item.json.quality_feedback,\n    suggestions: $('Quality Check').item.json.suggestions\n  },\n  files: {\n    json: $('Format Output').item.json.file_name_base + '.json',\n    markdown: $('Format Output').item.json.file_name_base + '.md'\n  }\n} }}",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "id": "prepare-response-001",
+      "name": "Prepare Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [2220, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "webhook-response-001",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [2440, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract Parameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Parameters": {
+      "main": [
+        [
+          {
+            "node": "Build Advanced Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Advanced Prompt": {
+      "main": [
+        [
+          {
+            "node": "Route by Platform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Platform": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - Long Form",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OpenAI - Short Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Long Form": {
+      "main": [
+        [
+          {
+            "node": "Merge Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Short Form": {
+      "main": [
+        [
+          {
+            "node": "Merge Scripts",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Scripts": {
+      "main": [
+        [
+          {
+            "node": "Format Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Output": {
+      "main": [
+        [
+          {
+            "node": "Quality Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quality Check": {
+      "main": [
+        [
+          {
+            "node": "Save JSON",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save JSON": {
+      "main": [
+        [
+          {
+            "node": "Prepare Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Markdown": {
+      "main": [
+        [
+          {
+            "node": "Prepare Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Response": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "id": "1",
+      "name": "Video Production"
+    },
+    {
+      "id": "2",
+      "name": "AI Content"
+    },
+    {
+      "id": "3",
+      "name": "Advanced"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-07T00:00:00.000Z",
+  "versionId": "advanced-v1"
+}
