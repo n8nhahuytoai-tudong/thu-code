@@ -20,14 +20,26 @@ class SoraBrowserAutomation:
     async def init_browser(self, headless: bool = False):
         """Initialize browser instance"""
         try:
-            self.browser = await Browser(
+            # Initialize browser with zendriver
+            self.browser = Browser(
+                browser_args=[
+                    '--no-first-run',
+                    '--no-default-browser-check',
+                    '--disable-blink-features=AutomationControlled',
+                ],
                 headless=headless,
                 lang="en-US"
             )
+
+            # Start browser and get first tab
+            await self.browser.start()
             self.page = await self.browser.get("about:blank")
+
             return True
         except Exception as e:
             print(f"Failed to initialize browser: {e}")
+            import traceback
+            traceback.print_exc()
             return False
 
     async def login_with_gmail(
@@ -438,12 +450,13 @@ class SoraBrowserAutomation:
         """Close browser"""
         if self.browser:
             try:
-                await self.browser.close()
-            except:
-                pass
-            self.browser = None
-            self.page = None
-            self.is_logged_in = False
+                await self.browser.stop()
+            except Exception as e:
+                print(f"Error closing browser: {e}")
+            finally:
+                self.browser = None
+                self.page = None
+                self.is_logged_in = False
 
 
 # Global instance

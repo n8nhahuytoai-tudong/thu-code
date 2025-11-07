@@ -26,7 +26,8 @@ ManixAI Tools v1.2.3 - AI Video Generation Tool using OpenAI Sora with Browser A
 
 1. Double-click `install.bat`
 2. Wait for installation to complete
-3. Run the application using `run.bat`
+3. **Test browser** (recommended): `python test_browser.py`
+4. Run the application using `run.bat`
 
 ### Method 2: Manual Installation
 
@@ -123,10 +124,14 @@ Configuration is stored in `~/.sora_config.json`:
 - Try unchecking "Headless mode" to see what's happening
 - Some Gmail accounts require 2FA - you may need an app-specific password
 
-### Browser doesn't open
+### "Failed to initialize browser"
+- **First, run test**: `python test_browser.py`
+- Make sure zendriver is installed: `pip install zendriver==0.14.2`
 - Zendriver will auto-download Chrome if needed
 - Check firewall/antivirus isn't blocking browser
 - Try running as Administrator
+- Update pip: `python -m pip install --upgrade pip`
+- On some systems, you may need to install Chrome manually
 
 ### Video generation times out
 - Sora generation can take 2-5 minutes, be patient
