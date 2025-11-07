@@ -1,0 +1,754 @@
+{
+  "original_data": {
+    "id": "trex_pteranodon_battle_001",
+    "name": "T-Rex vs Pteranodon - Epic Battle",
+    "description": "Trận chiến hoành tráng giữa T-Rex và Pteranodon trong rừng rậm",
+    "total_duration": 160,
+    "shots": [
+      {
+        "scene": "Mở đầu cảnh rừng rậm tươi xanh, ánh sáng yếu xuyên qua tán lá, tạo không gian bí ẩn.",
+        "duration": 8
+      },
+      {
+        "scene": "T-Rex xuất hiện bước đi uy nghi qua khu rừng, tiếng chân nặng vang vọng.",
+        "duration": 8
+      },
+      {
+        "scene": "Bầu trời sáng lên, xuất hiện một con Pteranodon lớn đang bay lượn quan sát mặt đất.",
+        "duration": 8
+      },
+      {
+        "scene": "Pteranodon phát hiện T-Rex và bắt đầu lao xuống truy đuổi.",
+        "duration": 8
+      },
+      {
+        "scene": "T-Rex hoảng loạn chạy trốn, môi trường rừng rậm với cây cối rậm rạp nhanh chóng bao quanh.",
+        "duration": 8
+      },
+      {
+        "scene": "Cận cảnh mắt T-Rex hiện rõ sự lo sợ và mồ hôi chảy trên da.",
+        "duration": 8
+      },
+      {
+        "scene": "Pteranodon quặp vuốt, bay sát theo sau T-Rex, tạo cảm giác đe dọa.",
+        "duration": 8
+      },
+      {
+        "scene": "T-Rex nhảy ngoặt tránh một cái cây lớn, chân vung mạnh tạo lớp bụi bay lên.",
+        "duration": 8
+      },
+      {
+        "scene": "Góc máy rộng, toàn cảnh T-Rex chạy thoát trong khi Pteranodon vẫn sát nút.",
+        "duration": 8
+      },
+      {
+        "scene": "T-Rex dừng lại phút chốc, quay đầu lại nhìn đối thủ, chuẩn bị phản công.",
+        "duration": 8
+      },
+      {
+        "scene": "Pteranodon lao tới với tốc độ cao, mỏ và vuốt giơ ra sẵn sàng tấn công.",
+        "duration": 8
+      },
+      {
+        "scene": "T-Rex tru lên, mở hàm rộng, màn kịch tính lên đến đỉnh điểm.",
+        "duration": 8
+      },
+      {
+        "scene": "Cận cảnh va chạm giữa mỏ Pteranodon và miệng T-Rex, ánh sáng phản chiếu khi chúng va vào nhau.",
+        "duration": 8
+      },
+      {
+        "scene": "Cuộc chiến kéo dài, di chuyển liên tục trong khu rừng với nhiều yếu tố thiên nhiên như cây cối, đá tảng.",
+        "duration": 8
+      },
+      {
+        "scene": "Pteranodon bất ngờ bị T-Rex dùng đuôi đánh trúng, mất thăng bằng nhẹ.",
+        "duration": 8
+      },
+      {
+        "scene": "T-Rex tận dụng thời cơ, gầm lên vang dội khu rừng.",
+        "duration": 8
+      },
+      {
+        "scene": "Pteranodon lùi lại, xoay người bay lên cao để tránh né.",
+        "duration": 8
+      },
+      {
+        "scene": "Khung cảnh rộng, hai con khủng long tạm thời tách xa, hít thở lấy lại sức.",
+        "duration": 8
+      },
+      {
+        "scene": "T-Rex nhìn lên trời, ánh mắt kiên quyết và không chùn bước.",
+        "duration": 8
+      },
+      {
+        "scene": "Kết thúc mở, Pteranodon bay lượn trên cao, T-Rex đứng dưới đất chuẩn bị cho lần đụng độ tiếp theo.",
+        "duration": 8
+      }
+    ]
+  },
+  "processed_shots": [
+    {
+      "scene_number": 1,
+      "original": "Mở đầu cảnh rừng rậm tươi xanh, ánh sáng yếu xuyên qua tán lá, tạo không gian bí ẩn.",
+      "enhanced": "Mở đầu cảnh rừng rậm tươi xanh, ánh sáng yếu xuyên qua tán lá, tạo không gian bí ẩn. [VFX: cây cối rung lắc mạnh, lá rụng tung tóe; chớp sáng mặt trời qua khe lá]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 1,
+        "original_description": "Mở đầu cảnh rừng rậm tươi xanh, ánh sáng yếu xuyên qua tán lá, tạo không gian bí ẩn.",
+        "duration": 8,
+        "characters": [],
+        "action_type": "Transition",
+        "environment": "Dense jungle",
+        "camera_angle": "Medium shot",
+        "mood": "Mysterious",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 2,
+      "original": "T-Rex xuất hiện bước đi uy nghi qua khu rừng, tiếng chân nặng vang vọng.",
+      "enhanced": "T-Rex xuất hiện bước đi uy nghi qua khu rừng, tiếng chân nặng vang vọng. [răng nanh dài cong, màu trắng ngà bóng] [VFX: cây cối rung lắc mạnh, lá rụng tung tóe] [SFX: bụi bay dày đặc từ chân T-Rex đạp xuống đất]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 2,
+        "original_description": "T-Rex xuất hiện bước đi uy nghi qua khu rừng, tiếng chân nặng vang vọng.",
+        "duration": 8,
+        "characters": [
+          "T-Rex"
+        ],
+        "action_type": "Transition",
+        "environment": "Dense jungle",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 3,
+      "original": "Bầu trời sáng lên, xuất hiện một con Pteranodon lớn đang bay lượn quan sát mặt đất.",
+      "enhanced": "Bầu trời sáng lên, xuất hiện một con Pteranodon lớn đang bay lượn quan sát mặt đất. [vuốt chân sắc nhọn màu đen bóng] [VFX: chớp sáng mặt trời qua khe lá] [SFX: bụi bay dày đặc từ chân T-Rex đạp xuống đất]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 3,
+        "original_description": "Bầu trời sáng lên, xuất hiện một con Pteranodon lớn đang bay lượn quan sát mặt đất.",
+        "duration": 8,
+        "characters": [
+          "Pteranodon"
+        ],
+        "action_type": "Transition",
+        "environment": "Sky/aerial",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 4,
+      "original": "Pteranodon phát hiện T-Rex và bắt đầu lao xuống truy đuổi.",
+      "enhanced": "Pteranodon phát hiện T-Rex và bắt đầu lao xuống truy đuổi. [đuôi dài khỏe, vảy lớn ở lưng, mắt lớn màu đỏ tía, nhìn sắc bén] [SFX: hơi thở ấm tạo sương mù nhẹ từ mũi; làn khói bụi dày bao trùm khu vực chiến đấu]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 4,
+        "original_description": "Pteranodon phát hiện T-Rex và bắt đầu lao xuống truy đuổi.",
+        "duration": 8,
+        "characters": [
+          "T-Rex",
+          "Pteranodon"
+        ],
+        "action_type": "Transition",
+        "environment": "",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 5,
+      "original": "T-Rex hoảng loạn chạy trốn, môi trường rừng rậm với cây cối rậm rạp nhanh chóng bao quanh.",
+      "enhanced": "T-Rex hoảng loạn chạy trốn, môi trường rừng rậm với cây cối rậm rạp nhanh chóng bao quanh. [da có vân sần sùi màu xanh sẫm pha nâu đất] [VFX: đám bụi bay dày đặc, màu nâu đất, khuếch tán chậm trong không khí; hình ảnh mờ động khi di chuyển tốc độ cao; cây cối rung lắc mạnh, lá rụng tung tóe]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 5,
+        "original_description": "T-Rex hoảng loạn chạy trốn, môi trường rừng rậm với cây cối rậm rạp nhanh chóng bao quanh.",
+        "duration": 8,
+        "characters": [
+          "T-Rex"
+        ],
+        "action_type": "Chase",
+        "environment": "Dense jungle",
+        "camera_angle": "Medium shot",
+        "mood": "Fearful",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 6,
+      "original": "Cận cảnh mắt T-Rex hiện rõ sự lo sợ và mồ hôi chảy trên da.",
+      "enhanced": "Cận cảnh mắt T-Rex hiện rõ sự lo sợ và mồ hôi chảy trên da. [mắt vàng chanh với đồng tử đen sâu thẳm] [SFX: sóng nhiệt méo mó không khí ở gần T-Rex]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 6,
+        "original_description": "Cận cảnh mắt T-Rex hiện rõ sự lo sợ và mồ hôi chảy trên da.",
+        "duration": 8,
+        "characters": [
+          "T-Rex"
+        ],
+        "action_type": "Close-up",
+        "environment": "",
+        "camera_angle": "Close-up",
+        "mood": "Fearful",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 7,
+      "original": "Pteranodon quặp vuốt, bay sát theo sau T-Rex, tạo cảm giác đe dọa.",
+      "enhanced": "Pteranodon quặp vuốt, bay sát theo sau T-Rex, tạo cảm giác đe dọa. [răng nanh dài cong, màu trắng ngà bóng, mào đầu đỏ sẫm hình mũi mác]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 7,
+        "original_description": "Pteranodon quặp vuốt, bay sát theo sau T-Rex, tạo cảm giác đe dọa.",
+        "duration": 8,
+        "characters": [
+          "T-Rex",
+          "Pteranodon"
+        ],
+        "action_type": "Transition",
+        "environment": "",
+        "camera_angle": "Medium shot",
+        "mood": "Intense",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 8,
+      "original": "T-Rex nhảy ngoặt tránh một cái cây lớn, chân vung mạnh tạo lớp bụi bay lên.",
+      "enhanced": "T-Rex nhảy ngoặt tránh một cái cây lớn, chân vung mạnh tạo lớp bụi bay lên. [cơ bắp chân sau cuồn cuộn, móng vuốt đen nhọn, vuốt chân sắc nhọn màu đen bóng] [VFX: nứt đất lan tỏa hình tia chớp, sỏi đá bật lên; mảnh vỡ cây cối, đá nhỏ bay trong không khí; cây cối rung lắc mạnh, lá rụng tung tóe] [SFX: bụi bay dày đặc từ chân T-Rex đạp xuống đất]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 8,
+        "original_description": "T-Rex nhảy ngoặt tránh một cái cây lớn, chân vung mạnh tạo lớp bụi bay lên.",
+        "duration": 8,
+        "characters": [
+          "T-Rex",
+          "Pteranodon"
+        ],
+        "action_type": "Transition",
+        "environment": "",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 9,
+      "original": "Góc máy rộng, toàn cảnh T-Rex chạy thoát trong khi Pteranodon vẫn sát nút.",
+      "enhanced": "Góc máy rộng, toàn cảnh T-Rex chạy thoát trong khi Pteranodon vẫn sát nút. [đuôi dài khỏe, vảy lớn ở lưng, mắt lớn màu đỏ tía, nhìn sắc bén] [VFX: đám bụi bay dày đặc, màu nâu đất, khuếch tán chậm trong không khí; hình ảnh mờ động khi di chuyển tốc độ cao]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 9,
+        "original_description": "Góc máy rộng, toàn cảnh T-Rex chạy thoát trong khi Pteranodon vẫn sát nút.",
+        "duration": 8,
+        "characters": [
+          "T-Rex",
+          "Pteranodon"
+        ],
+        "action_type": "Chase",
+        "environment": "",
+        "camera_angle": "Wide angle",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 10,
+      "original": "T-Rex dừng lại phút chốc, quay đầu lại nhìn đối thủ, chuẩn bị phản công.",
+      "enhanced": "T-Rex dừng lại phút chốc, quay đầu lại nhìn đối thủ, chuẩn bị phản công. [da có vân sần sùi màu xanh sẫm pha nâu đất]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 10,
+        "original_description": "T-Rex dừng lại phút chốc, quay đầu lại nhìn đối thủ, chuẩn bị phản công.",
+        "duration": 8,
+        "characters": [
+          "T-Rex"
+        ],
+        "action_type": "Transition",
+        "environment": "",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 11,
+      "original": "Pteranodon lao tới với tốc độ cao, mỏ và vuốt giơ ra sẵn sàng tấn công.",
+      "enhanced": "Pteranodon lao tới với tốc độ cao, mỏ và vuốt giơ ra sẵn sàng tấn công. [mỏ dài nhọn màu cam đậm, không có răng] [VFX: tia sáng trắng xanh thoáng qua khi va chạm mạnh; mảnh vỡ cây cối, đá nhỏ bay trong không khí] [SFX: tia lửa nhỏ bắn từ va chạm răng nanh và vuốt; vụ nổ nhỏ bụi đất khi va chạm mạnh]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 11,
+        "original_description": "Pteranodon lao tới với tốc độ cao, mỏ và vuốt giơ ra sẵn sàng tấn công.",
+        "duration": 8,
+        "characters": [
+          "Pteranodon"
+        ],
+        "action_type": "Combat",
+        "environment": "",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 12,
+      "original": "T-Rex tru lên, mở hàm rộng, màn kịch tính lên đến đỉnh điểm.",
+      "enhanced": "T-Rex tru lên, mở hàm rộng, màn kịch tính lên đến đỉnh điểm. [răng nanh dài cong, màu trắng ngà bóng] [SFX: hơi thở ấm tạo sương mù nhẹ từ mũi]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 12,
+        "original_description": "T-Rex tru lên, mở hàm rộng, màn kịch tính lên đến đỉnh điểm.",
+        "duration": 8,
+        "characters": [
+          "T-Rex"
+        ],
+        "action_type": "Wide shot",
+        "environment": "",
+        "camera_angle": "Wide angle",
+        "mood": "Intense",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 13,
+      "original": "Cận cảnh va chạm giữa mỏ Pteranodon và miệng T-Rex, ánh sáng phản chiếu khi chúng va vào nhau.",
+      "enhanced": "Cận cảnh va chạm giữa mỏ Pteranodon và miệng T-Rex, ánh sáng phản chiếu khi chúng va vào nhau. [cơ bắp chân sau cuồn cuộn, móng vuốt đen nhọn, vuốt chân sắc nhọn màu đen bóng] [VFX: tia sáng trắng xanh thoáng qua khi va chạm mạnh; mảnh vỡ cây cối, đá nhỏ bay trong không khí; chớp sáng mặt trời qua khe lá] [SFX: bụi bay dày đặc từ chân T-Rex đạp xuống đất; tia lửa nhỏ bắn từ va chạm răng nanh và vuốt; vụ nổ nhỏ bụi đất khi va chạm mạnh; sóng nhiệt méo mó không khí ở gần T-Rex]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 13,
+        "original_description": "Cận cảnh va chạm giữa mỏ Pteranodon và miệng T-Rex, ánh sáng phản chiếu khi chúng va vào nhau.",
+        "duration": 8,
+        "characters": [
+          "T-Rex",
+          "Pteranodon"
+        ],
+        "action_type": "Close-up",
+        "environment": "",
+        "camera_angle": "Close-up",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 14,
+      "original": "Cuộc chiến kéo dài, di chuyển liên tục trong khu rừng với nhiều yếu tố thiên nhiên như cây cối, đá tảng.",
+      "enhanced": "Cuộc chiến kéo dài, di chuyển liên tục trong khu rừng với nhiều yếu tố thiên nhiên như cây cối, đá tảng. [VFX: đám bụi bay dày đặc, màu nâu đất, khuếch tán chậm trong không khí; hình ảnh mờ động khi di chuyển tốc độ cao; cây cối rung lắc mạnh, lá rụng tung tóe] [SFX: làn khói bụi dày bao trùm khu vực chiến đấu]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 14,
+        "original_description": "Cuộc chiến kéo dài, di chuyển liên tục trong khu rừng với nhiều yếu tố thiên nhiên như cây cối, đá tảng.",
+        "duration": 8,
+        "characters": [],
+        "action_type": "Combat",
+        "environment": "Dense jungle",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 15,
+      "original": "Pteranodon bất ngờ bị T-Rex dùng đuôi đánh trúng, mất thăng bằng nhẹ.",
+      "enhanced": "Pteranodon bất ngờ bị T-Rex dùng đuôi đánh trúng, mất thăng bằng nhẹ. [da có vân sần sùi màu xanh sẫm pha nâu đất, cánh xương dài 7 mét, da cánh mỏng màu xám xanh] [VFX: tia sáng trắng xanh thoáng qua khi va chạm mạnh; mảnh vỡ cây cối, đá nhỏ bay trong không khí] [SFX: tia lửa nhỏ bắn từ va chạm răng nanh và vuốt; vụ nổ nhỏ bụi đất khi va chạm mạnh]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 15,
+        "original_description": "Pteranodon bất ngờ bị T-Rex dùng đuôi đánh trúng, mất thăng bằng nhẹ.",
+        "duration": 8,
+        "characters": [
+          "T-Rex",
+          "Pteranodon"
+        ],
+        "action_type": "Transition",
+        "environment": "",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 16,
+      "original": "T-Rex tận dụng thời cơ, gầm lên vang dội khu rừng.",
+      "enhanced": "T-Rex tận dụng thời cơ, gầm lên vang dội khu rừng. [mắt vàng chanh với đồng tử đen sâu thẳm] [VFX: cây cối rung lắc mạnh, lá rụng tung tóe] [SFX: hơi thở ấm tạo sương mù nhẹ từ mũi]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 16,
+        "original_description": "T-Rex tận dụng thời cơ, gầm lên vang dội khu rừng.",
+        "duration": 8,
+        "characters": [
+          "T-Rex"
+        ],
+        "action_type": "Transition",
+        "environment": "Dense jungle",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 17,
+      "original": "Pteranodon lùi lại, xoay người bay lên cao để tránh né.",
+      "enhanced": "Pteranodon lùi lại, xoay người bay lên cao để tránh né. [mào đầu đỏ sẫm hình mũi mác] [VFX: nứt đất lan tỏa hình tia chớp, sỏi đá bật lên; mảnh vỡ cây cối, đá nhỏ bay trong không khí]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 17,
+        "original_description": "Pteranodon lùi lại, xoay người bay lên cao để tránh né.",
+        "duration": 8,
+        "characters": [
+          "Pteranodon"
+        ],
+        "action_type": "Transition",
+        "environment": "",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 18,
+      "original": "Khung cảnh rộng, hai con khủng long tạm thời tách xa, hít thở lấy lại sức.",
+      "enhanced": "Khung cảnh rộng, hai con khủng long tạm thời tách xa, hít thở lấy lại sức. [cơ bắp chân sau cuồn cuộn, móng vuốt đen nhọn] [SFX: bụi bay dày đặc từ chân T-Rex đạp xuống đất]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 18,
+        "original_description": "Khung cảnh rộng, hai con khủng long tạm thời tách xa, hít thở lấy lại sức.",
+        "duration": 8,
+        "characters": [
+          "T-Rex"
+        ],
+        "action_type": "Wide shot",
+        "environment": "",
+        "camera_angle": "Wide angle",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 19,
+      "original": "T-Rex nhìn lên trời, ánh mắt kiên quyết và không chùn bước.",
+      "enhanced": "T-Rex nhìn lên trời, ánh mắt kiên quyết và không chùn bước. [đuôi dài khỏe, vảy lớn ở lưng] [VFX: chớp sáng mặt trời qua khe lá] [SFX: bụi bay dày đặc từ chân T-Rex đạp xuống đất]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 19,
+        "original_description": "T-Rex nhìn lên trời, ánh mắt kiên quyết và không chùn bước.",
+        "duration": 8,
+        "characters": [
+          "T-Rex"
+        ],
+        "action_type": "Transition",
+        "environment": "Sky/aerial",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    },
+    {
+      "scene_number": 20,
+      "original": "Kết thúc mở, Pteranodon bay lượn trên cao, T-Rex đứng dưới đất chuẩn bị cho lần đụng độ tiếp theo.",
+      "enhanced": "Kết thúc mở, Pteranodon bay lượn trên cao, T-Rex đứng dưới đất chuẩn bị cho lần đụng độ tiếp theo. [da có vân sần sùi màu xanh sẫm pha nâu đất, cánh xương dài 7 mét, da cánh mỏng màu xám xanh] [SFX: tia lửa nhỏ bắn từ va chạm răng nanh và vuốt; vụ nổ nhỏ bụi đất khi va chạm mạnh]",
+      "duration": 8,
+      "summary": {
+        "scene_number": 20,
+        "original_description": "Kết thúc mở, Pteranodon bay lượn trên cao, T-Rex đứng dưới đất chuẩn bị cho lần đụng độ tiếp theo.",
+        "duration": 8,
+        "characters": [
+          "T-Rex",
+          "Pteranodon"
+        ],
+        "action_type": "Transition",
+        "environment": "",
+        "camera_angle": "Medium shot",
+        "mood": "Action",
+        "key_elements": []
+      }
+    }
+  ],
+  "scene_summaries": [
+    {
+      "scene_number": 1,
+      "original_description": "Mở đầu cảnh rừng rậm tươi xanh, ánh sáng yếu xuyên qua tán lá, tạo không gian bí ẩn.",
+      "duration": 8,
+      "characters": [],
+      "action_type": "Transition",
+      "environment": "Dense jungle",
+      "camera_angle": "Medium shot",
+      "mood": "Mysterious",
+      "key_elements": []
+    },
+    {
+      "scene_number": 2,
+      "original_description": "T-Rex xuất hiện bước đi uy nghi qua khu rừng, tiếng chân nặng vang vọng.",
+      "duration": 8,
+      "characters": [
+        "T-Rex"
+      ],
+      "action_type": "Transition",
+      "environment": "Dense jungle",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 3,
+      "original_description": "Bầu trời sáng lên, xuất hiện một con Pteranodon lớn đang bay lượn quan sát mặt đất.",
+      "duration": 8,
+      "characters": [
+        "Pteranodon"
+      ],
+      "action_type": "Transition",
+      "environment": "Sky/aerial",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 4,
+      "original_description": "Pteranodon phát hiện T-Rex và bắt đầu lao xuống truy đuổi.",
+      "duration": 8,
+      "characters": [
+        "T-Rex",
+        "Pteranodon"
+      ],
+      "action_type": "Transition",
+      "environment": "",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 5,
+      "original_description": "T-Rex hoảng loạn chạy trốn, môi trường rừng rậm với cây cối rậm rạp nhanh chóng bao quanh.",
+      "duration": 8,
+      "characters": [
+        "T-Rex"
+      ],
+      "action_type": "Chase",
+      "environment": "Dense jungle",
+      "camera_angle": "Medium shot",
+      "mood": "Fearful",
+      "key_elements": []
+    },
+    {
+      "scene_number": 6,
+      "original_description": "Cận cảnh mắt T-Rex hiện rõ sự lo sợ và mồ hôi chảy trên da.",
+      "duration": 8,
+      "characters": [
+        "T-Rex"
+      ],
+      "action_type": "Close-up",
+      "environment": "",
+      "camera_angle": "Close-up",
+      "mood": "Fearful",
+      "key_elements": []
+    },
+    {
+      "scene_number": 7,
+      "original_description": "Pteranodon quặp vuốt, bay sát theo sau T-Rex, tạo cảm giác đe dọa.",
+      "duration": 8,
+      "characters": [
+        "T-Rex",
+        "Pteranodon"
+      ],
+      "action_type": "Transition",
+      "environment": "",
+      "camera_angle": "Medium shot",
+      "mood": "Intense",
+      "key_elements": []
+    },
+    {
+      "scene_number": 8,
+      "original_description": "T-Rex nhảy ngoặt tránh một cái cây lớn, chân vung mạnh tạo lớp bụi bay lên.",
+      "duration": 8,
+      "characters": [
+        "T-Rex",
+        "Pteranodon"
+      ],
+      "action_type": "Transition",
+      "environment": "",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 9,
+      "original_description": "Góc máy rộng, toàn cảnh T-Rex chạy thoát trong khi Pteranodon vẫn sát nút.",
+      "duration": 8,
+      "characters": [
+        "T-Rex",
+        "Pteranodon"
+      ],
+      "action_type": "Chase",
+      "environment": "",
+      "camera_angle": "Wide angle",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 10,
+      "original_description": "T-Rex dừng lại phút chốc, quay đầu lại nhìn đối thủ, chuẩn bị phản công.",
+      "duration": 8,
+      "characters": [
+        "T-Rex"
+      ],
+      "action_type": "Transition",
+      "environment": "",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 11,
+      "original_description": "Pteranodon lao tới với tốc độ cao, mỏ và vuốt giơ ra sẵn sàng tấn công.",
+      "duration": 8,
+      "characters": [
+        "Pteranodon"
+      ],
+      "action_type": "Combat",
+      "environment": "",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 12,
+      "original_description": "T-Rex tru lên, mở hàm rộng, màn kịch tính lên đến đỉnh điểm.",
+      "duration": 8,
+      "characters": [
+        "T-Rex"
+      ],
+      "action_type": "Wide shot",
+      "environment": "",
+      "camera_angle": "Wide angle",
+      "mood": "Intense",
+      "key_elements": []
+    },
+    {
+      "scene_number": 13,
+      "original_description": "Cận cảnh va chạm giữa mỏ Pteranodon và miệng T-Rex, ánh sáng phản chiếu khi chúng va vào nhau.",
+      "duration": 8,
+      "characters": [
+        "T-Rex",
+        "Pteranodon"
+      ],
+      "action_type": "Close-up",
+      "environment": "",
+      "camera_angle": "Close-up",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 14,
+      "original_description": "Cuộc chiến kéo dài, di chuyển liên tục trong khu rừng với nhiều yếu tố thiên nhiên như cây cối, đá tảng.",
+      "duration": 8,
+      "characters": [],
+      "action_type": "Combat",
+      "environment": "Dense jungle",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 15,
+      "original_description": "Pteranodon bất ngờ bị T-Rex dùng đuôi đánh trúng, mất thăng bằng nhẹ.",
+      "duration": 8,
+      "characters": [
+        "T-Rex",
+        "Pteranodon"
+      ],
+      "action_type": "Transition",
+      "environment": "",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 16,
+      "original_description": "T-Rex tận dụng thời cơ, gầm lên vang dội khu rừng.",
+      "duration": 8,
+      "characters": [
+        "T-Rex"
+      ],
+      "action_type": "Transition",
+      "environment": "Dense jungle",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 17,
+      "original_description": "Pteranodon lùi lại, xoay người bay lên cao để tránh né.",
+      "duration": 8,
+      "characters": [
+        "Pteranodon"
+      ],
+      "action_type": "Transition",
+      "environment": "",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 18,
+      "original_description": "Khung cảnh rộng, hai con khủng long tạm thời tách xa, hít thở lấy lại sức.",
+      "duration": 8,
+      "characters": [
+        "T-Rex"
+      ],
+      "action_type": "Wide shot",
+      "environment": "",
+      "camera_angle": "Wide angle",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 19,
+      "original_description": "T-Rex nhìn lên trời, ánh mắt kiên quyết và không chùn bước.",
+      "duration": 8,
+      "characters": [
+        "T-Rex"
+      ],
+      "action_type": "Transition",
+      "environment": "Sky/aerial",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    },
+    {
+      "scene_number": 20,
+      "original_description": "Kết thúc mở, Pteranodon bay lượn trên cao, T-Rex đứng dưới đất chuẩn bị cho lần đụng độ tiếp theo.",
+      "duration": 8,
+      "characters": [
+        "T-Rex",
+        "Pteranodon"
+      ],
+      "action_type": "Transition",
+      "environment": "",
+      "camera_angle": "Medium shot",
+      "mood": "Action",
+      "key_elements": []
+    }
+  ],
+  "metadata": {
+    "total_scenes": 20,
+    "total_duration": 160,
+    "characters": [
+      "T-Rex",
+      "Pteranodon"
+    ],
+    "processing_pipeline": [
+      "Character Consistency",
+      "VFX Enhancement",
+      "Smoke/Fire Effects",
+      "Scene Summarization"
+    ]
+  }
+}

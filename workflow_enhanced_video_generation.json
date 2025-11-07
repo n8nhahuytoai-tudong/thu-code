@@ -1,0 +1,289 @@
+{
+  "name": "Enhanced Video Generation Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ",
+          "mode": "list",
+          "cachedResultName": "Viet kich ban - Kyle Friel",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "storyboarb",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "trigger-sheets",
+      "name": "Google Sheets Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "status-check",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [200, 0],
+      "id": "filter-ready",
+      "name": "Filter Status Ready"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Parse scenes JSON from Google Sheets\nconst scenesString = $input.item.json.scenes;\nconst scenesData = JSON.parse(scenesString);\n\nreturn {\n  id: $input.item.json.id,\n  scenes: scenesData,\n  originalRow: $input.item.json\n};"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [400, 0],
+      "id": "parse-scenes",
+      "name": "Parse Scenes JSON"
+    },
+    {
+      "parameters": {
+        "functionCode": "// 1. CHARACTER CONSISTENCY\n// Định nghĩa character profiles\nconst characterProfiles = {\n  'T-Rex': {\n    details: [\n      'da có vân sần sùi màu xanh sẫm pha nâu đất',\n      'mắt vàng chanh với đồng tử đen sâu thẳm',\n      'răng nanh dài cong, màu trắng ngà bóng',\n      'cơ bắp chân sau cuồn cuộn, móng vuốt đen nhọn',\n      'đuôi dài khỏe, vảy lớn ở lưng'\n    ]\n  },\n  'Pteranodon': {\n    details: [\n      'cánh xương dài 7 mét, da cánh mỏng màu xám xanh',\n      'mỏ dài nhọn màu cam đậm, không có răng',\n      'mào đầu đỏ sẫm hình mũi mác',\n      'vuốt chân sắc nhọn màu đen bóng',\n      'mắt lớn màu đỏ tía, nhìn sắc bén'\n    ]\n  }\n};\n\n// 2. VFX LIBRARY\nconst vfxLibrary = {\n  dust_cloud: 'đám bụi bay dày đặc, màu nâu đất',\n  tree_shake: 'cây cối rung lắc mạnh, lá rụng tung tóe',\n  ground_crack: 'nứt đất lan tỏa, sỏi đá bật lên',\n  impact_flash: 'tia sáng trắng xanh khi va chạm',\n  motion_blur: 'motion blur khi di chuyển nhanh',\n  lens_flare: 'chớp sáng mặt trời qua khe lá',\n  debris: 'mảnh vỡ cây cối bay trong không khí'\n};\n\n// 3. SMOKE/FIRE EFFECTS\nconst smokeFireEffects = {\n  dust_impact: 'bụi bay dày từ chân đạp xuống',\n  breathing_mist: 'hơi thở tạo sương mù nhẹ',\n  battle_dust: 'khói bụi dày bao trùm chiến đấu',\n  fire_sparks: 'tia lửa nhỏ từ va chạm',\n  heat_wave: 'sóng nhiệt méo mó không khí',\n  impact_explosion: 'vụ nổ nhỏ bụi đất'\n};\n\n// Process all scenes\nconst shots = $input.item.json.scenes.shots;\nconst processedShots = [];\n\nshots.forEach((shot, idx) => {\n  let enhanced = shot.scene;\n  const sceneNumber = idx + 1;\n  const sceneLower = shot.scene.toLowerCase();\n  \n  // Add character consistency\n  const charDetails = [];\n  if (sceneLower.includes('t-rex') || sceneLower.includes('khủng long')) {\n    const detailIdx = sceneNumber % characterProfiles['T-Rex'].details.length;\n    charDetails.push(characterProfiles['T-Rex'].details[detailIdx]);\n  }\n  if (sceneLower.includes('pteranodon') || sceneLower.includes('bay')) {\n    const detailIdx = sceneNumber % characterProfiles['Pteranodon'].details.length;\n    charDetails.push(characterProfiles['Pteranodon'].details[detailIdx]);\n  }\n  if (charDetails.length > 0) {\n    enhanced += ` [${charDetails.join('; ')}]`;\n  }\n  \n  // Add VFX\n  const vfxToAdd = [];\n  if (sceneLower.match(/chạy|trốn|di chuyển/)) {\n    vfxToAdd.push(vfxLibrary.dust_cloud);\n    vfxToAdd.push(vfxLibrary.motion_blur);\n  }\n  if (sceneLower.match(/nhảy|tránh|vung/)) {\n    vfxToAdd.push(vfxLibrary.ground_crack);\n    vfxToAdd.push(vfxLibrary.debris);\n  }\n  if (sceneLower.match(/va chạm|đánh|tấn công/)) {\n    vfxToAdd.push(vfxLibrary.impact_flash);\n  }\n  if (sceneLower.includes('rừng') || sceneLower.includes('cây')) {\n    vfxToAdd.push(vfxLibrary.tree_shake);\n  }\n  if (vfxToAdd.length > 0) {\n    enhanced += ` [VFX: ${vfxToAdd.join('; ')}]`;\n  }\n  \n  // Add smoke/fire\n  const sfxToAdd = [];\n  if (sceneLower.match(/chân|bước|đạp/)) {\n    sfxToAdd.push(smokeFireEffects.dust_impact);\n  }\n  if (sceneLower.match(/gầm|tru|hàm/)) {\n    sfxToAdd.push(smokeFireEffects.breathing_mist);\n  }\n  if (sceneLower.match(/va chạm|đụng|đánh/)) {\n    sfxToAdd.push(smokeFireEffects.fire_sparks);\n    sfxToAdd.push(smokeFireEffects.impact_explosion);\n  }\n  if (sceneLower.match(/chiến|đấu/)) {\n    sfxToAdd.push(smokeFireEffects.battle_dust);\n  }\n  if (sfxToAdd.length > 0) {\n    enhanced += ` [SFX: ${sfxToAdd.join('; ')}]`;\n  }\n  \n  processedShots.push({\n    scene_number: sceneNumber,\n    original: shot.scene,\n    enhanced: enhanced,\n    duration: shot.duration\n  });\n});\n\nreturn {\n  id: $input.item.json.id,\n  original_shots: shots,\n  processed_shots: processedShots,\n  metadata: {\n    total_scenes: processedShots.length,\n    total_duration: processedShots.reduce((sum, s) => sum + s.duration, 0),\n    pipeline: ['Character Consistency', 'VFX Enhancement', 'Smoke/Fire Effects']\n  }\n};"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [600, 0],
+      "id": "process-enhancement",
+      "name": "Process: Character + VFX + Effects"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Tóm lược từng cảnh để đồng bộ\nconst processedShots = $input.item.json.processed_shots;\nconst summaries = [];\n\nprocessedShots.forEach((shot) => {\n  const sceneLower = shot.original.toLowerCase();\n  \n  // Phân tích cảnh\n  const summary = {\n    scene_number: shot.scene_number,\n    original: shot.original,\n    enhanced: shot.enhanced,\n    duration: shot.duration,\n    analysis: {\n      characters: [],\n      action_type: 'Transition',\n      camera_angle: 'Medium shot',\n      mood: 'Action',\n      key_elements: []\n    }\n  };\n  \n  // Detect characters\n  if (sceneLower.match(/t-rex|khủng long/)) {\n    summary.analysis.characters.push('T-Rex');\n  }\n  if (sceneLower.match(/pteranodon|bay/)) {\n    summary.analysis.characters.push('Pteranodon');\n  }\n  \n  // Detect action type\n  if (sceneLower.match(/chạy|trốn/)) {\n    summary.analysis.action_type = 'Chase';\n  } else if (sceneLower.match(/chiến|đấu|tấn công/)) {\n    summary.analysis.action_type = 'Combat';\n  } else if (sceneLower.includes('cận cảnh')) {\n    summary.analysis.action_type = 'Close-up';\n  } else if (sceneLower.match(/toàn cảnh|rộng/)) {\n    summary.analysis.action_type = 'Wide shot';\n  }\n  \n  // Detect camera angle\n  if (sceneLower.includes('cận cảnh')) {\n    summary.analysis.camera_angle = 'Close-up';\n  } else if (sceneLower.match(/toàn cảnh|rộng/)) {\n    summary.analysis.camera_angle = 'Wide angle';\n  }\n  \n  // Detect mood\n  if (sceneLower.match(/bí ẩn|tối/)) {\n    summary.analysis.mood = 'Mysterious';\n  } else if (sceneLower.match(/kịch tính|đe dọa/)) {\n    summary.analysis.mood = 'Intense';\n  } else if (sceneLower.match(/hoảng|lo sợ/)) {\n    summary.analysis.mood = 'Fearful';\n  }\n  \n  summaries.push(summary);\n});\n\nreturn {\n  id: $input.item.json.id,\n  summaries: summaries,\n  ready_for_video_gen: true,\n  metadata: {\n    total_scenes: summaries.length,\n    processing_complete: true\n  }\n};"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [800, 0],
+      "id": "summarize-sync",
+      "name": "Summarize & Sync Scenes"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Processed",
+            "task id": "={{ $json.id }}"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1000, -100],
+      "id": "update-status-processed",
+      "name": "Update Status: Processed"
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [1000, 100],
+      "id": "split-scenes",
+      "name": "Split Scenes Into Batches"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.VIDEO_GEN_API_URL || 'https://api.sora.openai.com/v1/generate' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $json.summaries[$json.batchIndex].enhanced }}"
+            },
+            {
+              "name": "duration",
+              "value": "={{ $json.summaries[$json.batchIndex].duration }}"
+            },
+            {
+              "name": "scene_number",
+              "value": "={{ $json.summaries[$json.batchIndex].scene_number }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1200, 100],
+      "id": "send-to-video-gen",
+      "name": "Send to Video Generation API",
+      "notes": "Gửi từng cảnh đã xử lý đến Sora 2 hoặc Veo 3 API"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Video Generation Complete",
+            "video link": "={{ $json.video_url }}",
+            "task id": "={{ $json.task_id }}"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1400, 100],
+      "id": "update-complete",
+      "name": "Update Status: Complete"
+    }
+  ],
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter Status Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Status Ready": {
+      "main": [
+        [
+          {
+            "node": "Parse Scenes JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Scenes JSON": {
+      "main": [
+        [
+          {
+            "node": "Process: Character + VFX + Effects",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process: Character + VFX + Effects": {
+      "main": [
+        [
+          {
+            "node": "Summarize & Sync Scenes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize & Sync Scenes": {
+      "main": [
+        [
+          {
+            "node": "Update Status: Processed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Scenes Into Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Scenes Into Batches": {
+      "main": [
+        [
+          {
+            "node": "Send to Video Generation API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Video Generation API": {
+      "main": [
+        [
+          {
+            "node": "Update Status: Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}
