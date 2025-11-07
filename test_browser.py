@@ -3,7 +3,7 @@ Test zendriver browser initialization
 Run this to debug browser issues
 """
 import asyncio
-from zendriver import Browser
+import zendriver as zd
 
 
 async def test_browser():
@@ -12,19 +12,14 @@ async def test_browser():
     print("-" * 50)
 
     try:
-        print("1. Creating Browser instance...")
-        browser = Browser(
-            browser_args=[
-                '--no-first-run',
-                '--no-default-browser-check',
-            ],
-            headless=False,
-            lang="en-US"
-        )
-        print("   ✅ Browser object created")
+        print("1. Creating browser config...")
+        config = zd.Config()
+        config.add_argument("--no-first-run")
+        config.add_argument("--no-default-browser-check")
+        print("   ✅ Config created")
 
         print("\n2. Starting browser...")
-        await browser.start()
+        browser = await zd.start(config)
         print("   ✅ Browser started successfully")
 
         print("\n3. Opening test page...")
@@ -34,9 +29,9 @@ async def test_browser():
         print("\n4. Waiting 5 seconds...")
         await asyncio.sleep(5)
 
-        print("\n5. Stopping browser...")
-        await browser.stop()
-        print("   ✅ Browser stopped")
+        print("\n5. Closing browser...")
+        await browser.close()
+        print("   ✅ Browser closed")
 
         print("\n" + "=" * 50)
         print("✅ SUCCESS! Zendriver is working correctly!")

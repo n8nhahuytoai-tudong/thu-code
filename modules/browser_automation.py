@@ -20,19 +20,20 @@ class SoraBrowserAutomation:
     async def init_browser(self, headless: bool = False):
         """Initialize browser instance"""
         try:
-            # Initialize browser with zendriver
-            self.browser = Browser(
-                browser_args=[
-                    '--no-first-run',
-                    '--no-default-browser-check',
-                    '--disable-blink-features=AutomationControlled',
-                ],
-                headless=headless,
-                lang="en-US"
-            )
+            # Initialize browser with zendriver (correct API)
+            # Browser() returns a browser instance, then we need to start it
+            import zendriver as zd
 
-            # Start browser and get first tab
-            await self.browser.start()
+            # Create browser config
+            config = zd.Config()
+            if headless:
+                config.add_argument("--headless=new")
+            config.add_argument("--no-first-run")
+            config.add_argument("--no-default-browser-check")
+            config.add_argument("--disable-blink-features=AutomationControlled")
+
+            # Start browser
+            self.browser = await zd.start(config)
             self.page = await self.browser.get("about:blank")
 
             return True
@@ -450,7 +451,7 @@ class SoraBrowserAutomation:
         """Close browser"""
         if self.browser:
             try:
-                await self.browser.stop()
+                await self.browser.close()
             except Exception as e:
                 print(f"Error closing browser: {e}")
             finally:
