@@ -1,0 +1,333 @@
+{
+  "name": "My workflow 7",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a7374937-7690-45ac-b73f-c5bc50a44f70",
+      "name": "When chat message received",
+      "webhookId": "f2260fa7-7d8a-45e5-9fd6-ee0055b283bd"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Bạn là một trợ lý hữu ích. Bạn là một đạo diễn điện ảnh giàu kinh nghiệm, đang hỗ trợ người dùng lên kế hoạch cho một kịch bản phân cảnh ngắn do AI tạo ra cho video Sora 2.hoặc Veo 3\n\nHãy đặt những câu hỏi tự nhiên, sáng tạo để thu thập mọi thông tin cần thiết — ý tưởng cốt truyện tổng thể, bối cảnh, tâm trạng, nhân vật, giọng điệu và phong cách hình ảnh. Khuyến khích người dùng giữ cho câu chuyện ngắn gọn vì video sẽ dài khoảng 240 giây (lý tưởng nhất là mỗi cảnh 8 giây).\n\nKhi cuộc trò chuyện diễn ra, hãy hướng dẫn họ đến những khoảnh khắc điện ảnh rõ ràng, có thể chuyển thể thành các cảnh video ngắn.\n\nKhi đã có đủ thông tin, hãy tóm tắt lại kịch bản phân cảnh cho người dùng theo định dạng phác thảo rõ ràng:\n\n### Cảnh 1\nMô tả cảnh\nThời lượng: 8 giây\n\n### Cảnh 2\nMô tả cảnh\nThời lượng: 8 giây\n\n### Cảnh 3\nMô tả cảnh\nThời lượng: 8 giây\n\ncho đến cảnh cuối cùng có thể là 20 hoặc 30 cảnh\n\n\nĐiều này có ổn không?\n\nĐợi người dùng xác nhận hoặc chỉnh sửa trước khi tiếp tục.\n\nSau khi người dùng xác nhận bảng phân cảnh đã ổn, hãy thêm một hàng mới vào Google Trang tính bằng công cụ Trang tính có sẵn.\n\nHàng mới phải chứa ít nhất các trường sau:\n\n- Cảnh: một đối tượng JSON có cấu trúc chính xác như sau:\n\n{\n\"shots\": [\n{ \"scene\": \"Mô tả cảnh 1\", \"duration\": 8 },\n{ \"scene\": \"Mô tả cảnh 2\", \"duration\": 8 }\n]\n}\n\nChỉ ghi vào Trang tính sau khi đã xác nhận — không bao giờ trước đó.\n\nKhông tự tạo hoặc gọi bất kỳ API video nào.\nTrách nhiệm duy nhất của bạn là:\n\nTrao đổi tự nhiên để thiết kế bảng phân cảnh,\n\nXác nhận cấu trúc với người dùng và\n\nLưu bảng phân cảnh đã xác nhận vào Google Trang tính theo định dạng JSON bắt buộc.\n\nGiữ giọng điệu thân thiện, đúng chất đạo diễn sáng tạo — hợp tác, điện ảnh và chuyên nghiệp."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fb7d1367-bbab-4c78-a98d-7fb8b1b15869",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        208
+      ],
+      "id": "408f063c-e82a-439f-bb89-779fe7fbd937",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "IRCdXNSSuhLk1jkv",
+          "name": "OpenAi rohaumon"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 8
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "feea7d98-a49a-48bd-ab33-542d748cfbe1",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ",
+          "mode": "list",
+          "cachedResultName": "Viet kich ban - Kyle Friel",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "storyboarb",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id', ``, 'string') }}",
+            "scenes": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('scenes', ``, 'string') }}",
+            "status": "Ready"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "scenes",
+              "displayName": "scenes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "task id",
+              "displayName": "task id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "video link",
+              "displayName": "video link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "star",
+              "displayName": "star",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "complete",
+              "displayName": "complete",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        208
+      ],
+      "id": "a73a2e1b-1935-4a69-ae74-75763a421cdc",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ShfJoih7tQOx6Oxc",
+          "name": "GG-hahuytoai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ",
+          "mode": "list",
+          "cachedResultName": "Viet kich ban - Kyle Friel",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "storyboarb",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1icbPiyDYGjB3UmcNVL_4YWb4lugcZ0ykFS8DbF38fgQ/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        928,
+        48
+      ],
+      "id": "bcae25ce-d296-41bb-905b-af6365efc947",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "yAlYfnACZXAPUJ9H",
+          "name": "Sheets n8nhahuytoai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "32ebc9f1-1860-492a-9dd8-381cf05e8b6e",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1136,
+        48
+      ],
+      "id": "3bb19b97-59e9-4e00-a5d3-1a051f78729d",
+      "name": "Filter"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7758e8e1-08da-40b3-a43b-fcfddf9ac16b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b8af9dd668e8ecaccc1dd39b20c16bb28fd24e56f32f2ed660dea45af4654def"
+  },
+  "id": "QYGa0IyB4JBlYckf",
+  "tags": []
+}
