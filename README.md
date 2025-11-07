@@ -1,21 +1,24 @@
 # Sora AI Video Generator 🎬
 
-ManixAI Tools v1.2.3 - AI Video Generation Tool using OpenAI Sora
+ManixAI Tools v1.2.3 - AI Video Generation Tool using OpenAI Sora with Browser Automation
 
 ## Features
 
 - 🎥 Generate AI videos from text descriptions using Sora
+- 🤖 **Browser Automation** - Auto-login with Gmail to sora.chatgpt.com
 - 🖥️ Modern PyQt5 graphical interface
-- ⚙️ Configurable video parameters (duration, resolution)
-- 💾 Easy video download and management
-- 🔑 Secure API key storage
+- 🔐 Secure Gmail authentication
+- 💾 Automatic video download
 - 📊 Real-time progress tracking
+- 🌐 Works with ChatGPT Plus/Pro accounts
 
 ## Requirements
 
 - Python 3.13 or higher
-- OpenAI API key with Sora access
+- **ChatGPT Plus** ($20/month) or **ChatGPT Pro** ($200/month) account
+- Gmail account for login
 - Windows OS (can be adapted for Linux/Mac)
+- Chrome/Chromium browser (installed automatically)
 
 ## Installation
 
@@ -46,46 +49,48 @@ python main.py
 
 ## Usage
 
-### 1. Configure API Key
+### 1. Login with Gmail
 
 1. Open the application
-2. Go to the **Settings** tab
-3. Enter your OpenAI API key
-4. Click **Save API Key**
+2. Go to **Tab 1: Login**
+3. Enter your Gmail address (the one linked to ChatGPT Plus/Pro)
+4. Enter your Gmail password
+5. Optional: Check "Headless mode" to hide browser window
+6. Click **Login to Sora**
+7. Wait for automatic browser login (takes 15-30 seconds)
+8. ✅ You'll see "Login successful!" when done
 
 ### 2. Generate Video
 
-1. Go to the **Generate Video** tab
+1. Go to **Tab 2: Generate Video**
 2. Enter your video description in the prompt box
    - Example: "A serene sunset over a calm ocean, with gentle waves and seagulls flying"
-3. Set video parameters:
-   - **Duration**: 3-10 seconds
-   - **Resolution**: Choose from 1080p, 720p, 4K, or portrait
-4. Click **Generate Video**
-5. Wait for generation to complete
-6. Click **Download Video** to save
+3. Click **Generate Video**
+4. Wait for generation (takes 2-5 minutes depending on complexity)
+5. Click **Download Video** when ready
 
 ### 3. Access Your Videos
 
 Generated videos are saved to:
 - Default: `~/SoraVideos/`
-- Custom: Configure in Settings tab
+- Files named: `sora_video_YYYYMMDD_HHMMSS.mp4`
 
 ## Project Structure
 
 ```
 thu-code/
-├── main.py                 # Application entry point
-├── requirements.txt        # Python dependencies
-├── install.bat            # Windows installation script
-├── run.bat                # Windows run script
-├── README.md              # This file
+├── main.py                      # Application entry point
+├── requirements.txt             # Python dependencies
+├── install.bat                  # Windows installation script
+├── run.bat                      # Windows run script
+├── README.md                    # This file
 └── modules/
-    ├── __init__.py        # Module initialization
-    ├── app_runner.py      # Application runner
-    ├── gui.py             # PyQt5 GUI interface
-    ├── sora_api.py        # OpenAI Sora API integration
-    └── config.py          # Configuration management
+    ├── __init__.py              # Module initialization
+    ├── app_runner.py            # Application runner with async support
+    ├── gui_browser.py           # PyQt5 GUI with browser automation
+    ├── browser_automation.py    # Zendriver browser automation
+    ├── sora_api.py              # OpenAI Sora API (backup method)
+    └── config.py                # Configuration management
 ```
 
 ## Configuration
@@ -103,29 +108,52 @@ Configuration is stored in `~/.sora_config.json`:
 
 ## Troubleshooting
 
-### "API key not configured"
-- Go to Settings tab and enter your OpenAI API key
-- Get your API key from: https://platform.openai.com/api-keys
+### "Please login first in the Login tab"
+- You must login with Gmail before generating videos
+- Go to Tab 1: Login and enter your credentials
+- Wait for "Login successful!" message
 
 ### "Module not found" error
 - Make sure you've run `install.bat` or manually installed requirements
-- Activate the virtual environment before running
+- Activate the virtual environment before running: `venv\Scripts\activate`
 
-### Video generation fails
-- Check your internet connection
-- Verify your API key has Sora access
-- Ensure you have sufficient API credits
+### Login fails
+- Check your Gmail email and password are correct
+- Make sure your Gmail account has ChatGPT Plus or Pro subscription
+- Try unchecking "Headless mode" to see what's happening
+- Some Gmail accounts require 2FA - you may need an app-specific password
+
+### Browser doesn't open
+- Zendriver will auto-download Chrome if needed
+- Check firewall/antivirus isn't blocking browser
+- Try running as Administrator
+
+### Video generation times out
+- Sora generation can take 2-5 minutes, be patient
+- Check the browser window (if not headless) for errors
+- Verify your ChatGPT account has Sora access
 
 ### GUI doesn't open
 - Make sure PyQt5 is installed correctly
-- Try reinstalling dependencies: `pip install -r requirements.txt --force-reinstall`
+- Try reinstalling: `pip install -r requirements.txt --force-reinstall`
 
-## API Notes
+## Important Notes
 
-⚠️ **Important**:
-- Sora API access requires special approval from OpenAI
-- Standard OpenAI API keys may not have Sora access
-- Apply for access at: https://openai.com/sora
+⚠️ **Requirements**:
+- **ChatGPT Plus** ($20/month) or **ChatGPT Pro** ($200/month) subscription required
+- Free ChatGPT accounts cannot access Sora
+- Subscribe at: https://chatgpt.com/
+
+🔐 **Security**:
+- Your Gmail credentials are NEVER stored or transmitted except to Google
+- Browser automation happens locally on your machine
+- Credentials only used for login to sora.chatgpt.com
+
+🌐 **How it works**:
+- Uses browser automation (Zendriver) to control Chrome
+- Automatically logs into sora.chatgpt.com with your Gmail
+- Simulates human interaction to generate videos
+- Downloads videos directly from the Sora web interface
 
 ## License
 

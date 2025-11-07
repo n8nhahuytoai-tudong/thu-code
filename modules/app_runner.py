@@ -1,8 +1,8 @@
 """
-Main application runner
+Main application runner with browser automation
 """
 import sys
-from .gui import create_app, create_main_window
+from .gui_browser import create_app, create_main_window
 
 
 def run():
@@ -13,14 +13,17 @@ def run():
         int: Exit code
     """
     try:
-        # Create Qt application
-        app = create_app()
+        # Create Qt application with async support
+        app, loop = create_app()
 
         # Create and show main window
         window = create_main_window()
 
-        # Run event loop
-        return app.exec_()
+        # Run async event loop
+        with loop:
+            loop.run_forever()
+
+        return 0
 
     except Exception as e:
         print(f"Fatal error: {e}")
