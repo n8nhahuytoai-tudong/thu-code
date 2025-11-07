@@ -451,7 +451,7 @@ class SoraBrowserAutomation:
         """Close browser"""
         if self.browser:
             try:
-                await self.browser.close()
+                await self.browser.stop()
             except Exception as e:
                 print(f"Error closing browser: {e}")
             finally:

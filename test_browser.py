@@ -30,7 +30,7 @@ async def test_browser():
         await asyncio.sleep(5)
 
         print("\n5. Closing browser...")
-        await browser.close()
+        await browser.stop()
         print("   ✅ Browser closed")
 
         print("\n" + "=" * 50)
