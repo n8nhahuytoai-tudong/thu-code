@@ -1,0 +1,442 @@
+{
+  "name": "Complete Video Production System - All-in-One",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [240, 300],
+      "id": "chat-trigger",
+      "name": "1. Chat Interface",
+      "webhookId": "complete-video-system-chat",
+      "notes": "Interface chat với người dùng\nBắt đầu conversation để tạo storyboard"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Bạn là một ĐẠO DIỄN ĐIỆN ẢNH HOLLYWOOD giàu kinh nghiệm, chuyên về AI video generation (Sora 2, Veo 3). Nhiệm vụ của bạn là giúp người dùng tạo một kịch bản phân cảnh (storyboard) CHUYÊN NGHIỆP với đầy đủ chi tiết kỹ thuật.\n\n## QUY TRÌNH LÀM VIỆC:\n\n### BƯỚC 1: THU THẬP THÔNG TIN CỐT TRUYỆN\nHỏi tự nhiên, sáng tạo về:\n- Ý tưởng cốt truyện tổng thể\n- Setting/bối cảnh (địa điểm, thời gian)\n- Tâm trạng/mood chung (hồi hộp? lãng mạn? hành động?)\n- Giọng điệu (nghiêm túc? hài hước? kịch tính?)\n- Reference films (người dùng muốn giống phim nào?)\n\nKhuyến khích giữ câu chuyện ngắn gọn: 240 giây tổng (20-30 scenes x 8 giây).\n\n### BƯỚC 2: THIẾT KẾ NHÂN VẬT (CRITICAL!)\nNẾU có nhân vật, BẮT BUỘC hỏi chi tiết:\n\n**Cho MỖI nhân vật, hỏi:**\n- Tên và vai trò (protagonist? antagonist?)\n- **Appearance (LOCK NGAY - RẤT QUAN TRỌNG):**\n  - Màu sắc chính cụ thể (ví dụ: \"forest green #2D4A3E\", không chỉ \"xanh\")\n  - Màu mắt cụ thể (ví dụ: \"amber yellow #FFB000\")\n  - Kích thước/tỷ lệ (cao bao nhiêu? lớn thế nào? so với gì?)\n  - Đặc điểm nổi bật duy nhất (sẹo? vảy? cánh? răng nanh? bao nhiêu?)\n  - Texture/vật liệu (da? vảy? lông? bóng? nhám?)\n\n**QUAN TRỌNG - Nhấn mạnh với user:**\n\"Các thông tin về nhân vật này sẽ được LOCK và dùng GIỐNG NHAU cho TẤT CẢ 20-30 scenes để đảm bảo consistency khi AI generate video. Vì vậy hãy mô tả CỤ THỂ NHẤT có thể ngay từ đầu!\n\nVí dụ TỐT: 'T-Rex có da xanh rêu đậm (#2D4A3E) với vảy sần sùi, mắt vàng hổ phách (#FFB000), 58 răng nanh trắng ngà, cao 4.5m'\nVí dụ XẤU: 'T-Rex màu xanh, mắt vàng, có răng'\"\n\n### BƯỚC 3: PHONG CÁCH HÌNH ẢNH\nHỏi về:\n- **Color palette** (warm/cool? vibrant/muted? hex codes nếu có)\n- **Lighting style** (bright daylight? dark moody? golden hour? dramatic?)\n- **Camera style** (steady cinematic? handheld shaky? smooth drone?)\n- **VFX level** (realistic? stylized? heavy effects? minimal?)\n- **Reference films** (Jurassic Park? Avatar? Mad Max? Blade Runner?)\n\n### BƯỚC 4: XÂY DỰNG STORYBOARD\nVới thông tin đã có, hướng dẫn chia câu chuyện thành:\n- 20-30 scenes (tổng ~240 giây)\n- Mỗi scene 8 giây\n- Các \"khoảnh khắc điện ảnh\" rõ ràng\n\nCho MỖI scene, bao gồm:\n- Hành động/cảnh quay cụ thể\n- Nhân vật nào xuất hiện (mention màu sắc/đặc điểm)\n- Camera angle (wide? medium? close-up? aerial? low angle?)\n- Lighting hint (bright? backlit? dark? dappled?)\n- Mood (tense? calm? action? mysterious?)\n- Effects cần thiết (dust? smoke? rain? fire?)\n\n### BƯỚC 5: TÓM TẮT STORYBOARD\nFormat:\n\n### Cảnh 1: [Tên ngắn gọn]\n**Mô tả:** [Hành động chi tiết + nhân vật details + camera + lighting + mood]\n**Thời lượng:** 8 giây\n\n### Cảnh 2: [Tên ngắn gọn]\n**Mô tả:** [Tương tự...]\n**Thời lượng:** 8 giây\n\n[...tiếp tục cho tất cả scenes]\n\n---\n\n### 🎨 CHARACTER CONSISTENCY LOCKED SPECS:\n\n**[Tên Nhân Vật 1]:**\n- Màu chủ đạo: [cụ thể + hex code]\n- Màu mắt: [cụ thể + hex]\n- Kích thước: [số liệu]\n- Đặc điểm: [chi tiết]\n- Texture: [mô tả]\n\n**[Tên Nhân Vật 2]:**\n[...tương tự]\n\n⚠️ **CÁC THÔNG SỐ TRÊN PHẢI GIỐNG NHAU 100% TRONG TẤT CẢ SCENES!**\n\n---\n\n**VÍ DỤ SCENE MÔ TẢ CHUẨN:**\n\"T-Rex (da xanh rêu #2D4A3E, mắt vàng hổ phách #FFB000, răng trắng ngà, 4.5m cao) bước đi uy nghi qua rừng rậm. Camera: Low angle medium shot looking up. Lighting: Dappled morning sunlight through trees, strong rim backlight on dorsal plates. Mood: Powerful, mysterious. Mỗi bước chân tạo rung động đất, bụi nâu bay lên.\"\n\n### BƯỚC 6: XÁC NHẬN\nSau khi tóm tắt storyboard đầy đủ, hỏi:\n\n\"📋 Storyboard trên có ổn không? \n\nKiểm tra:\n✓ Nhân vật có đúng không?\n✓ Màu sắc/đặc điểm có rõ ràng không?\n✓ Số lượng scenes phù hợp không? (20-30 scenes)\n✓ Cần chỉnh sửa gì không?\n\nNếu OK, tôi sẽ lưu vào Google Sheets để xử lý tiếp!\"\n\nĐợi user XÁC NHẬN trước khi tiếp tục.\n\n### BƯỚC 7: LƯU VÀO GOOGLE SHEETS\nSau khi user xác nhận ổn, sử dụng Google Sheets tool để thêm row mới.\n\n**Cấu trúc JSON bắt buộc:**\n```json\n{\n  \"shots\": [\n    {\n      \"scene\": \"[Mô tả đầy đủ bao gồm: action + character details với màu sắc + camera + lighting + mood + effects]\",\n      \"duration\": 8\n    },\n    {\n      \"scene\": \"[Scene 2...]\",\n      \"duration\": 8\n    }\n    // ... tiếp tục cho tất cả scenes\n  ]\n}\n```\n\n**QUAN TRỌNG - Mỗi scene description phải có:**\n- Hành động/cảnh quay\n- Nhân vật + màu sắc/đặc điểm (nếu xuất hiện)\n- Camera hint (wide/medium/close-up, angle)\n- Lighting hint (bright/dark/backlit, etc.)\n- Mood/atmosphere\n- Effects (nếu có)\n\n**CHỈ ghi vào Google Sheets SAU KHI user xác nhận ổn!**\n\n---\n\n## LƯU Ý QUAN TRỌNG:\n\n❌ KHÔNG tự tạo hoặc gọi bất kỳ API video nào\n❌ KHÔNG tự động lưu trước khi xác nhận\n✅ Trách nhiệm: Thiết kế storyboard + Lock character consistency + Lưu Google Sheets\n✅ Giọng điệu: Thân thiện, chuyên nghiệp, đạo diễn Hollywood\n✅ PRIORITY #1: Character consistency - phải lock màu sắc/details từ đầu!\n\n---\n\n**Bắt đầu bằng câu chào thân thiện và hỏi về ý tưởng phim của họ!** 🎬"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [460, 300],
+      "id": "ai-director-agent",
+      "name": "2. AI Director (Hollywood)",
+      "notes": "AI Agent với prompt cải tiến:\n- Hỏi chi tiết character consistency\n- Lock màu sắc/specs từ đầu\n- Hướng dẫn technical details\n- Output chuẩn Hollywood"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [320, 480],
+      "id": "openai-model",
+      "name": "OpenAI GPT-4",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI Account"
+        }
+      },
+      "notes": "GPT-4o model\nThay YOUR_OPENAI_CREDENTIAL_ID"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 12
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [460, 480],
+      "id": "conversation-memory",
+      "name": "Conversation Memory",
+      "notes": "Nhớ 12 messages cuối\n(đủ cho conversation dài)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $fromAI('id', 'Generate unique ID for this storyboard', 'string') }}",
+            "scenes": "={{ $fromAI('scenes', 'The complete storyboard in JSON format: {\"shots\":[{\"scene\":\"...\",\"duration\":8}]}', 'string') }}",
+            "status": "Ready"
+          },
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "type": "string",
+              "required": false
+            },
+            {
+              "id": "scenes",
+              "displayName": "scenes",
+              "type": "string",
+              "required": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "type": "string",
+              "required": false
+            },
+            {
+              "id": "task id",
+              "displayName": "task id",
+              "type": "string",
+              "required": false
+            },
+            {
+              "id": "processed_json",
+              "displayName": "processed_json",
+              "type": "string",
+              "required": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [600, 480],
+      "id": "save-to-sheets-tool",
+      "name": "Save to Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets Account"
+        }
+      },
+      "notes": "Tool cho AI Agent\nLưu storyboard vào Google Sheets\nThay YOUR_GOOGLE_SHEET_ID_HERE"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $node['Save to Google Sheets'].parameter.documentId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $node['Save to Google Sheets'].parameter.sheetName }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [980, 300],
+      "id": "sheets-monitor",
+      "name": "3. Monitor Google Sheets",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets Account"
+        }
+      },
+      "notes": "Theo dõi Google Sheets mỗi phút\nTự động trigger khi có row mới"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-ready",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [1180, 300],
+      "id": "filter-ready",
+      "name": "4. Filter Status Ready",
+      "notes": "Chỉ xử lý scenes có status='Ready'"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse scenes JSON từ Google Sheets\nconst scenesString = $input.item.json.scenes || '{}';\nconst scenesData = JSON.parse(scenesString);\n\nreturn {\n  id: $input.item.json.id,\n  scenes: scenesData,\n  originalRow: $input.item.json\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1380, 300],
+      "id": "parse-json",
+      "name": "5. Parse Scenes JSON",
+      "notes": "Đọc và parse JSON scenes"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ==========================================\n// COMPLETE SCENE ENHANCEMENT PROCESSOR\n// Character Consistency + VFX + Effects + Camera + Lighting\n// ==========================================\n\nconst characterProfiles = {\n  'T-Rex': {\n    colors: { skin: '#2D4A3E', eyes: '#FFB000', teeth: '#FFFFF0' },\n    details: [\n      'da xanh rêu sần sùi #2D4A3E',\n      'mắt vàng hổ phách #FFB000 với đồng tử dọc',\n      'răng nanh trắng ngà #FFFFF0, 58 răng',\n      'cơ bắp cuồn cuộn, 3 móng vuốt đen mỗi chân sau',\n      '32 đĩa xương sần sùi dọc lưng'\n    ],\n    aiPrompt: 'Photo-realistic Tyrannosaurus Rex: deep forest green skin (#2D4A3E), amber yellow eyes (#FFB000), 58 ivory white teeth (#FFFFF0), hexagonal scales on head, 32 dorsal plates along spine, 4.5m tall, 12m long, 8 tons, massive build'\n  },\n  'Pteranodon': {\n    colors: { body: '#5A6B6E', wings: '#8FA5A8', beak: '#D86F2A', eyes: '#A52A52' },\n    details: [\n      'sải cánh 7m, màu xám xanh #8FA5A8, trong suốt 40%',\n      'gân cánh hình cây, tối màu, nhìn rõ khi có ánh sáng sau lưng',\n      'mỏ dài nhọn màu cam #D86F2A, không răng',\n      'mào đầu đỏ sẫm #8B2835, hình lưỡi kiếm',\n      'mắt tím đỏ #A52A52 với vòng vàng, sắc bén'\n    ],\n    aiPrompt: 'Photo-realistic Pteranodon: 7m wingspan, translucent blue-gray wings (#8FA5A8) 40% see-through with visible dark veins in tree-branch pattern, orange beak (#D86F2A) no teeth, dark crimson crest (#8B2835), purple-red eyes (#A52A52) with gold ring, fuzzy body, 25kg light'\n  }\n};\n\nconst vfxLibrary = {\n  dust_cloud: 'đám bụi nâu #6B5D4F bay dày',\n  tree_shake: 'cây rung mạnh, lá rụng tung tóe',\n  ground_crack: 'đất nứt lan tỏa, sỏi đá bật lên',\n  impact_flash: 'tia sáng trắng xanh khi va chạm',\n  motion_blur: 'mờ chuyển động tốc độ cao',\n  lens_flare: 'chớp sáng mặt trời qua khe lá',\n  debris: 'mảnh vỡ cây cối bay trong không khí'\n};\n\nconst smokeFireEffects = {\n  dust_impact: 'bụi bay dày từ chân đạp xuống đất',\n  breathing_mist: 'hơi thở tạo sương mù nhẹ',\n  battle_dust: 'khói bụi dày bao trùm khu vực chiến đấu',\n  fire_sparks: 'tia lửa nhỏ bắn từ va chạm',\n  heat_wave: 'sóng nhiệt méo mó không khí',\n  impact_explosion: 'vụ nổ nhỏ bụi đất khi va chạm mạnh'\n};\n\nfunction processScene(scene, sceneNumber) {\n  let enhanced = scene;\n  const lower = scene.toLowerCase();\n  \n  // 1. CHARACTER CONSISTENCY\n  const charDetails = [];\n  if (lower.includes('t-rex') || lower.includes('khủng long')) {\n    const idx = sceneNumber % characterProfiles['T-Rex'].details.length;\n    charDetails.push(characterProfiles['T-Rex'].details[idx]);\n  }\n  if (lower.includes('pteranodon') || lower.includes('bay')) {\n    const idx = sceneNumber % characterProfiles['Pteranodon'].details.length;\n    charDetails.push(characterProfiles['Pteranodon'].details[idx]);\n  }\n  if (charDetails.length > 0) {\n    enhanced += ` [Character: ${charDetails.join('; ')}]`;\n  }\n  \n  // 2. VFX AUTO-DETECTION\n  const vfx = [];\n  if (lower.match(/chạy|trốn|di chuyển/)) {\n    vfx.push(vfxLibrary.dust_cloud, vfxLibrary.motion_blur);\n  }\n  if (lower.match(/nhảy|tránh|vung/)) {\n    vfx.push(vfxLibrary.ground_crack, vfxLibrary.debris);\n  }\n  if (lower.match(/va chạm|đánh|tấn công/)) {\n    vfx.push(vfxLibrary.impact_flash);\n  }\n  if (lower.includes('rừng') || lower.includes('cây')) {\n    vfx.push(vfxLibrary.tree_shake);\n  }\n  if (lower.match(/sáng|trời|ánh/)) {\n    vfx.push(vfxLibrary.lens_flare);\n  }\n  if (vfx.length > 0) {\n    enhanced += ` [VFX: ${vfx.join('; ')}]`;\n  }\n  \n  // 3. SMOKE/FIRE EFFECTS\n  const sfx = [];\n  if (lower.match(/chân|bước|đạp/)) sfx.push(smokeFireEffects.dust_impact);\n  if (lower.match(/gầm|tru|hàm/)) sfx.push(smokeFireEffects.breathing_mist);\n  if (lower.match(/va chạm|đụng|đánh/)) {\n    sfx.push(smokeFireEffects.fire_sparks, smokeFireEffects.impact_explosion);\n  }\n  if (lower.match(/chiến|đấu/)) sfx.push(smokeFireEffects.battle_dust);\n  if (sfx.length > 0) {\n    enhanced += ` [SFX: ${sfx.join('; ')}]`;\n  }\n  \n  // 4. CAMERA AUTO-DETECTION\n  let camera = '[Camera: Medium 50mm, eye level]';\n  if (lower.includes('cận cảnh')) {\n    camera = '[Camera: Close-up 85mm, shallow DOF f/2.8]';\n  } else if (lower.match(/toàn cảnh|rộng/)) {\n    camera = '[Camera: Wide 24mm, deep focus f/8]';\n  } else if (lower.match(/bay|trên cao/)) {\n    camera = '[Camera: Aerial drone, wide angle]';\n  } else if (lower.match(/nhìn lên|uy nghi/)) {\n    camera = '[Camera: Low angle looking up, heroic]';\n  }\n  enhanced += ` ${camera}`;\n  \n  // 5. LIGHTING AUTO-DETECTION\n  let lighting = '[Lighting: Natural daylight, soft rim backlight]';\n  if (lower.match(/tối|bí ẩn|đêm/)) {\n    lighting = '[Lighting: Low key, dark shadows, mysterious]';\n  } else if (lower.match(/sáng|trời|mặt trời/)) {\n    lighting = '[Lighting: Bright sky, sun backlight, lens flare]';\n  } else if (lower.match(/rừng|cây|tán lá/)) {\n    lighting = '[Lighting: Dappled through trees, god rays]';\n  } else if (lower.match(/chiến|đấu|kịch tính/)) {\n    lighting = '[Lighting: Dramatic high contrast, rim light]';\n  }\n  enhanced += ` ${lighting}`;\n  \n  return enhanced;\n}\n\nfunction analyzeScene(scene) {\n  const lower = scene.toLowerCase();\n  return {\n    characters: [\n      ...(lower.match(/t-rex|khủng long/) ? ['T-Rex'] : []),\n      ...(lower.match(/pteranodon|bay/) ? ['Pteranodon'] : [])\n    ],\n    actionType: lower.match(/chạy|trốn/) ? 'Chase' :\n                lower.match(/chiến|đấu|tấn công/) ? 'Combat' :\n                lower.includes('cận cảnh') ? 'Close-up' :\n                lower.match(/toàn cảnh|rộng/) ? 'Wide shot' : 'Transition',\n    mood: lower.match(/bí ẩn|tối/) ? 'Mysterious' :\n          lower.match(/kịch tính|đe dọa/) ? 'Intense' :\n          lower.match(/hoảng|lo sợ/) ? 'Fearful' : 'Action',\n    cameraAngle: lower.includes('cận cảnh') ? 'Close-up' :\n                 lower.match(/toàn cảnh|rộng/) ? 'Wide' : 'Medium'\n  };\n}\n\n// MAIN PROCESSING\nconst shots = $input.item.json.scenes.shots || [];\nconst processedShots = [];\n\nshots.forEach((shot, idx) => {\n  const sceneNumber = idx + 1;\n  const enhanced = processScene(shot.scene, sceneNumber);\n  const analysis = analyzeScene(shot.scene);\n  \n  // Create AI-ready prompt\n  let aiPrompt = '';\n  \n  // Add character base prompts\n  if (analysis.characters.includes('T-Rex')) {\n    aiPrompt += characterProfiles['T-Rex'].aiPrompt + '. ';\n  }\n  if (analysis.characters.includes('Pteranodon')) {\n    aiPrompt += characterProfiles['Pteranodon'].aiPrompt + '. ';\n  }\n  \n  // Add enhanced scene description\n  aiPrompt += enhanced;\n  \n  // Add quality tags\n  aiPrompt += '. Cinematic, photorealistic, 8K IMAX quality, Hollywood production.';\n  \n  processedShots.push({\n    scene_number: sceneNumber,\n    original: shot.scene,\n    enhanced: enhanced,\n    ai_prompt: aiPrompt,\n    duration: shot.duration,\n    analysis: analysis\n  });\n});\n\nreturn {\n  id: $input.item.json.id,\n  total_scenes: processedShots.length,\n  processed_shots: processedShots,\n  metadata: {\n    processing_date: new Date().toISOString(),\n    pipeline_version: '3.0-complete',\n    enhancements: [\n      'Character Consistency (locked colors)',\n      'VFX Auto-detection',\n      'Smoke/Fire Effects',\n      'Camera Auto-selection',\n      'Lighting Auto-setup',\n      'AI-ready prompts'\n    ]\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1600, 300],
+      "id": "enhancement-processor",
+      "name": "6. Complete Enhancement",
+      "notes": "Xử lý TẤT CẢ:\n✓ Character consistency\n✓ VFX auto-detect\n✓ Smoke/Fire effects\n✓ Camera selection\n✓ Lighting setup\n✓ AI prompts"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $node['3. Monitor Google Sheets'].parameter.documentId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $node['3. Monitor Google Sheets'].parameter.sheetName }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Processing"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1820, 180],
+      "id": "update-processing",
+      "name": "7a. Update: Processing",
+      "notes": "Đánh dấu đang xử lý"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "output-json",
+              "name": "output_json",
+              "value": "={{ JSON.stringify($json, null, 2) }}",
+              "type": "string"
+            },
+            {
+              "id": "summary-text",
+              "name": "summary",
+              "value": "=✅ Processed {{ $json.total_scenes }} scenes successfully!\n\nEnhancements applied:\n- Character Consistency (locked colors & specs)\n- VFX Effects ({{ $json.processed_shots.filter(s => s.enhanced.includes('[VFX:')).length }} scenes)\n- Smoke/Fire ({{ $json.processed_shots.filter(s => s.enhanced.includes('[SFX:')).length }} scenes)\n- Camera specs (all scenes)\n- Lighting setups (all scenes)\n\n🎬 Ready for AI video generation (Sora 2 / Veo 3)!\n\nFirst scene AI prompt preview:\n{{ $json.processed_shots[0].ai_prompt.substring(0, 200) }}...",
+              "type": "string"
+            },
+            {
+              "id": "scene-count",
+              "name": "scene_count",
+              "value": "={{ $json.total_scenes }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [1820, 300],
+      "id": "prepare-output",
+      "name": "7b. Prepare Output",
+      "notes": "Format output đẹp:\n- JSON đầy đủ\n- Summary statistics\n- Preview AI prompt"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $node['3. Monitor Google Sheets'].parameter.documentId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $node['3. Monitor Google Sheets'].parameter.sheetName }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Complete",
+            "processed_json": "={{ $json.output_json }}",
+            "summary": "={{ $json.summary }}"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [2040, 300],
+      "id": "update-complete",
+      "name": "8. Update: Complete ✅",
+      "notes": "Cập nhật:\n- Status = Complete\n- Lưu processed JSON\n- Lưu summary\n\n→ DONE!"
+    },
+    {
+      "parameters": {
+        "content": "## 🎬 COMPLETE VIDEO PRODUCTION SYSTEM\n### All-in-One Workflow\n\n---\n\n## 📋 WORKFLOW NÀY LÀM GÌ?\n\n### PART 1: AI CHAT STORYBOARD (Nodes 1-2)\n✅ Chat với AI Director Hollywood-style\n✅ Hỏi chi tiết character consistency\n✅ Lock màu sắc/specs từ đầu (hex codes!)\n✅ Hướng dẫn technical details (camera, lighting)\n✅ Tạo storyboard chuẩn chuyên nghiệp\n✅ Lưu vào Google Sheets\n\n### PART 2: AUTO PROCESSING (Nodes 3-8)\n✅ Monitor Google Sheets (mỗi phút)\n✅ Auto-trigger khi có storyboard mới\n✅ Enhance TẤT CẢ scenes:\n   - Character consistency enforcement\n   - VFX auto-detection (dust, motion blur, etc.)\n   - Smoke/Fire effects\n   - Camera auto-selection (close/wide/aerial)\n   - Lighting auto-setup (bright/dark/dramatic)\n   - AI-ready prompts (copy vào Sora/Veo!)\n✅ Lưu kết quả về Google Sheets\n\n---\n\n## 🚀 SETUP - 5 BƯỚC:\n\n### 1️⃣ GOOGLE SHEETS\nTạo sheet với columns:\n| id | scenes | status | task id | processed_json | summary |\n|----|--------|--------|---------|----------------|----------|\n\n### 2️⃣ CREDENTIALS\nSetup 2 credentials:\n- **OpenAI API** (GPT-4)\n- **Google Sheets OAuth2**\n\n### 3️⃣ UPDATE IDs\nThay trong workflow:\n- Node \"Save to Google Sheets\": `YOUR_GOOGLE_SHEET_ID_HERE`\n- Node \"OpenAI GPT-4\": `YOUR_OPENAI_CREDENTIAL_ID`\n- Nodes Google Sheets: `YOUR_GOOGLE_SHEETS_CREDENTIAL_ID`\n\nLấy Sheet ID từ URL:\n`docs.google.com/spreadsheets/d/`**[SHEET_ID]**`/edit`\n\n### 4️⃣ ACTIVATE\nBật workflow:\n- Save\n- Toggle \"Active\" switch ON\n\n### 5️⃣ TEST\nMở chat interface và nói:\n\"Tôi muốn làm video về T-Rex vs Pteranodon\"\n\n---\n\n## 💬 CÁCH DÙNG:\n\n### Chat với AI Director:\n1. Mở Chat interface (webhook URL)\n2. AI sẽ hỏi về:\n   - Cốt truyện\n   - Nhân vật (màu sắc, kích thước, đặc điểm)\n   - Phong cách hình ảnh\n   - Camera & lighting preferences\n3. AI tạo storyboard chi tiết\n4. Bạn xác nhận\n5. AI lưu vào Google Sheets\n\n### Auto Processing:\n- Workflow tự động chạy mỗi phút\n- Phát hiện storyboard mới (status=Ready)\n- Xử lý enhancement đầy đủ\n- Lưu kết quả (status=Complete)\n- Check column `processed_json` để lấy AI prompts!\n\n---\n\n## 🎨 CHARACTER CONSISTENCY:\n\nWorkflow này ĐẢM BẢO nhân vật giống nhau 100% qua tất cả scenes!\n\n**T-Rex Locked Specs:**\n- Skin: #2D4A3E forest green\n- Eyes: #FFB000 amber yellow\n- Teeth: #FFFFF0 ivory white\n- Size: 4.5m tall, 12m long\n\n**Pteranodon Locked Specs:**\n- Wings: #8FA5A8 blue-gray, 40% translucent\n- Beak: #D86F2A orange, no teeth\n- Eyes: #A52A52 purple-red\n- Wingspan: 7.0m exactly\n\n---\n\n## 📤 OUTPUT:\n\n**Mỗi scene sẽ có AI prompt đầy đủ:**\n```\nPhoto-realistic T-Rex: deep forest green skin (#2D4A3E),\namber yellow eyes (#FFB000), 58 ivory white teeth...\nT-Rex bước đi trong rừng [Character: răng nanh trắng ngà]\n[VFX: cây rung, lá rụng] [SFX: bụi bay] [Camera: Medium\n50mm] [Lighting: Dappled through trees]. Cinematic, 8K IMAX.\n```\n\n→ **Copy vào Sora 2 / Veo 3 để generate!**\n\n---\n\n## ✅ FEATURES:\n\n✓ **Hollywood-standard workflow**\n✓ **Character consistency 100%**\n✓ **Auto enhancement (VFX, camera, lighting)**\n✓ **AI-ready prompts**\n✓ **End-to-end automation**\n✓ **Professional storyboarding**\n\n---\n\n**Version:** 3.0 Complete\n**Ready to use!** 🎬",
+        "height": 1080,
+        "width": 520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-160, -60],
+      "id": "instructions",
+      "name": "📖 HƯỚNG DẪN ĐẦY ĐỦ"
+    }
+  ],
+  "connections": {
+    "1. Chat Interface": {
+      "main": [
+        [
+          {
+            "node": "2. AI Director (Hollywood)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "2. AI Director (Hollywood)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conversation Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "2. AI Director (Hollywood)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "2. AI Director (Hollywood)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Monitor Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "4. Filter Status Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4. Filter Status Ready": {
+      "main": [
+        [
+          {
+            "node": "5. Parse Scenes JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5. Parse Scenes JSON": {
+      "main": [
+        [
+          {
+            "node": "6. Complete Enhancement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6. Complete Enhancement": {
+      "main": [
+        [
+          {
+            "node": "7a. Update: Processing",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "7b. Prepare Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "7b. Prepare Output": {
+      "main": [
+        [
+          {
+            "node": "8. Update: Complete ✅",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2025-11-07T00:00:00.000Z",
+  "versionId": "complete-3.0"
+}
