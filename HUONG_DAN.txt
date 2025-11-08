@@ -1,0 +1,160 @@
+========================================
+  VIDEO TO JSON CONVERTER
+  Công cụ chuyển đổi video thành JSON
+========================================
+
+CÁCH SỬ DỤNG:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CÁCH 1: Sử dụng giao diện (KHUYÊN DÙNG)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Double-click vào file: START_HERE.bat
+
+2. Hộp thoại chọn file sẽ hiện ra
+
+3. Chọn file video của bạn
+
+4. Chọn tùy chọn:
+   - Extract frames: File JSON sẽ chứa hình ảnh (file lớn hơn)
+   - Chỉ metadata: File JSON chỉ chứa thông tin video (file nhỏ)
+
+5. Đợi xử lý xong!
+
+6. File JSON sẽ được lưu cùng thư mục với video
+   Tên file: [tên_video]_info.json
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CÁCH 2: Kéo thả file video
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Double-click vào file: run_video_to_json.bat
+
+2. KÉO file video vào cửa sổ CMD
+
+3. Nhấn ENTER
+
+4. Đợi xử lý xong!
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CÁCH 3: Dùng Command Line (Nâng cao)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Mở CMD/PowerShell tại thư mục này và chạy:
+
+# Cơ bản
+python video_to_json.py "đường_dẫn_video.mp4"
+
+# Chỉ lấy metadata (không extract frames)
+python video_to_json.py "video.mp4" --no-frames
+
+# Tùy chỉnh frames
+python video_to_json.py "video.mp4" --interval 60 --max-frames 5
+
+# Đặt tên file output
+python video_to_json.py "video.mp4" --output "my_output.json"
+
+# Xem tất cả options
+python video_to_json.py
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  YÊU CẦU HỆ THỐNG
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Windows 7/8/10/11
+✓ Python 3.7 trở lên (tải tại: https://www.python.org/downloads/)
+✓ opencv-python (sẽ tự động cài đặt khi chạy)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  KẾT QUẢ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+File JSON sẽ chứa:
+
+1. METADATA:
+   - Tên file và đường dẫn
+   - Kích thước file (MB)
+   - Độ phân giải (width x height)
+   - FPS (frames per second)
+   - Tổng số frames
+   - Thời lượng video (giây và định dạng mm:ss)
+
+2. FRAMES (nếu chọn extract):
+   - Số thứ tự frame
+   - Timestamp (giây)
+   - Hình ảnh dạng base64 (JPEG)
+   - Định dạng ảnh
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VÍ DỤ OUTPUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+{
+  "video_info": {
+    "filename": "1234.mp4",
+    "filesize_mb": 17.2,
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "fps": 30.0,
+    "total_frames": 900,
+    "duration_seconds": 30.0,
+    "duration_formatted": "0:30"
+  },
+  "frames": [
+    {
+      "frame_number": 0,
+      "timestamp_seconds": 0.0,
+      "image_base64": "/9j/4AAQSkZJRgABAQEA...",
+      "image_format": "jpeg"
+    },
+    ...
+  ]
+}
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  KHẮC PHỤC SỰ CỐ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ Lỗi: "Python chưa được cài đặt"
+✓ Giải pháp: Tải và cài Python tại python.org
+   Nhớ tick vào "Add Python to PATH" khi cài!
+
+❌ Lỗi: "opencv-python không cài được"
+✓ Giải pháp: Mở CMD với quyền Administrator và chạy:
+   pip install opencv-python
+
+❌ Lỗi: PowerShell script bị chặn
+✓ Giải pháp: Dùng CÁCH 2 (run_video_to_json.bat)
+   Hoặc chạy CMD với Admin và gõ:
+   powershell Set-ExecutionPolicy RemoteSigned
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  LƯU Ý
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠ File JSON có thể rất lớn nếu extract nhiều frames
+  Khuyến nghị: Dùng --max-frames 10 hoặc ít hơn
+
+⚠ Video dài sẽ mất nhiều thời gian xử lý
+  Khuyến nghị: Dùng --no-frames cho video dài
+
+✓ File JSON được lưu cùng thư mục với video gốc
+
+✓ Hỗ trợ định dạng: MP4, AVI, MOV, MKV, WEBM
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Nếu cần hỗ trợ, vui lòng liên hệ hoặc kiểm tra
+file video_to_json.py để xem code chi tiết.
+
+© 2024 Video to JSON Converter
