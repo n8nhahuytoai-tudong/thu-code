@@ -1,0 +1,80 @@
+PROMPT: Professional Dancer Girl Character
+
+OVERVIEW:
+A stunning professional dancer, graceful and elegant with athletic feminine body, captured mid-performance in dynamic dancing pose.
+
+---
+
+DETAILED PROMPT (For AI Generation):
+
+"A breathtakingly beautiful Asian dancer, 23 years old, professional ballet and contemporary dancer, ethereal graceful appearance. Long silky black hair tied in elegant high bun with some loose strands framing her face, delicate features with almond-shaped dark brown eyes filled with passion and focus, natural makeup with subtle pink blush, soft pink glossy lips, porcelain smooth skin with healthy glow, defined cheekbones, elegant long neck, collarbones visible.
+
+Athletic dancer physique, 165cm tall, gracefully slender yet toned body with measurements 34-23-35 inches (86-58-89 cm), lean toned arms with defined muscles, long elegant legs with sculpted calves and thighs, small perky bust, tiny waist, gentle hip curve, perfect posture with elongated spine, flexible and poised. Wearing form-fitting dance outfit: sleeveless light pink ballet leotard with deep scoop back, sheer nude mesh panels on sides, high-cut legs showing hip line, paired with flowing ethereal chiffon wrap skirt in gradient pink to lavender that moves with her motion, pink ballet pointe shoes with satin ribbons wrapped around ankles and calves.
+
+Captured in mid-dance motion, performing an elegant arabesque penché pose, standing on left pointe shoe with right leg extended high behind her in perfect split position above her head, arms gracefully extended - left arm reaching forward, right arm swept back, creating beautiful arc line. Head tilted slightly back, eyes looking upward with expression of pure joy and artistic passion, serene focused face. Body creating stunning curved S-line silhouette, demonstrating perfect balance, flexibility and control. Hair bun intact with few artistic wisps floating, skirt fabric flowing and billowing around her creating dreamy ethereal effect.
+
+Additional details: Delicate silver necklace with small pendant, small stud earrings, subtle body shimmer on shoulders and décolletage catching the light, defined muscle definition on legs and arms, pointed toes perfectly executed, hands with elegant finger placement - ballet hand position with soft curved fingers.
+
+Background: Professional dance studio with large mirror wall reflecting her pose, natural light streaming through tall windows creating soft directional lighting, wooden sprung floor, minimalist aesthetic with white walls, some bokeh effect from background lights. Atmosphere feels airy, graceful, dreamy, artistic.
+
+Alternative pose options: grand jeté leap suspended in air with perfect split, fouetté turn motion blur showing movement, graceful port de bras with dramatic back arch, en pointe relevé with arms in fifth position crown.
+
+Lighting: Soft natural window light from left side creating gentle shadows emphasizing body contours, backlight creating rim light glow around her silhouette, warm golden hour lighting, diffused and flattering, some light rays with dust particles visible adding magical atmosphere.
+
+Photography: professional dance photography, shot with 85mm f/1.8 lens, fast shutter speed freezing motion, shallow depth of field with blurred background, sharp focus on dancer, cinematic color grading with soft pastel tones, high contrast but gentle, dreamy aesthetic, magazine editorial quality, ultra detailed, 8K resolution, photorealistic, elegant composition following rule of thirds, model positioned off-center creating dynamic composition"
+
+---
+
+ALTERNATIVE STYLES:
+
+MODERN CONTEMPORARY DANCER:
+"Contemporary dancer in flowing costume, wearing cropped white sports bra and high-waisted black flowing pants with side slits, barefoot, performing expressive floor work or dramatic leap with arms reaching, hair loose and flying with movement, emotional intense expression, industrial loft studio setting with concrete walls and dramatic side lighting"
+
+LATIN SALSA DANCER:
+"Latina salsa dancer, wearing sparkly red fringe dress with deep V-neck and high slit showing legs, red high heel dance shoes, performing passionate salsa turn with dress spinning, one arm raised overhead, confident seductive expression, on dance floor with warm club lighting and colorful bokeh lights background"
+
+STREET HIP HOP DANCER:
+"Urban hip hop dancer, wearing oversized graphic t-shirt, baggy cargo pants, fresh sneakers, cap backwards, performing dynamic breaking move or freestyle pose, attitude and swag expression, graffiti wall background with vibrant colors, dramatic urban lighting with rim lights"
+
+TRADITIONAL ASIAN DANCER:
+"Elegant Asian traditional dancer in flowing silk hanfu or kimono with embroidered details, performing graceful traditional dance with fan or silk ribbon, delicate hand gestures, serene peaceful expression, temple or garden setting, soft natural lighting"
+
+---
+
+NEGATIVE PROMPT (Enhanced):
+
+"ugly, unattractive, plain, deformed, disfigured, malformed, mutated, blurry motion blur, out of focus, low quality, low resolution, pixelated, amateur photography, bad lighting, harsh lighting, bad anatomy, bad proportions, stiff pose, awkward pose, broken pose, impossible anatomy, extra limbs, extra fingers, missing limbs, fused fingers, poorly drawn hands, poorly drawn face, asymmetrical face, twisted body, contorted, crooked, bad posture, fat, overweight, thick waist, short legs, stubby legs, muscular bodybuilder, masculine, childish, innocent, juvenile, immature, baby face, old, elderly, wrinkles, aged, cartoonish, anime style, illustration, painting, 3D render, CGI, artificial, plastic skin, waxy skin, oversaturated colors, neon colors, muddy colors, watermark, text, logo, signature, username, grainy, noisy, jpeg artifacts, compression artifacts, distorted, warped, stretched, squashed, disproportionate, unrealistic, fake looking, mannequin, emotionless, dead eyes, falling, losing balance, clumsy, injury, torn clothes, messy hair, sweaty, exhausted, tired expression, full body distant shot showing entire room, cluttered background, distracting elements"
+
+---
+
+PROMPT VARIATIONS BY DANCE STYLE:
+
+1. BALLET (Elegant & Classical):
+Pose: En pointe arabesque, grand jeté leap, attitude derrière
+Costume: Classical tutu, romantic tutu, or contemporary leotard
+Setting: Theater stage, ballet studio, outdoor natural setting
+Mood: Graceful, ethereal, elegant, dreamy
+
+2. CONTEMPORARY (Expressive & Emotional):
+Pose: Floor work, dramatic extension, contraction release
+Costume: Flowy minimalist pieces, nude tones, asymmetrical cuts
+Setting: Industrial space, empty studio, dramatic lighting
+Mood: Emotional, raw, artistic, powerful
+
+3. JAZZ (Energetic & Sharp):
+Pose: Jazz hands, kick ball change, leap with attitude
+Costume: Sequined crop top, jazz pants, character shoes
+Setting: Stage with spotlight, rehearsal studio
+Mood: Energetic, sassy, confident, entertaining
+
+4. LATIN (Passionate & Sensual):
+Pose: Hip rotation, dramatic spin, partner lift position
+Costume: Fringe dress, fitted dance costume, heels
+Setting: Dance floor, club setting, competition stage
+Mood: Passionate, sensual, fiery, romantic
+
+5. MODERN (Creative & Unique):
+Pose: Improvisation, abstract shapes, grounded movements
+Costume: Unconventional pieces, mixed textures, artistic
+Setting: Gallery space, outdoor urban, minimalist backdrop
+Mood: Artistic, thoughtful, innovative, expressive
