@@ -1,0 +1,283 @@
+{
+  "name": "Video Scene Production Pipeline - Ready to Use",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "id": "google-sheets-trigger",
+      "name": "1. Google Sheets Monitor",
+      "notes": "Theo dõi Google Sheets mỗi phút\nKhi có row mới với status='Ready' sẽ trigger workflow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "status-ready-check",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [460, 300],
+      "id": "filter-ready-status",
+      "name": "2. Filter Status Ready",
+      "notes": "Chỉ xử lý scenes có status = 'Ready'"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse scenes JSON từ Google Sheets\nconst scenesString = $input.item.json.scenes || '{}';\nconst scenesData = JSON.parse(scenesString);\n\nreturn {\n  id: $input.item.json.id,\n  scenes: scenesData,\n  originalRow: $input.item.json\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300],
+      "id": "parse-scenes-json",
+      "name": "3. Parse Scenes JSON",
+      "notes": "Đọc và parse JSON scenes từ Google Sheets column"
+    },
+    {
+      "parameters": {
+        "jsCode": "// CHARACTER CONSISTENCY + VFX + EFFECTS\n// Tích hợp tất cả enhancement vào 1 node\n\n// ========================================\n// CHARACTER PROFILES - LOCKED SPECS\n// ========================================\nconst characterProfiles = {\n  'T-Rex': {\n    name: 'Rex',\n    colors: {\n      skin: '#2D4A3E',\n      eyes: '#FFB000',\n      teeth: '#FFFFF0'\n    },\n    details: [\n      'da xanh rêu sần sùi (#2D4A3E)',\n      'mắt vàng hổ phách (#FFB000) với đồng tử dọc',\n      'răng nanh trắng ngà (#FFFFF0), 58 răng',\n      'cơ bắp cuồn cuộn, 3 móng vuốt mỗi chân sau',\n      '32 đĩa xương sần sùi dọc lưng'\n    ],\n    size: '4.5m cao, 12m dài, 8 tấn',\n    aiPrompt: 'Photo-realistic Tyrannosaurus Rex: deep forest green skin (#2D4A3E), amber yellow eyes (#FFB000), 58 ivory white teeth (#FFFFF0), 4.5m tall, 12m long, hexagonal scales, 32 dorsal plates, massive powerful build, 8K IMAX quality'\n  },\n  'Pteranodon': {\n    name: 'Terror',\n    colors: {\n      body: '#5A6B6E',\n      wings: '#8FA5A8',\n      beak: '#D86F2A',\n      eyes: '#A52A52'\n    },\n    details: [\n      'sải cánh 7m, màu xám xanh (#8FA5A8)',\n      'cánh trong suốt 40%, có thể nhìn thấy gân',\n      'mỏ dài nhọn màu cam (#D86F2A), không có răng',\n      'mào đầu đỏ sẫm (#8B2835)',\n      'mắt tím đỏ (#A52A52) sắc bén'\n    ],\n    size: 'sải cánh 7m, nặng 25kg',\n    aiPrompt: 'Photo-realistic Pteranodon: 7m wingspan, translucent blue-gray wings (#8FA5A8) 40% see-through with visible veins, orange beak (#D86F2A), crimson crest (#8B2835), purple-red eyes (#A52A52), fuzzy body, 8K quality'\n  }\n};\n\n// ========================================\n// VFX LIBRARY\n// ========================================\nconst vfxLibrary = {\n  dust_cloud: 'đám bụi bay dày (#6B5D4F)',\n  tree_shake: 'cây rung, lá rụng',\n  ground_crack: 'đất nứt, sỏi bay',\n  impact_flash: 'tia sáng trắng khi va chạm',\n  motion_blur: 'mờ chuyển động',\n  lens_flare: 'chớp sáng mặt trời',\n  debris: 'mảnh vỡ bay'\n};\n\n// ========================================\n// SMOKE/FIRE EFFECTS\n// ========================================\nconst smokeFireEffects = {\n  dust_impact: 'bụi bay từ chân đạp xuống',\n  breathing_mist: 'hơi thở tạo sương mù',\n  battle_dust: 'khói bụi chiến đấu',\n  fire_sparks: 'tia lửa va chạm',\n  heat_wave: 'sóng nhiệt',\n  impact_explosion: 'vụ nổ bụi nhỏ'\n};\n\n// ========================================\n// PROCESSING FUNCTION\n// ========================================\nfunction processScene(scene, sceneNumber) {\n  let enhanced = scene;\n  const lower = scene.toLowerCase();\n  \n  // 1. CHARACTER CONSISTENCY\n  const charDetails = [];\n  \n  if (lower.includes('t-rex') || lower.includes('khủng long')) {\n    const idx = sceneNumber % characterProfiles['T-Rex'].details.length;\n    charDetails.push(characterProfiles['T-Rex'].details[idx]);\n  }\n  \n  if (lower.includes('pteranodon') || lower.includes('bay')) {\n    const idx = sceneNumber % characterProfiles['Pteranodon'].details.length;\n    charDetails.push(characterProfiles['Pteranodon'].details[idx]);\n  }\n  \n  if (charDetails.length > 0) {\n    enhanced += ` [Nhân vật: ${charDetails.join('; ')}]`;\n  }\n  \n  // 2. VFX ENHANCEMENT\n  const vfxToAdd = [];\n  \n  if (lower.match(/chạy|trốn|di chuyển/)) {\n    vfxToAdd.push(vfxLibrary.dust_cloud);\n    vfxToAdd.push(vfxLibrary.motion_blur);\n  }\n  if (lower.match(/nhảy|tránh|vung/)) {\n    vfxToAdd.push(vfxLibrary.ground_crack);\n    vfxToAdd.push(vfxLibrary.debris);\n  }\n  if (lower.match(/va chạm|đánh|tấn công/)) {\n    vfxToAdd.push(vfxLibrary.impact_flash);\n  }\n  if (lower.includes('rừng') || lower.includes('cây')) {\n    vfxToAdd.push(vfxLibrary.tree_shake);\n  }\n  if (lower.match(/sáng|trời/)) {\n    vfxToAdd.push(vfxLibrary.lens_flare);\n  }\n  \n  if (vfxToAdd.length > 0) {\n    enhanced += ` [VFX: ${vfxToAdd.join('; ')}]`;\n  }\n  \n  // 3. SMOKE/FIRE EFFECTS\n  const sfxToAdd = [];\n  \n  if (lower.match(/chân|bước|đạp/)) {\n    sfxToAdd.push(smokeFireEffects.dust_impact);\n  }\n  if (lower.match(/gầm|tru|hàm/)) {\n    sfxToAdd.push(smokeFireEffects.breathing_mist);\n  }\n  if (lower.match(/va chạm|đụng|đánh/)) {\n    sfxToAdd.push(smokeFireEffects.fire_sparks);\n    sfxToAdd.push(smokeFireEffects.impact_explosion);\n  }\n  if (lower.match(/chiến|đấu/)) {\n    sfxToAdd.push(smokeFireEffects.battle_dust);\n  }\n  \n  if (sfxToAdd.length > 0) {\n    enhanced += ` [Effects: ${sfxToAdd.join('; ')}]`;\n  }\n  \n  // 4. CAMERA & LIGHTING HINTS\n  let cameraHint = '';\n  if (lower.includes('cận cảnh')) {\n    cameraHint = '[Camera: Close-up 85mm, shallow DOF]';\n  } else if (lower.match(/toàn cảnh|rộng/)) {\n    cameraHint = '[Camera: Wide 24mm, deep focus]';\n  } else {\n    cameraHint = '[Camera: Medium 50mm]';\n  }\n  \n  enhanced += ` ${cameraHint}`;\n  \n  // 5. LIGHTING\n  let lightingHint = '[Lighting: Natural daylight, rim backlight]';\n  if (lower.match(/tối|bí ẩn/)) {\n    lightingHint = '[Lighting: Low key, mysterious]';\n  } else if (lower.match(/sáng|trời/)) {\n    lightingHint = '[Lighting: Bright sky, sun backlight]';\n  }\n  \n  enhanced += ` ${lightingHint}`;\n  \n  return enhanced;\n}\n\n// ========================================\n// ANALYZE SCENE\n// ========================================\nfunction analyzeScene(scene) {\n  const lower = scene.toLowerCase();\n  \n  return {\n    characters: [\n      ...(lower.match(/t-rex|khủng long/) ? ['T-Rex'] : []),\n      ...(lower.match(/pteranodon|bay/) ? ['Pteranodon'] : [])\n    ],\n    actionType: lower.match(/chạy|trốn/) ? 'Chase' :\n                lower.match(/chiến|đấu|tấn công/) ? 'Combat' :\n                lower.includes('cận cảnh') ? 'Close-up' :\n                lower.match(/toàn cảnh|rộng/) ? 'Wide shot' : 'Transition',\n    mood: lower.match(/bí ẩn|tối/) ? 'Mysterious' :\n          lower.match(/kịch tính|đe dọa/) ? 'Intense' :\n          lower.match(/hoảng|lo sợ/) ? 'Fearful' : 'Action'\n  };\n}\n\n// ========================================\n// MAIN PROCESSING\n// ========================================\nconst shots = $input.item.json.scenes.shots || [];\nconst processedShots = [];\n\nshots.forEach((shot, idx) => {\n  const sceneNumber = idx + 1;\n  const enhanced = processScene(shot.scene, sceneNumber);\n  const analysis = analyzeScene(shot.scene);\n  \n  // Create AI-ready prompt\n  let aiPrompt = enhanced;\n  \n  // Add character base prompts if characters present\n  if (analysis.characters.includes('T-Rex')) {\n    aiPrompt = characterProfiles['T-Rex'].aiPrompt + '. ' + aiPrompt;\n  }\n  if (analysis.characters.includes('Pteranodon')) {\n    aiPrompt = characterProfiles['Pteranodon'].aiPrompt + '. ' + aiPrompt;\n  }\n  \n  // Add technical specs\n  aiPrompt += `. Duration: ${shot.duration}s. Cinematic, photorealistic, 8K IMAX quality.`;\n  \n  processedShots.push({\n    scene_number: sceneNumber,\n    original: shot.scene,\n    enhanced: enhanced,\n    ai_prompt: aiPrompt,\n    duration: shot.duration,\n    analysis: analysis\n  });\n});\n\nreturn {\n  id: $input.item.json.id,\n  total_scenes: processedShots.length,\n  processed_shots: processedShots,\n  metadata: {\n    processing_date: new Date().toISOString(),\n    pipeline_version: '2.0',\n    enhancements: ['Character Consistency', 'VFX', 'Smoke/Fire', 'Camera', 'Lighting']\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300],
+      "id": "process-enhancement",
+      "name": "4. Character + VFX + Effects",
+      "notes": "Thêm:\n- Character consistency (colors, details)\n- VFX effects (dust, motion blur, etc)\n- Smoke/Fire effects\n- Camera hints\n- Lighting setup\n- AI-ready prompts"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $node['1. Google Sheets Monitor'].parameter.documentId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $node['1. Google Sheets Monitor'].parameter.sheetName }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Processing"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1120, 180],
+      "id": "update-status-processing",
+      "name": "5a. Update Status: Processing",
+      "notes": "Đánh dấu status = Processing trong Google Sheets"
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "={{ $json.processed_shots.length > 0 ? 'hasScenes' : 'noScenes' }}"
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [1120, 300],
+      "id": "check-has-scenes",
+      "name": "5b. Check Has Scenes",
+      "notes": "Kiểm tra có scenes để xử lý không"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "create-output",
+              "name": "output_json",
+              "value": "={{ JSON.stringify($json, null, 2) }}",
+              "type": "string"
+            },
+            {
+              "id": "create-summary",
+              "name": "summary",
+              "value": "=Processed {{ $json.total_scenes }} scenes with full enhancements (Character Consistency + VFX + Effects + Camera + Lighting). Ready for AI video generation!",
+              "type": "string"
+            },
+            {
+              "id": "first-scene-preview",
+              "name": "first_scene_example",
+              "value": "={{ $json.processed_shots[0].ai_prompt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [1340, 300],
+      "id": "prepare-output",
+      "name": "6. Prepare Output",
+      "notes": "Chuẩn bị output:\n- JSON đầy đủ\n- Summary\n- Preview scene đầu tiên"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $node['1. Google Sheets Monitor'].parameter.documentId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $node['1. Google Sheets Monitor'].parameter.sheetName }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "Complete",
+            "processed_json": "={{ $json.output_json }}",
+            "summary": "={{ $json.summary }}"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1560, 300],
+      "id": "update-complete",
+      "name": "7. Update Status: Complete",
+      "notes": "Cập nhật:\n- Status = Complete\n- Lưu processed JSON\n- Lưu summary"
+    },
+    {
+      "parameters": {
+        "content": "## 🎬 VIDEO SCENE PRODUCTION PIPELINE\n\n### Workflow này làm gì?\n\n1. **Monitor Google Sheets** - Theo dõi mỗi phút\n2. **Filter Status Ready** - Chỉ xử lý row có status='Ready'\n3. **Parse Scenes** - Đọc JSON từ Google Sheets\n4. **Enhancement** - Thêm:\n   - ✅ Character Consistency (colors, details locked)\n   - ✅ VFX Effects (dust, motion blur, etc)\n   - ✅ Smoke/Fire Effects\n   - ✅ Camera Specs (lens, angle)\n   - ✅ Lighting Setup\n   - ✅ AI-Ready Prompts (cho Sora/Veo)\n5. **Update Status** - Processing → Complete\n6. **Save Results** - Lưu vào Google Sheets\n\n### Setup:\n\n1. **Google Sheets Format:**\n   Columns cần có:\n   - `id` - unique ID\n   - `scenes` - JSON: {\"shots\": [{\"scene\": \"...\", \"duration\": 8}]}\n   - `status` - Set \"Ready\" để trigger\n   - `processed_json` - Output (tự động fill)\n   - `summary` - Tóm tắt (tự động fill)\n\n2. **Credentials cần setup:**\n   - Google Sheets OAuth2\n\n3. **Edit Node 1:**\n   - Thay `YOUR_GOOGLE_SHEET_ID_HERE` bằng Sheet ID của bạn\n   - Sheet ID lấy từ URL: docs.google.com/spreadsheets/d/**[SHEET_ID]**/edit\n\n### Character Specs (Locked):\n\n**T-Rex:**\n- Skin: #2D4A3E forest green\n- Eyes: #FFB000 amber yellow\n- Teeth: #FFFFF0 ivory white\n- Size: 4.5m tall, 12m long, 8 tons\n\n**Pteranodon:**\n- Wingspan: 7.0m\n- Wings: #8FA5A8 blue-gray, 40% translucent\n- Beak: #D86F2A orange\n- Eyes: #A52A52 purple-red\n\n### Test:\n\n1. Thêm row vào Google Sheets:\n   ```\n   id: test_001\n   scenes: {\"shots\":[{\"scene\":\"T-Rex bước đi trong rừng\",\"duration\":8}]}\n   status: Ready\n   ```\n\n2. Wait 1 minute (hoặc click Execute Workflow)\n\n3. Check Google Sheets:\n   - status → Complete\n   - processed_json → Full enhanced data\n   - summary → Processing summary\n\n### Output Example:\n\nEnhanced scene sẽ có dạng:\n```\nPhoto-realistic T-Rex: deep forest green skin (#2D4A3E),\namber eyes (#FFB000), ivory teeth (#FFFFF0)... T-Rex bước\nđi trong rừng [Nhân vật: răng nanh trắng ngà] [VFX: cây\nrung, lá rụng] [Effects: bụi bay từ chân] [Camera: Medium\n50mm] [Lighting: Natural daylight]. Duration: 8s. 8K IMAX.\n```\n\nCopy prompt này vào Sora/Veo để generate video!\n\n---\n**Version:** 2.0\n**Ready to use!** ✅",
+        "height": 870,
+        "width": 520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-140, 60],
+      "id": "instructions-note",
+      "name": "📖 HƯỚNG DẪN SỬ DỤNG"
+    }
+  ],
+  "connections": {
+    "1. Google Sheets Monitor": {
+      "main": [
+        [
+          {
+            "node": "2. Filter Status Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Filter Status Ready": {
+      "main": [
+        [
+          {
+            "node": "3. Parse Scenes JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Parse Scenes JSON": {
+      "main": [
+        [
+          {
+            "node": "4. Character + VFX + Effects",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4. Character + VFX + Effects": {
+      "main": [
+        [
+          {
+            "node": "5a. Update Status: Processing",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "5b. Check Has Scenes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5b. Check Has Scenes": {
+      "main": [
+        [
+          {
+            "node": "6. Prepare Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6. Prepare Output": {
+      "main": [
+        [
+          {
+            "node": "7. Update Status: Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-07T00:00:00.000Z",
+  "versionId": "new-version-2.0"
+}
