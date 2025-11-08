@@ -14,8 +14,18 @@ Optional details: Dragon tattoo on right side ribcage, warm lighting, urban back
 
 ---
 
-SHORT PROMPT (For AI Generation):
-"Beautiful Vietnamese woman, 25yo, long burgundy red wavy hair, amber eyes, red lips, athletic body, tan skin, confident seductive expression, wearing black leather jacket and red crop top, tight jeans, high heels, gold earrings, choker, fire dancer aesthetic, bold sexy style, standing confidently, one hand on hip, seductive smile, mysterious alluring vibe, dragon tattoo, warm lighting, cinematic, high quality, detailed"
+DETAILED PROMPT (For AI Generation):
+"A breathtakingly beautiful Vietnamese woman, 25 years old, professional fire dancer, stunning sultry appearance. Long flowing burgundy red hair with natural waves cascading down to her lower back, thick and voluminous with subtle highlights catching the light. Mesmerizing almond-shaped amber-brown eyes with golden flecks, smoky eyeshadow with winged eyeliner, long dark lashes, intense seductive piercing gaze looking directly at camera. High sculpted cheekbones, perfectly shaped eyebrows, sun-kissed warm tan skin with healthy glow. Full sensual lips painted in bold crimson red matte lipstick, slight parted with confident alluring smile. Defined jawline, elegant neck.
 
-NEGATIVE PROMPT:
-"ugly, deformed, blurry, low quality, amateur, bad anatomy, extra limbs, disfigured, oversaturated, cartoonish, childish, innocent"
+Athletic feminine physique, 168cm tall, toned arms and legs, flat defined abs visible, curvy hips, confident posture. Wearing distressed black leather jacket with silver zippers open, revealing tight-fitted red crop top with deep V-neck showing cleavage, high-waisted dark blue skinny jeans hugging her curves, black high heel ankle boots with silver buckles. Large gold hoop earrings catching light, black leather choker with silver ring detail, multiple silver rings on fingers, thin gold chain bracelets.
+
+Intricate detailed red and orange dragon tattoo wrapping around right ribcage from under breast down to hip, flowing artistic design with scales visible, smoke effects around dragon. Additional small flame tattoo behind left ear.
+
+Standing in confident power pose, weight on left leg with right hip popped out creating S-curve silhouette, left hand resting on hip with fingers spread, right arm relaxed at side holding fire poi. Head slightly tilted, chin up, shoulders back, exuding confidence and sex appeal. Mysterious seductive expression with slight smirk, bedroom eyes, radiating charisma and allure.
+
+Background: dimly lit urban rooftop at golden hour sunset, city skyline visible, warm orange and purple sky, bokeh lights from city below. Dramatic rim lighting creating glow around her silhouette, key light from left creating shadows emphasizing her curves, warm color temperature. Small flames and fire sparks floating around her, heat distortion effects, ember particles in air, fire poi with trailing light effects.
+
+Photography: professional fashion photography, shot with 85mm f/1.4 lens, shallow depth of field with blurred background, sharp focus on subject, cinematic color grading with warm tones, high contrast, film grain texture, magazine quality, ultra detailed skin texture, 8K resolution, photorealistic, studio lighting setup, golden ratio composition, rule of thirds, model positioned slightly off-center"
+
+NEGATIVE PROMPT (Enhanced):
+"ugly, unattractive, plain, deformed, disfigured, malformed, mutated, blurry, out of focus, low quality, low resolution, pixelated, amateur, bad lighting, bad anatomy, bad proportions, extra limbs, extra fingers, missing limbs, fused fingers, poorly drawn hands, poorly drawn face, asymmetrical face, crooked nose, double head, multiple heads, elongated body, short legs, fat, overweight, underweight, skinny, bony, childish, innocent, juvenile, immature, baby face, old, elderly, wrinkles, aged, cartoonish, anime style, illustration, painting, 3D render, CGI, artificial, plastic skin, waxy skin, oversaturated colors, neon colors, watermark, text, logo, signature, username, grainy, noisy, jpeg artifacts, compression artifacts, distorted, warped, stretched, squashed, disproportionate, unrealistic, fake looking, mannequin, emotionless, stiff pose, awkward pose, hands in pockets, crossed arms, sitting, lying down, back turned, profile view, side view, full body distant shot"
