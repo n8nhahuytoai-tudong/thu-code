@@ -1,42 +1,32 @@
 #!/usr/bin/env python3
-"""
-Script chuyển đổi video thành JSON
-Hỗ trợ extract metadata và frames từ video
-"""
+# -*- coding: utf-8 -*-
+"""Video to JSON Converter - Chuyen doi video thanh JSON"""
 
 import json
 import base64
 import os
 import sys
-from typing import Dict, List, Any
 
+try:
+    import cv2
+except ImportError:
+    print("ERROR: opencv-python chua duoc cai dat!")
+    print("Chay lenh: pip install opencv-python")
+    input("Nhan Enter de thoat...")
+    sys.exit(1)
 
-def video_to_json_with_opencv(video_path: str, extract_frames: bool = True,
-                               frame_interval: int = 30, max_frames: int = 10) -> Dict[str, Any]:
-    """
-    Chuyển đổi video thành JSON sử dụng OpenCV
+def video_to_json(video_path, extract_frames=True, frame_interval=30, max_frames=10):
+    """Chuyen video thanh JSON"""
 
-    Args:
-        video_path: Đường dẫn đến file video
-        extract_frames: Có extract frames hay không
-        frame_interval: Lấy 1 frame sau mỗi N frames
-        max_frames: Số frame tối đa để extract
-
-    Returns:
-        Dictionary chứa thông tin video và frames (nếu có)
-    """
-    try:
-        import cv2
-    except ImportError:
-        print("Error: OpenCV chưa được cài đặt. Chạy: pip install opencv-python")
-        sys.exit(1)
+    print(f"\nDang xu ly: {video_path}")
 
     video = cv2.VideoCapture(video_path)
 
     if not video.isOpened():
-        raise ValueError(f"Không thể mở video: {video_path}")
+        print(f"ERROR: Khong the mo video!")
+        return None
 
-    # Lấy metadata
+    # Lay thong tin video
     fps = video.get(cv2.CAP_PROP_FPS)
     frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
     width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -60,18 +50,24 @@ def video_to_json_with_opencv(video_path: str, extract_frames: bool = True,
         "frames": []
     }
 
-    # Extract frames nếu cần
-    if extract_frames:
-        frames_to_extract = min(max_frames, frame_count // frame_interval)
-        print(f"Đang extract {frames_to_extract} frames...")
+    print(f"\nThong tin video:")
+    print(f"  Do phan giai: {width}x{height}")
+    print(f"  FPS: {fps:.2f}")
+    print(f"  Tong frames: {frame_count}")
+    print(f"  Thoi luong: {duration:.2f}s ({result['video_info']['duration_formatted']})")
+    print(f"  Kich thuoc: {result['video_info']['filesize_mb']} MB")
+
+    # Extract frames
+    if extract_frames and frame_count > 0:
+        frames_to_extract = min(max_frames, max(1, frame_count // frame_interval))
+        print(f"\nDang extract {frames_to_extract} frames...")
 
         for i in range(frames_to_extract):
-            frame_position = i * frame_interval
+            frame_position = min(i * frame_interval, frame_count - 1)
             video.set(cv2.CAP_PROP_POS_FRAMES, frame_position)
             ret, frame = video.read()
 
             if ret:
-                # Encode frame thành base64
                 _, buffer = cv2.imencode('.jpg', frame)
                 frame_base64 = base64.b64encode(buffer).decode('utf-8')
 
@@ -81,134 +77,95 @@ def video_to_json_with_opencv(video_path: str, extract_frames: bool = True,
                     "image_base64": frame_base64,
                     "image_format": "jpeg"
                 })
-                print(f"  ✓ Frame {i+1}/{frames_to_extract} (position: {frame_position})")
+                print(f"  [OK] Frame {i+1}/{frames_to_extract} (vi tri: {frame_position})")
 
     video.release()
     return result
 
 
-def video_to_json_with_ffmpeg(video_path: str) -> Dict[str, Any]:
-    """
-    Chuyển đổi video thành JSON sử dụng ffprobe (từ ffmpeg)
-    Chỉ lấy metadata, không extract frames
-
-    Args:
-        video_path: Đường dẫn đến file video
-
-    Returns:
-        Dictionary chứa thông tin video
-    """
-    import subprocess
-
-    try:
-        # Chạy ffprobe để lấy thông tin video
-        cmd = [
-            'ffprobe',
-            '-v', 'quiet',
-            '-print_format', 'json',
-            '-show_format',
-            '-show_streams',
-            video_path
-        ]
-
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        video_data = json.loads(result.stdout)
-
-        # Extract thông tin quan trọng
-        video_stream = next((s for s in video_data.get('streams', [])
-                           if s['codec_type'] == 'video'), None)
-
-        if not video_stream:
-            raise ValueError("Không tìm thấy video stream")
-
-        format_info = video_data.get('format', {})
-
-        return {
-            "video_info": {
-                "filename": os.path.basename(video_path),
-                "filepath": os.path.abspath(video_path),
-                "filesize_mb": round(float(format_info.get('size', 0)) / (1024 * 1024), 2),
-                "resolution": {
-                    "width": video_stream.get('width'),
-                    "height": video_stream.get('height')
-                },
-                "codec": video_stream.get('codec_name'),
-                "fps": eval(video_stream.get('r_frame_rate', '0/1')),
-                "duration_seconds": round(float(format_info.get('duration', 0)), 2),
-                "bitrate": int(format_info.get('bit_rate', 0)),
-                "format": format_info.get('format_name')
-            }
-        }
-
-    except FileNotFoundError:
-        print("Error: ffprobe chưa được cài đặt. Cài đặt ffmpeg để sử dụng.")
-        sys.exit(1)
-    except Exception as e:
-        raise ValueError(f"Lỗi khi xử lý video: {e}")
-
-
 def main():
-    if len(sys.argv) < 2:
-        print("Sử dụng: python video_to_json.py <video_path> [options]")
-        print("\nOptions:")
-        print("  --no-frames          Không extract frames")
-        print("  --interval N         Lấy 1 frame sau mỗi N frames (mặc định: 30)")
-        print("  --max-frames N       Số frame tối đa (mặc định: 10)")
-        print("  --output FILE        File JSON output (mặc định: video_info.json)")
-        print("  --method METHOD      Phương pháp: opencv hoặc ffmpeg (mặc định: opencv)")
-        print("\nVí dụ:")
-        print("  python video_to_json.py video.mp4")
-        print("  python video_to_json.py video.mp4 --no-frames --output info.json")
-        print("  python video_to_json.py video.mp4 --interval 60 --max-frames 5")
-        sys.exit(1)
+    print("=" * 60)
+    print("       CHUYEN DOI VIDEO THANH JSON")
+    print("=" * 60)
 
-    video_path = sys.argv[1]
+    # Lay duong dan video
+    if len(sys.argv) > 1:
+        video_path = sys.argv[1]
+    else:
+        print("\nNhap duong dan video (hoac keo tha file vao day):")
+        video_path = input("> ").strip().strip('"')
 
     if not os.path.exists(video_path):
-        print(f"Error: File không tồn tại: {video_path}")
+        print(f"\nERROR: File khong ton tai: {video_path}")
+        input("\nNhan Enter de thoat...")
         sys.exit(1)
 
-    # Parse arguments
-    extract_frames = '--no-frames' not in sys.argv
+    # Hoi co extract frames khong
+    print("\nBan co muon extract frames khong?")
+    print("  1 - Co (file JSON se lon hon, chua hinh anh)")
+    print("  2 - Khong (chi lay thong tin video, file nho)")
+
+    choice = input("\nChon (1/2, Enter = 1): ").strip()
+    extract_frames = (choice != "2")
+
     frame_interval = 30
     max_frames = 10
-    output_file = 'video_info.json'
-    method = 'opencv'
 
-    for i, arg in enumerate(sys.argv):
-        if arg == '--interval' and i + 1 < len(sys.argv):
-            frame_interval = int(sys.argv[i + 1])
-        elif arg == '--max-frames' and i + 1 < len(sys.argv):
-            max_frames = int(sys.argv[i + 1])
-        elif arg == '--output' and i + 1 < len(sys.argv):
-            output_file = sys.argv[i + 1]
-        elif arg == '--method' and i + 1 < len(sys.argv):
-            method = sys.argv[i + 1].lower()
+    if extract_frames:
+        interval_input = input("\nKhoang cach giua cac frames (Enter = 30): ").strip()
+        if interval_input:
+            frame_interval = int(interval_input)
 
-    print(f"Đang xử lý video: {video_path}")
-    print(f"Phương pháp: {method}")
+        max_input = input("So frames toi da (Enter = 10): ").strip()
+        if max_input:
+            max_frames = int(max_input)
 
-    # Chuyển đổi video thành JSON
-    if method == 'ffmpeg':
-        result = video_to_json_with_ffmpeg(video_path)
-    else:
-        result = video_to_json_with_opencv(
-            video_path,
-            extract_frames=extract_frames,
-            frame_interval=frame_interval,
-            max_frames=max_frames
-        )
+    # Xu ly video
+    result = video_to_json(video_path, extract_frames, frame_interval, max_frames)
 
-    # Lưu vào file JSON
+    if result is None:
+        input("\nNhan Enter de thoat...")
+        sys.exit(1)
+
+    # Luu JSON
+    video_dir = os.path.dirname(os.path.abspath(video_path))
+    video_name = os.path.splitext(os.path.basename(video_path))[0]
+    output_file = os.path.join(video_dir, f"{video_name}_info.json")
+
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
 
-    print(f"\n✓ Đã lưu kết quả vào: {output_file}")
-    print(f"  Kích thước file: {os.path.getsize(output_file) / 1024:.2f} KB")
+    print(f"\n{'=' * 60}")
+    print("       HOAN THANH!")
+    print(f"{'=' * 60}")
+    print(f"\nFile JSON da luu tai:")
+    print(f"  {output_file}")
+    print(f"\nKich thuoc file: {os.path.getsize(output_file) / 1024:.2f} KB")
 
-    if extract_frames and 'frames' in result:
-        print(f"  Số frames đã extract: {len(result['frames'])}")
+    if extract_frames:
+        print(f"So frames da extract: {len(result['frames'])}")
+
+    # Mo file
+    open_choice = input("\nMo file JSON? (y/n): ").strip().lower()
+    if open_choice == 'y':
+        os.startfile(output_file)
+
+    # Mo thu muc
+    folder_choice = input("Mo thu muc chua file? (y/n): ").strip().lower()
+    if folder_choice == 'y':
+        os.startfile(video_dir)
+
+    print("\nCam on ban da su dung!")
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\nDa huy!")
+    except Exception as e:
+        print(f"\n\nERROR: {e}")
+        import traceback
+        traceback.print_exc()
+    finally:
+        input("\nNhan Enter de thoat...")

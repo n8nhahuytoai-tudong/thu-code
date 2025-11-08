@@ -3,43 +3,43 @@
 
 Add-Type -AssemblyName System.Windows.Forms
 
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "   VIDEO TO JSON CONVERTER" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "============================================================" -ForegroundColor Cyan
+Write-Host "       CHUYEN DOI VIDEO THANH JSON" -ForegroundColor Cyan
+Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Kiểm tra Python
+# Kiem tra Python
 try {
     $pythonVersion = python --version 2>&1
     Write-Host "[OK] Python: $pythonVersion" -ForegroundColor Green
 } catch {
-    Write-Host "[ERROR] Python chưa được cài đặt!" -ForegroundColor Red
-    Read-Host "Nhấn Enter để thoát"
+    Write-Host "[ERROR] Python chua duoc cai dat!" -ForegroundColor Red
+    Read-Host "Nhan Enter de thoat"
     exit 1
 }
 
-# Kiểm tra opencv-python
-Write-Host "[1/4] Kiểm tra thư viện Python..." -ForegroundColor Yellow
+# Kiem tra opencv-python
+Write-Host "[1/4] Kiem tra thu vien Python..." -ForegroundColor Yellow
 $opencvCheck = python -c "import cv2; print('OK')" 2>&1
 if ($opencvCheck -notmatch "OK") {
-    Write-Host "[!] Đang cài đặt opencv-python..." -ForegroundColor Yellow
+    Write-Host "[!] Dang cai dat opencv-python..." -ForegroundColor Yellow
     pip install opencv-python
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "[ERROR] Không thể cài đặt opencv-python!" -ForegroundColor Red
-        Read-Host "Nhấn Enter để thoát"
+        Write-Host "[ERROR] Khong the cai dat opencv-python!" -ForegroundColor Red
+        Read-Host "Nhan Enter de thoat"
         exit 1
     }
-    Write-Host "[OK] Đã cài đặt opencv-python!" -ForegroundColor Green
+    Write-Host "[OK] Da cai dat opencv-python!" -ForegroundColor Green
 } else {
-    Write-Host "[OK] OpenCV đã sẵn sàng!" -ForegroundColor Green
+    Write-Host "[OK] OpenCV da san sang!" -ForegroundColor Green
 }
 
-# Mở hộp thoại chọn file
+# Mo hop thoai chon file
 Write-Host ""
-Write-Host "[2/4] Mở hộp thoại chọn file..." -ForegroundColor Yellow
+Write-Host "[2/4] Mo hop thoai chon file..." -ForegroundColor Yellow
 
 $openFileDialog = New-Object System.Windows.Forms.OpenFileDialog
-$openFileDialog.Title = "Chọn file video"
+$openFileDialog.Title = "Chon file video"
 $openFileDialog.Filter = "Video Files (*.mp4;*.avi;*.mov;*.mkv;*.webm)|*.mp4;*.avi;*.mov;*.mkv;*.webm|All Files (*.*)|*.*"
 $openFileDialog.InitialDirectory = [Environment]::GetFolderPath("MyVideos")
 
@@ -47,81 +47,81 @@ $result = $openFileDialog.ShowDialog()
 
 if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
     $videoPath = $openFileDialog.FileName
-    Write-Host "[OK] File đã chọn: $videoPath" -ForegroundColor Green
+    Write-Host "[OK] File da chon: $videoPath" -ForegroundColor Green
 } else {
-    Write-Host "[!] Không có file nào được chọn!" -ForegroundColor Yellow
-    Read-Host "Nhấn Enter để thoát"
+    Write-Host "[!] Khong co file nao duoc chon!" -ForegroundColor Yellow
+    Read-Host "Nhan Enter de thoat"
     exit 0
 }
 
-# Lấy thông tin file
+# Lay thong tin file
 $videoFile = Get-Item $videoPath
 $videoDir = $videoFile.DirectoryName
 $videoName = $videoFile.BaseName
 $outputFile = Join-Path $videoDir "$videoName`_info.json"
 
-# Tùy chọn xử lý
+# Tuy chon xu ly
 Write-Host ""
-Write-Host "[3/4] Tùy chọn xử lý" -ForegroundColor Yellow
+Write-Host "[3/4] Tuy chon xu ly" -ForegroundColor Yellow
 Write-Host ""
-Write-Host "Bạn có muốn extract frames từ video không?"
-Write-Host "  1 - Có (extract frames, file JSON sẽ lớn hơn)"
-Write-Host "  2 - Không (chỉ lấy metadata, file JSON nhỏ)"
+Write-Host "Ban co muon extract frames tu video khong?"
+Write-Host "  1 - Co (extract frames, file JSON se lon hon)"
+Write-Host "  2 - Khong (chi lay metadata, file JSON nho)"
 Write-Host ""
 
-$extractChoice = Read-Host "Chọn (1 hoặc 2)"
+$extractChoice = Read-Host "Chon (1 hoac 2)"
 
 if ($extractChoice -eq "2") {
     $extractParam = "--no-frames"
-    Write-Host "[OK] Chỉ extract metadata" -ForegroundColor Green
+    Write-Host "[OK] Chi extract metadata" -ForegroundColor Green
 } else {
     Write-Host ""
-    $frameInterval = Read-Host "Khoảng cách giữa các frames (mặc định 30, Enter để bỏ qua)"
+    $frameInterval = Read-Host "Khoang cach giua cac frames (mac dinh 30, Enter de bo qua)"
     if ([string]::IsNullOrWhiteSpace($frameInterval)) { $frameInterval = "30" }
 
-    $maxFrames = Read-Host "Số frame tối đa (mặc định 10, Enter để bỏ qua)"
+    $maxFrames = Read-Host "So frame toi da (mac dinh 10, Enter de bo qua)"
     if ([string]::IsNullOrWhiteSpace($maxFrames)) { $maxFrames = "10" }
 
     $extractParam = "--interval $frameInterval --max-frames $maxFrames"
-    Write-Host "[OK] Sẽ extract frames (interval: $frameInterval, max: $maxFrames)" -ForegroundColor Green
+    Write-Host "[OK] Se extract frames (interval: $frameInterval, max: $maxFrames)" -ForegroundColor Green
 }
 
-# Chạy script Python
+# Chay script Python
 Write-Host ""
-Write-Host "[4/4] Đang xử lý video..." -ForegroundColor Yellow
-Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "[4/4] Dang xu ly video..." -ForegroundColor Yellow
+Write-Host "============================================================" -ForegroundColor Cyan
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $pythonScript = Join-Path $scriptDir "video_to_json.py"
 
-$arguments = "`"$videoPath`" $extractParam --output `"$outputFile`""
+$arguments = "`"$videoPath`""
 $processInfo = Start-Process -FilePath "python" -ArgumentList "`"$pythonScript`" $arguments" -Wait -NoNewWindow -PassThru
 
 if ($processInfo.ExitCode -eq 0) {
     Write-Host ""
-    Write-Host "========================================" -ForegroundColor Cyan
-    Write-Host "[SUCCESS] Hoàn thành!" -ForegroundColor Green
+    Write-Host "============================================================" -ForegroundColor Cyan
+    Write-Host "[SUCCESS] Hoan thanh!" -ForegroundColor Green
     Write-Host ""
-    Write-Host "File JSON đã được lưu tại:" -ForegroundColor Cyan
+    Write-Host "File JSON da duoc luu tai:" -ForegroundColor Cyan
     Write-Host $outputFile -ForegroundColor White
     Write-Host ""
 
-    # Hỏi có muốn mở file JSON không
-    $openChoice = Read-Host "Bạn có muốn mở file JSON không? (y/n)"
+    # Hoi co muon mo file JSON khong
+    $openChoice = Read-Host "Ban co muon mo file JSON khong? (y/n)"
     if ($openChoice -eq "y" -or $openChoice -eq "Y") {
         Start-Process $outputFile
     }
 
-    # Hỏi có muốn mở thư mục không
-    $folderChoice = Read-Host "Bạn có muốn mở thư mục chứa file không? (y/n)"
+    # Hoi co muon mo thu muc khong
+    $folderChoice = Read-Host "Ban co muon mo thu muc chua file khong? (y/n)"
     if ($folderChoice -eq "y" -or $folderChoice -eq "Y") {
         explorer $videoDir
     }
 
 } else {
     Write-Host ""
-    Write-Host "[ERROR] Có lỗi xảy ra khi xử lý video!" -ForegroundColor Red
+    Write-Host "[ERROR] Co loi xay ra khi xu ly video!" -ForegroundColor Red
 }
 
 Write-Host ""
-Read-Host "Nhấn Enter để thoát"
+Read-Host "Nhan Enter de thoat"
