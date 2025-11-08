@@ -1,0 +1,21 @@
+PROMPT: Fiery Seductive Girl Character
+
+A stunning 25-year-old Vietnamese woman with long burgundy red wavy hair flowing down her back, amber eyes with seductive gaze, full lips with bright red lipstick. Athletic toned body, 168cm tall with long legs. Sun-kissed tan skin. Confident and alluring expression.
+
+Wearing: Black leather jacket, red crop top, tight jeans, high heel boots. Gold large hoop earrings, black choker necklace, silver rings. Fire dancer aesthetic.
+
+Style: Bold, sexy, edgy. Mix of streetwear and performer fashion. Red, black, and gold color palette.
+
+Pose: Confident stance, hip slightly popped, one hand on hip, seductive smile, piercing gaze at camera. Fire and passion in her eyes.
+
+Vibe: Confident, seductive, independent, fiery personality, mysterious, alluring.
+
+Optional details: Dragon tattoo on right side ribcage, warm lighting, urban background or stage setting, flame effects.
+
+---
+
+SHORT PROMPT (For AI Generation):
+"Beautiful Vietnamese woman, 25yo, long burgundy red wavy hair, amber eyes, red lips, athletic body, tan skin, confident seductive expression, wearing black leather jacket and red crop top, tight jeans, high heels, gold earrings, choker, fire dancer aesthetic, bold sexy style, standing confidently, one hand on hip, seductive smile, mysterious alluring vibe, dragon tattoo, warm lighting, cinematic, high quality, detailed"
+
+NEGATIVE PROMPT:
+"ugly, deformed, blurry, low quality, amateur, bad anatomy, extra limbs, disfigured, oversaturated, cartoonish, childish, innocent"
