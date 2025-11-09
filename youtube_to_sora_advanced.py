@@ -825,17 +825,24 @@ SORA 2 PROMPTS
         if use_cache:
             cached = self._load_cache(cache_key)
             if cached:
-                print_success("Tìm thấy kết quả trong cache!")
-                self.video_title = cached.get('video_info', {}).get('title', '')
-                print(f"Video: {self.video_title}\n")
+                # Validate cache has complete data
+                overall = cached.get('overall_analysis')
+                prompts = cached.get('sora_prompts')
 
-                print_section("PHÂN TÍCH TỔNG THỂ (từ cache)")
-                print(cached.get('overall_analysis', ''))
+                if overall and prompts:
+                    print_success("Tìm thấy kết quả hợp lệ trong cache!")
+                    self.video_title = cached.get('video_info', {}).get('title', '')
+                    print(f"Video: {self.video_title}\n")
 
-                print_section("SORA 2 PROMPTS (từ cache)")
-                print(cached.get('sora_prompts', ''))
+                    print_section("PHÂN TÍCH TỔNG THỂ (từ cache)")
+                    print(overall)
 
-                return cached
+                    print_section("SORA 2 PROMPTS (từ cache)")
+                    print(prompts)
+
+                    return cached
+                else:
+                    print_warning("Cache không hợp lệ (thiếu dữ liệu), phân tích lại...")
 
         # Step 1: Get metadata
         self._get_video_metadata(youtube_url)
