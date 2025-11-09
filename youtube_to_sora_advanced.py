@@ -19,6 +19,21 @@ import hashlib
 from typing import List, Dict, Tuple, Optional
 from collections import defaultdict
 
+# Load .env file if exists
+def load_env_file():
+    """Load environment variables from .env file"""
+    env_file = Path('.env')
+    if env_file.exists():
+        with open(env_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    os.environ[key.strip()] = value.strip()
+
+# Load .env before initializing client
+load_env_file()
+
 # Khởi tạo OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 

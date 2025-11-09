@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 chcp 65001 >nul
 echo ======================================================================
 echo         CÀI ĐẶT YOUTUBE TO SORA 2 - ADVANCED ANALYZER

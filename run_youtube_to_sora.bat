@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 chcp 65001 >nul
 echo ======================================================================
 echo     YOUTUBE TO SORA 2 - ADVANCED PROMPT GENERATOR
