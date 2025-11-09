@@ -129,28 +129,89 @@ def video_to_json_full(video_path, output_json='video_full.json', frame_interval
 
 
 if __name__ == '__main__':
-    # Cấu hình
-    VIDEO_PATH = '1234.mp4'  # Thay đường dẫn video của bạn
-    OUTPUT_JSON = '123_full.json'
-    FRAME_INTERVAL = 2  # Mỗi 2 giây lấy 1 frame
+    import sys
+    import argparse
 
-    # Nếu muốn nhiều frames hơn, giảm FRAME_INTERVAL:
-    # - 2 giây = ~20 frames cho video 40s (file JSON ~15-20MB)
-    # - 1 giây = ~40 frames (file JSON ~30-40MB)
-    # - 0.5 giây = ~80 frames (file JSON ~60-80MB)
+    parser = argparse.ArgumentParser(description='Convert video to JSON with full frames')
+    parser.add_argument('video_path', help='Path to video file')
+    parser.add_argument('--interval', type=int, default=120,
+                       help='Frame interval (default: 120 frames = 2s for 60fps video)')
+    parser.add_argument('--max-frames', type=int, default=999,
+                       help='Maximum frames to extract (default: 999)')
+    parser.add_argument('--no-frames', action='store_true',
+                       help='Extract metadata only, no frames')
+    parser.add_argument('--output', '-o', help='Output JSON file path')
+
+    args = parser.parse_args()
+
+    # Tính frame interval theo giây
+    # Giả sử video 60fps, interval frames -> giây
+    VIDEO_PATH = args.video_path
+
+    # Xác định tên output file
+    if args.output:
+        OUTPUT_JSON = args.output
+    else:
+        # Tự động tạo tên dựa trên video
+        base_name = os.path.splitext(os.path.basename(VIDEO_PATH))[0]
+        OUTPUT_JSON = f"{base_name}_full.json"
 
     print("=" * 60)
     print("🎬 VIDEO TO JSON - FULL VERSION")
     print("=" * 60)
     print()
 
-    try:
-        video_to_json_full(
-            video_path=VIDEO_PATH,
-            output_json=OUTPUT_JSON,
-            frame_interval=FRAME_INTERVAL
-        )
-    except Exception as e:
-        print(f"\n❌ LỖI: {e}")
-        import traceback
-        traceback.print_exc()
+    if args.no_frames:
+        print("⚠️  Chế độ: Chỉ extract metadata (không có frames)")
+        # Tạo JSON với metadata only
+        cap = cv2.VideoCapture(VIDEO_PATH)
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        duration = total_frames / fps
+        file_size_mb = os.path.getsize(VIDEO_PATH) / (1024 * 1024)
+        cap.release()
+
+        output_data = {
+            'video_info': {
+                'filename': os.path.basename(VIDEO_PATH),
+                'filepath': str(Path(VIDEO_PATH).absolute()),
+                'filesize_mb': round(file_size_mb, 2),
+                'resolution': {'width': width, 'height': height},
+                'fps': fps,
+                'total_frames': total_frames,
+                'duration_seconds': round(duration, 2),
+            },
+            'frames': []
+        }
+
+        with open(OUTPUT_JSON, 'w', encoding='utf-8') as f:
+            json.dump(output_data, f, ensure_ascii=False, indent=2)
+
+        print(f"✅ Đã lưu metadata: {OUTPUT_JSON}")
+    else:
+        # Tính interval theo giây từ frame interval
+        # Đọc FPS trước để tính chính xác
+        cap = cv2.VideoCapture(VIDEO_PATH)
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        cap.release()
+
+        interval_seconds = args.interval / fps
+
+        print(f"⚙️  Cấu hình:")
+        print(f"   - Frame interval: {args.interval} frames ({interval_seconds:.2f}s)")
+        print(f"   - Max frames: {args.max_frames}")
+        print()
+
+        try:
+            video_to_json_full(
+                video_path=VIDEO_PATH,
+                output_json=OUTPUT_JSON,
+                frame_interval=interval_seconds
+            )
+        except Exception as e:
+            print(f"\n❌ LỖI: {e}")
+            import traceback
+            traceback.print_exc()
+            sys.exit(1)
