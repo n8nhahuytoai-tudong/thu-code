@@ -1,0 +1,14 @@
+# Requirements for YouTube to Sora 2 Advanced Analyzer
+
+# Core dependencies
+openai>=1.12.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+yt-dlp>=2023.12.0
+
+# Optional dependencies
+python-docx>=1.0.0  # For DOCX export
+
+# System requirements (install via system package manager):
+# - ffmpeg (for audio/video processing)
+# - yt-dlp or youtube-dl (for downloading videos)
