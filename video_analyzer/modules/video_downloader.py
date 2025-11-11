@@ -46,7 +46,7 @@ class VideoDownloader:
             'merge_output_format': 'mp4',
             # Options quan trọng
             'nocheckcertificate': True,
-            'ignoreerrors': True,  # Bỏ qua lỗi fragments
+            'ignoreerrors': False,  # KHÔNG bỏ qua lỗi để có thể fallback
             'no_color': True,
             'extract_flat': False,
             'fragment_retries': 10,  # Retry fragments 10 lần
@@ -112,7 +112,7 @@ class VideoDownloader:
             'progress_hooks': [self._progress_hook],
             'merge_output_format': 'mp4',
             'nocheckcertificate': True,
-            'ignoreerrors': True,
+            'ignoreerrors': False,
             'fragment_retries': 10,
             'skip_unavailable_fragments': True,
         }
@@ -139,7 +139,7 @@ class VideoDownloader:
             'quiet': True,
             'progress_hooks': [self._progress_hook],
             'nocheckcertificate': True,
-            'ignoreerrors': True,
+            'ignoreerrors': False,
             'fragment_retries': 10,
             'skip_unavailable_fragments': True,
         }
@@ -155,9 +155,34 @@ class VideoDownloader:
                 return downloaded_file
 
         except Exception as e:
+            print(f"⚠ Fallback 360p cũng thất bại: {e}")
+
+        # Fallback cuối cùng: download bất kỳ format nào có sẵn
+        print("   Đang thử download bất kỳ format nào (cuối cùng)...")
+
+        ydl_opts = {
+            'format': 'worst',  # Bất kỳ format nào, quality thấp nhất
+            'outtmpl': str(output_path.with_suffix('')),
+            'quiet': True,
+            'progress_hooks': [self._progress_hook],
+            'nocheckcertificate': True,
+            'ignoreerrors': False,
+        }
+
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+
+            downloaded_file = self._find_downloaded_file(output_path)
+
+            if downloaded_file:
+                print(f"✓ Download thành công (format tự động)")
+                return downloaded_file
+
+        except Exception as e:
             raise Exception(
-                f"Không thể download video.\n"
-                f"Lỗi: {e}\n"
+                f"Không thể download video sau tất cả fallback.\n"
+                f"Lỗi cuối: {e}\n"
                 f"Vui lòng:\n"
                 f"1. Update yt-dlp: pip install --upgrade yt-dlp\n"
                 f"2. Hoặc download video thủ công rồi dùng --input"

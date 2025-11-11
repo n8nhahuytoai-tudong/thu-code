@@ -208,12 +208,13 @@ Xem thêm:
 
 ---
 
-**Version: 1.0.2 Final**
+**Version: 1.0.3 Final**
 **Updated: 2025-01-11**
 **Latest fixes:**
+- ✅ Fixed auto-fallback when format not available (nsig extraction failed)
+- ✅ Added 4-level fallback: best → worst → 360p → any format
 - ✅ Fixed file finding after download (handles files without extensions)
 - ✅ Fixed NoneType error when extracting video info
 - ✅ Fixed fragment loss and HLS issues
 - ✅ Fixed YouTube signature extraction failures
-- ✅ Better error handling with 3-level fallback
 - ✅ All known bugs fixed and tested
