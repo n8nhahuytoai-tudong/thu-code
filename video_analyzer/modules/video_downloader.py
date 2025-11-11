@@ -32,22 +32,28 @@ class VideoDownloader:
         output_path = self.output_dir / output_filename
 
         # Cấu hình yt-dlp với nhiều format fallback
+        # Ưu tiên progressive download (không dùng HLS/DASH để tránh fragment loss)
         ydl_opts = {
-            # Thử nhiều format khác nhau
+            # Ưu tiên format progressive (mp4) không phải HLS
             'format': (
-                'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/'
-                'bestvideo+bestaudio/best'
+                'best[ext=mp4][protocol^=http]/best[ext=mp4]/'
+                'best[protocol^=http]/best'
             ),
-            'outtmpl': str(output_path.with_suffix('')),  # Không thêm .mp4 ở đây
+            'outtmpl': str(output_path.with_suffix('')),
             'quiet': False,
             'no_warnings': False,
             'progress_hooks': [self._progress_hook],
-            'merge_output_format': 'mp4',  # Merge thành mp4
-            # Thêm options để bypass một số giới hạn
+            'merge_output_format': 'mp4',
+            # Options quan trọng
             'nocheckcertificate': True,
-            'ignoreerrors': False,
+            'ignoreerrors': True,  # Bỏ qua lỗi fragments
             'no_color': True,
             'extract_flat': False,
+            'fragment_retries': 10,  # Retry fragments 10 lần
+            'skip_unavailable_fragments': True,  # Skip fragments không có
+            'keepvideo': False,  # Xóa file tạm sau khi merge
+            'http_chunk_size': 10485760,  # 10MB chunks
+            'retries': 10,  # Retry 10 lần
         }
 
         print(f"Đang tải video từ: {url}")
@@ -65,9 +71,14 @@ class VideoDownloader:
         except yt_dlp.utils.DownloadError as e:
             error_msg = str(e)
 
-            # Nếu lỗi format, thử cách khác
-            if "Requested format is not available" in error_msg or "nsig extraction failed" in error_msg:
-                print("\n⚠ Lỗi format, đang thử cách khác...")
+            # Nếu lỗi format hoặc file empty, thử cách khác
+            if any(keyword in error_msg for keyword in [
+                "Requested format is not available",
+                "nsig extraction failed",
+                "downloaded file is empty",
+                "fragment not found"
+            ]):
+                print("\n⚠ Lỗi download, đang thử cách khác...")
                 return self._download_fallback(url, output_path)
             else:
                 raise Exception(f"Lỗi download: {error_msg}")
@@ -85,16 +96,19 @@ class VideoDownloader:
         """
         Fallback download với options đơn giản hơn
         """
-        print("   Đang thử download với format đơn giản hơn...")
+        print("   Đang thử download với quality thấp hơn (ổn định hơn)...")
 
         ydl_opts = {
-            'format': 'worst',  # Lấy quality thấp nhất nhưng chắc chắn có
+            'format': 'worst[ext=mp4]/worst',  # Quality thấp nhưng ổn định
             'outtmpl': str(output_path.with_suffix('')),
             'quiet': True,
             'no_warnings': True,
             'progress_hooks': [self._progress_hook],
             'merge_output_format': 'mp4',
             'nocheckcertificate': True,
+            'ignoreerrors': True,
+            'fragment_retries': 10,
+            'skip_unavailable_fragments': True,
         }
 
         try:
@@ -110,15 +124,18 @@ class VideoDownloader:
         except Exception as e:
             print(f"⚠ Fallback cũng thất bại: {e}")
 
-        # Fallback cuối cùng: thử format 18 (360p mp4)
-        print("   Đang thử format 360p...")
+        # Fallback cuối cùng: thử format 18 (360p mp4 - progressive)
+        print("   Đang thử format 360p progressive (không HLS)...")
 
         ydl_opts = {
-            'format': '18',  # 360p mp4
+            'format': '18/17/36',  # 360p/144p mp4 progressive
             'outtmpl': str(output_path.with_suffix('')),
             'quiet': True,
             'progress_hooks': [self._progress_hook],
             'nocheckcertificate': True,
+            'ignoreerrors': True,
+            'fragment_retries': 10,
+            'skip_unavailable_fragments': True,
         }
 
         try:
