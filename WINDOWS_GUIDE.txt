@@ -1,0 +1,151 @@
+╔════════════════════════════════════════════════════════════════════╗
+║     YOUTUBE SCENE ANALYZER - HƯỚNG DẪN WINDOWS                     ║
+║     Phân tích video YouTube và tạo Sora prompt cho từng cảnh       ║
+╚════════════════════════════════════════════════════════════════════╝
+
+📋 CÁC FILE BAT:
+
+   1️⃣  INSTALL.bat
+       → Cài đặt tự động tất cả dependencies
+       → Chạy file này TRƯỚC KHI dùng analyzer
+
+   2️⃣  RUN.bat
+       → Giao diện nhập YouTube URL
+       → Phù hợp cho người dùng thông thường
+
+   3️⃣  DRAG_VIDEO_HERE.bat
+       → Kéo thả video (.mp4) hoặc URL vào icon
+       → Nhanh gọn, không cần gõ
+
+
+🚀 CÀI ĐẶT LẦN ĐẦU (3 PHÚT):
+
+   Bước 1: Cài Python
+      - Tải từ: https://www.python.org/downloads/
+      - ⚠️ QUAN TRỌNG: Tick "Add Python to PATH" khi cài!
+
+   Bước 2: Chạy INSTALL.bat
+      - Double-click vào file INSTALL.bat
+      - Chờ cài đặt hoàn tất (2-5 phút)
+
+   Bước 3: Nhập API Key
+      - Lấy key tại: https://platform.openai.com/api-keys
+      - Tạo file .env với nội dung:
+        OPENAI_API_KEY=sk-your-key-here
+      - Hoặc nhập khi INSTALL.bat hỏi
+
+
+💻 CÁCH SỬ DỤNG:
+
+   ══════════════════════════════════════════════════════════════════
+   CÁCH 1: Dùng RUN.bat (Khuyến nghị cho người mới)
+   ══════════════════════════════════════════════════════════════════
+
+   1. Double-click RUN.bat
+   2. Nhập YouTube URL khi được hỏi
+      VD: https://youtube.com/watch?v=dQw4w9WgXcQ
+   3. Nhấn Enter và chờ
+   4. Kết quả sẽ xuất hiện trong thư mục output_scenes\
+
+
+   ══════════════════════════════════════════════════════════════════
+   CÁCH 2: Kéo thả video (Nhanh nhất)
+   ══════════════════════════════════════════════════════════════════
+
+   1. Kéo file video (.mp4) vào icon DRAG_VIDEO_HERE.bat
+   2. Hoặc tạo shortcut và thêm URL vào Properties
+   3. Chờ phân tích xong
+   4. Thư mục kết quả tự động mở
+
+
+   ══════════════════════════════════════════════════════════════════
+   CÁCH 3: Command Line (Cho người thạo)
+   ══════════════════════════════════════════════════════════════════
+
+   Mở Command Prompt (cmd) trong thư mục này:
+
+   python youtube_scene_by_scene_analyzer.py "https://youtube.com/..."
+
+
+📁 KẾT QUẢ OUTPUT:
+
+   output_scenes\
+      VideoTitle_20250111_123456\
+         scene_0000\
+            FIRST_frame.jpg   ← Ảnh đầu cảnh
+            LAST_frame.jpg    ← Ảnh cuối cảnh
+            sora_prompt.txt   ← Prompt chi tiết 150-200 words
+
+         scene_0001\
+            FIRST_frame.jpg
+            LAST_frame.jpg
+            sora_prompt.txt
+
+         00_SUMMARY.txt       ← Tổng quan tất cả scenes
+         scenes_data.json     ← Dữ liệu JSON
+
+
+🐛 XỬ LÝ LỖI THƯỜNG GẶP:
+
+   ❌ "Python is not recognized"
+      → Python chưa cài hoặc chưa add to PATH
+      → Cài lại Python, nhớ tick "Add to PATH"
+
+   ❌ "No module named 'cv2'"
+      → Chạy lại INSTALL.bat
+      → Hoặc: pip install opencv-python
+
+   ❌ "OpenAI API key not found"
+      → Tạo file .env với nội dung:
+        OPENAI_API_KEY=sk-your-key
+
+   ❌ "yt-dlp error" hoặc download thất bại
+      → Kiểm tra kết nối internet
+      → Thử video khác (có thể video bị chặn vùng)
+      → Cập nhật: pip install --upgrade yt-dlp
+
+   ❌ Video quá dài → Quá nhiều scenes
+      → Chương trình sẽ phân tích tất cả (không giới hạn)
+      → Nhưng có thể tốn nhiều API credits
+
+   ❌ "Rate limit exceeded"
+      → Bạn đã vượt giới hạn API của OpenAI
+      → Đợi vài phút rồi thử lại
+      → Hoặc upgrade OpenAI plan
+
+
+💰 CHI PHÍ ƯỚC TÍNH:
+
+   - Model: GPT-4o Vision
+   - Chi phí: ~$0.05 - $0.10 per video (10 scenes)
+   - Tùy số lượng scenes và độ dài video
+
+
+⚙️ CẤU HÌNH (TÙY CHỌN):
+
+   Tạo/sửa file .env để điều chỉnh:
+
+   OPENAI_API_KEY=sk-your-key
+   SCENE_THRESHOLD=30.0        # Độ nhạy phát hiện cảnh (cao = ít cảnh)
+   MAX_VIDEO_HEIGHT=1080       # Độ phân giải video tải về
+   VISION_MODEL=gpt-4o         # Model AI sử dụng
+
+
+📚 TÀI LIỆU THÊM:
+
+   - README.md: Hướng dẫn đầy đủ
+   - QUICKSTART.md: Hướng dẫn nhanh
+   - DOWNLOAD.md: Link tải về
+   - test_installation.py: Kiểm tra cài đặt
+
+
+🆘 HỖ TRỢ:
+
+   - GitHub Issues: https://github.com/n8nhahuytoai-tudong/thu-code
+   - Email: [your-email]
+   - Documentation: README.md
+
+
+════════════════════════════════════════════════════════════════════
+Chúc bạn tạo prompt thành công! 🎬✨
+════════════════════════════════════════════════════════════════════

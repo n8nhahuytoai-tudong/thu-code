@@ -601,7 +601,16 @@ def main():
     print_header("YOUTUBE SCENE-BY-SCENE ANALYZER")
     print("🎬 Phân tích từng cảnh và tạo prompt riêng\n")
 
-    url = input("Nhập YouTube URL: ").strip()
+    # Check if URL passed as command-line argument
+    url = None
+    if len(sys.argv) > 1:
+        url = sys.argv[1].strip()
+        print(f"URL từ command line: {url}\n")
+
+    # If no argument, ask user
+    if not url:
+        url = input("Nhập YouTube URL: ").strip()
+
     if not url:
         print_error("URL không hợp lệ")
         return
