@@ -8,6 +8,14 @@ from typing import Dict, List
 from datetime import datetime
 import os
 
+try:
+    from docx import Document
+    from docx.shared import Inches, Pt, RGBColor
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    DOCX_AVAILABLE = True
+except ImportError:
+    DOCX_AVAILABLE = False
+
 
 class ReportGenerator:
     """Tạo báo cáo phân tích video"""
@@ -20,7 +28,7 @@ class ReportGenerator:
         self,
         video_info: Dict,
         scenes: List[Dict],
-        formats: List[str] = ["json", "html", "markdown"]
+        formats: List[str] = ["json", "html", "markdown", "docx"]
     ) -> Dict[str, str]:
         """Tạo báo cáo đầy đủ"""
         report_data = {
@@ -44,6 +52,14 @@ class ReportGenerator:
         if "markdown" in formats:
             md_path = self._export_markdown(report_data, video_name)
             output_files['markdown'] = md_path
+
+        if "docx" in formats:
+            if DOCX_AVAILABLE:
+                docx_path = self._export_docx(report_data, video_name)
+                output_files['docx'] = docx_path
+            else:
+                print("⚠ python-docx chưa được cài đặt. Bỏ qua export Word.")
+                print("   Chạy: pip install python-docx")
 
         return output_files
 
@@ -257,6 +273,126 @@ class ReportGenerator:
             f.write(md)
 
         print(f"✓ Đã tạo báo cáo Markdown: {output_path}")
+        return str(output_path)
+
+    def _export_docx(self, report_data: Dict, video_name: str) -> str:
+        """Export sang Word Document"""
+        output_path = self.output_dir / f"{video_name}_report.docx"
+
+        video_info = report_data['video_info']
+        scenes = report_data['scenes']
+        summary = report_data['summary']
+
+        # Tạo document
+        doc = Document()
+
+        # Tiêu đề chính
+        title = doc.add_heading(f"📹 Phân tích Video: {video_info['filename']}", level=1)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        # Tổng quan
+        doc.add_heading("📊 Tổng quan", level=2)
+
+        # Bảng tổng quan
+        table = doc.add_table(rows=3, cols=2)
+        table.style = 'Light Grid Accent 1'
+
+        cells = table.rows[0].cells
+        cells[0].text = "Tổng số cảnh"
+        cells[1].text = str(summary['total_scenes'])
+
+        cells = table.rows[1].cells
+        cells[0].text = "Thời lượng"
+        cells[1].text = self._format_duration(summary['total_duration'])
+
+        cells = table.rows[2].cells
+        cells[0].text = "Trung bình/cảnh"
+        cells[1].text = f"{summary['average_scene_duration']:.1f}s"
+
+        doc.add_paragraph()  # Spacing
+
+        # Thông tin video
+        doc.add_heading("ℹ️ Thông tin Video", level=2)
+
+        table = doc.add_table(rows=3, cols=2)
+        table.style = 'Light Grid Accent 1'
+
+        cells = table.rows[0].cells
+        cells[0].text = "Độ phân giải"
+        cells[1].text = f"{video_info['width']} × {video_info['height']}"
+
+        cells = table.rows[1].cells
+        cells[0].text = "Frame Rate"
+        cells[1].text = f"{video_info['fps']:.2f} fps"
+
+        cells = table.rows[2].cells
+        cells[0].text = "Tổng Frames"
+        cells[1].text = f"{video_info['total_frames']:,}"
+
+        doc.add_page_break()
+
+        # Chi tiết từng cảnh
+        doc.add_heading("🎬 Chi tiết từng cảnh", level=2)
+
+        for scene in scenes:
+            start_time = self._format_duration(scene['start_time'])
+            end_time = self._format_duration(scene['end_time'])
+            duration = scene['duration']
+
+            # Tiêu đề cảnh
+            scene_heading = doc.add_heading(f"Cảnh {scene['scene_number']}", level=3)
+
+            # Thời gian
+            time_para = doc.add_paragraph()
+            time_run = time_para.add_run(f"⏱️ Thời gian: {start_time} - {end_time} ({duration:.1f}s)")
+            time_run.bold = True
+
+            # Mô tả
+            desc_para = doc.add_paragraph()
+            desc_run = desc_para.add_run("📝 Mô tả:")
+            desc_run.bold = True
+
+            description = scene.get('description', 'Chưa có mô tả')
+            doc.add_paragraph(description)
+
+            # Thêm frames nếu có
+            if 'frames' in scene and scene['frames']:
+                frames_para = doc.add_paragraph()
+                frames_run = frames_para.add_run("🖼️ Frames:")
+                frames_run.bold = True
+
+                frame_table = doc.add_table(rows=1, cols=min(3, len(scene['frames'])))
+                frame_table.style = 'Light Grid'
+
+                for idx, (frame_type, frame_path) in enumerate(scene['frames'].items()):
+                    if idx >= 3:  # Max 3 frames per row
+                        break
+                    if os.path.exists(frame_path):
+                        try:
+                            label = {'first': 'Frame đầu', 'middle': 'Frame giữa', 'last': 'Frame cuối'}.get(frame_type, frame_type)
+                            cell = frame_table.rows[0].cells[idx]
+                            cell_para = cell.paragraphs[0]
+                            cell_para.text = label
+                            cell_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+                            # Thêm hình (giảm kích thước để fit)
+                            run = cell.add_paragraph().add_run()
+                            run.add_picture(frame_path, width=Inches(1.8))
+                        except Exception as e:
+                            print(f"⚠ Không thể thêm hình {frame_path}: {e}")
+
+            doc.add_paragraph()  # Spacing between scenes
+
+        # Footer với timestamp
+        footer_para = doc.add_paragraph()
+        footer_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        footer_run = footer_para.add_run(f"\nBáo cáo tạo lúc: {report_data['generated_at']}")
+        footer_run.italic = True
+        footer_run.font.color.rgb = RGBColor(128, 128, 128)
+
+        # Save
+        doc.save(output_path)
+        print(f"✓ Đã tạo báo cáo Word: {output_path}")
         return str(output_path)
 
     def _format_duration(self, seconds: float) -> str:

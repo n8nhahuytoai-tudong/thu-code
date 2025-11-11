@@ -224,13 +224,16 @@ python video_analyzer.py --input video.mp4 --no-ai
 Xem thêm:
 - `README.md` - Hướng dẫn đầy đủ
 - `HUONGDAN.txt` - Hướng dẫn tiếng Việt
+- `HUONG_DAN_AI.md` - **MỚI!** Hướng dẫn dùng AI để có mô tả chi tiết
 - `QUICKFIX.md` - Troubleshooting
 
 ---
 
-**Version: 1.0.4 Final**
+**Version: 1.1.0 Final**
 **Updated: 2025-01-11**
-**Latest fixes:**
+**Latest features:**
+- ✅ **NEW:** Export báo cáo Word (.docx) với hình ảnh và format chuyên nghiệp
+- ✅ **NEW:** File HUONG_DAN_AI.md - Hướng dẫn chi tiết cách dùng AI
 - ✅ Added 5-level fallback: best → worst → 360p → any format → bestvideo+bestaudio
 - ✅ Better error messages for nsig extraction failures
 - ✅ Added update_ytdlp.bat for easy yt-dlp updates
