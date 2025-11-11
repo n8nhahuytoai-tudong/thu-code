@@ -25,15 +25,22 @@ import hashlib
 from typing import List, Dict, Optional
 import shutil
 
-# Check docx availability
+# Import docx - REQUIRED
 try:
     from docx import Document
     from docx.shared import Pt, RGBColor
     DOCX_AVAILABLE = True
 except ImportError:
-    DOCX_AVAILABLE = False
-    print("⚠ python-docx not installed. Will export to .txt only.")
-    print("Install with: pip install python-docx")
+    print("\n" + "="*70)
+    print("ERROR: python-docx chưa được cài đặt!".center(70))
+    print("="*70)
+    print("\nFile Word (.docx) cần package python-docx để tạo.\n")
+    print("Cài đặt ngay:")
+    print("  pip install python-docx")
+    print("\nHoặc cài tất cả:")
+    print("  pip install -r requirements.txt")
+    print("\n" + "="*70 + "\n")
+    sys.exit(1)
 
 # ========== CONFIGURATION ==========
 
@@ -113,7 +120,7 @@ def print_error(msg: str):
 class SceneBySceneWordExporter:
     """Phân tích và xuất mỗi scene thành 1 dòng prompt siêu chi tiết"""
 
-    ULTRA_DETAILED_PROMPT = """Analyze this {duration:.1f}s scene and create ONE ULTRA-DETAILED SORA 2 PROMPT following HOLLYWOOD BLOCKBUSTER STANDARDS.
+    ULTRA_DETAILED_PROMPT = """Analyze this {duration:.1f}s scene and create ONE CONTINUOUS LINE PROMPT (NO LINE BREAKS) for Sora 2, following HOLLYWOOD BLOCKBUSTER STANDARDS.
 
 You are viewing 2 frames: FIRST FRAME and LAST FRAME of this scene.
 
@@ -204,20 +211,41 @@ Create a prompt in ENGLISH, EXTREMELY DETAILED, 250-350 words, MUST include:
 - Production value: student film/indie/mid-budget/studio/AAA blockbuster
 - Era influence: 1970s grit/1980s neon/1990s grunge/2000s digital/2020s cinematic
 
-CRITICAL REQUIREMENTS:
+CRITICAL REQUIREMENTS - ALL 8 ELEMENTS MANDATORY:
 ✅ Write in ENGLISH ONLY
-✅ ONE CONTINUOUS PARAGRAPH - no line breaks, no bullet points
-✅ SPECIFIC NUMBERS: heights in cm, weights in kg, focal lengths in mm, apertures in f-stops, color temps in Kelvin
-✅ COMPLETE CHARACTER DESCRIPTIONS: every person must have height, weight, build, skin, hair details, costume colors
-✅ COMPLETE ANIMAL DESCRIPTIONS: species, size (cm/kg), colors, features
-✅ AUDIO DESCRIPTION: describe what sounds would be heard
+✅ ONE CONTINUOUS LINE - absolutely NO line breaks, NO bullet points, just one flowing paragraph
 ✅ 250-350 words minimum
-✅ Focus on recreatable details for Sora 2
-✅ Use professional cinema terminology
-✅ Based on visual evidence from frames
 
-Format:
-PROMPT: [your single continuous paragraph here, 250-350 words, no line breaks]"""
+MUST INCLUDE ALL 8 SECTIONS (even if "none" for some):
+
+1. CAMERA SPECS (MANDATORY): Must mention focal length (mm), aperture (f-stop), camera movement type, shot size, angle
+   Example: "35mm lens at f/2.8, steadicam tracking shot..."
+
+2. CHARACTERS IF PRESENT (MANDATORY IF VISIBLE): height in cm, weight in kg, build type, exact skin tone, hair color+style+length, costume with colors and materials
+   Example: "male protagonist 185cm tall 80kg athletic build, tan olive skin, short dark brown hair 3cm messy style, wearing fitted black leather jacket..."
+
+3. ANIMALS IF PRESENT (MANDATORY IF VISIBLE): species, breed, size dimensions (cm/kg), coat colors, patterns
+   Example: "Golden Retriever dog, 60cm shoulder height, 30kg weight, golden coat with white chest..."
+
+4. LIGHTING (MANDATORY): setup type, color temperature in Kelvin, quality (hard/soft), practicals visible
+   Example: "3-point lighting with hard key from 45° left at 5600K cool daylight, practical window light..."
+
+5. ENVIRONMENT (MANDATORY): location type, set design details, time of day, weather, VFX if any
+   Example: "urban alley exterior at night, rain-soaked pavement, neon signs, CGI rain particles..."
+
+6. SOUND DESIGN (MANDATORY): ambient sounds, diegetic sounds from scene, music mood, audio atmosphere
+   Example: "ambient city traffic sounds, footsteps on wet pavement, distant sirens, tense electronic music underscoring mood..."
+
+7. ACTION & STORY (MANDATORY): what's happening, movement speed, emotional tone, story purpose
+   Example: "character running urgently through alley, fast-paced action, tense fearful emotion, chase sequence..."
+
+8. STYLE REFERENCE (MANDATORY): comparable film/director, production value level
+   Example: "in the style of Blade Runner 2049, AAA blockbuster production value..."
+
+If any element is not visible (e.g., no animals), briefly state "no animals present" but ALL 8 categories must be addressed.
+
+Format your response as ONE CONTINUOUS SENTENCE/PARAGRAPH:
+PROMPT: [Start with camera specs, flow into characters if present, then animals if present, then lighting, environment, sound, action, and style - all in one continuous flowing paragraph with no line breaks, 250-350 words total]"""
 
     def __init__(self, api_key: Optional[str] = None):
         load_env_file()
@@ -517,52 +545,59 @@ PROMPT: [your single continuous paragraph here, 250-350 words, no line breaks]""
             print_success(f"✓ Saved TXT: {txt_file.name}")
 
             # ========== WORD FILE (.docx) ==========
-            if DOCX_AVAILABLE:
-                docx_file = output_folder / f"{base_name}_PROMPTS.docx"
+            docx_file = output_folder / f"{base_name}_PROMPTS.docx"
 
-                doc = Document()
+            print_progress("Đang tạo file Word...")
 
-                # Title
-                title = doc.add_heading(f'Sora 2 Prompts - {self.video_title}', level=1)
+            doc = Document()
 
-                # Metadata
-                meta = doc.add_paragraph()
-                meta.add_run(f"Video: ").bold = True
-                meta.add_run(f"{self.video_title}\n")
-                meta.add_run(f"URL: ").bold = True
-                meta.add_run(f"{self.youtube_url}\n")
-                meta.add_run(f"Total Scenes: ").bold = True
-                meta.add_run(f"{len(self.scenes)}\n")
-                meta.add_run(f"Date: ").bold = True
-                meta.add_run(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            # Title
+            title = doc.add_heading(f'Sora 2 Prompts - {self.video_title}', level=1)
 
-                doc.add_paragraph("_" * 50)
+            # Metadata
+            meta = doc.add_paragraph()
+            meta.add_run(f"Video: ").bold = True
+            meta.add_run(f"{self.video_title}\n")
+            meta.add_run(f"URL: ").bold = True
+            meta.add_run(f"{self.youtube_url}\n")
+            meta.add_run(f"Total Scenes: ").bold = True
+            meta.add_run(f"{len(self.scenes)}\n")
+            meta.add_run(f"Date: ").bold = True
+            meta.add_run(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 
-                # Each scene = 1 paragraph
-                for scene in self.scenes:
-                    scene_num = scene['scene_id'] + 1
-                    duration = scene['duration']
-                    timestamp_str = f"{scene['start_time']:.1f}s - {scene['end_time']:.1f}s"
-                    prompt = scene.get('sora_prompt', 'No prompt generated')
+            doc.add_paragraph("_" * 50)
 
-                    # Scene header + prompt in same paragraph
-                    p = doc.add_paragraph()
-                    run_header = p.add_run(f"SCENE {scene_num} ({duration:.1f}s | {timestamp_str}): ")
-                    run_header.bold = True
-                    run_header.font.size = Pt(11)
-                    run_prompt = p.add_run(prompt)
-                    run_prompt.font.size = Pt(10)
+            # Each scene = 1 paragraph
+            for scene in self.scenes:
+                scene_num = scene['scene_id'] + 1
+                duration = scene['duration']
+                timestamp_str = f"{scene['start_time']:.1f}s - {scene['end_time']:.1f}s"
+                prompt = scene.get('sora_prompt', 'No prompt generated')
 
-                    # Add spacing between scenes
-                    doc.add_paragraph()
+                # Scene header + prompt in same paragraph
+                p = doc.add_paragraph()
+                run_header = p.add_run(f"SCENE {scene_num} ({duration:.1f}s | {timestamp_str}): ")
+                run_header.bold = True
+                run_header.font.size = Pt(11)
+                run_prompt = p.add_run(prompt)
+                run_prompt.font.size = Pt(10)
 
-                doc.save(str(docx_file))
-                print_success(f"✓ Saved WORD: {docx_file.name}")
-            else:
-                print_error("⚠ python-docx not installed, Word file not created")
-                print("  Install with: pip install python-docx")
+                # Add spacing between scenes
+                doc.add_paragraph()
 
-            print_success(f"\n✓ Output folder: {output_folder}/")
+            doc.save(str(docx_file))
+            print_success(f"✓ Saved WORD: {docx_file.name}")
+            print_success(f"   Đường dẫn đầy đủ: {docx_file.absolute()}")
+
+            print()
+            print("="*70)
+            print("📄 FILE WORD ĐÃ TẠO XONG!".center(70))
+            print("="*70)
+            print(f"\n📁 Folder: {output_folder.absolute()}")
+            print(f"📝 File TXT: {txt_file.name}")
+            print(f"📄 File WORD: {docx_file.name}")
+            print(f"\n✓ Tổng: {len(self.scenes)} scenes")
+            print(f"✓ Mỗi scene = 1 dòng prompt (250-350 words)\n")
 
             return str(output_folder)
 
