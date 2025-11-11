@@ -28,7 +28,7 @@ import shutil
 # Import docx - REQUIRED
 try:
     from docx import Document
-    from docx.shared import Pt, RGBColor
+    from docx.shared import Pt, RGBColor, Inches
     DOCX_AVAILABLE = True
 except ImportError:
     print("\n" + "="*70)
@@ -547,7 +547,7 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
             # ========== WORD FILE (.docx) ==========
             docx_file = output_folder / f"{base_name}_PROMPTS.docx"
 
-            print_progress("Đang tạo file Word...")
+            print_progress("Đang tạo file Word với ảnh...")
 
             doc = Document()
 
@@ -567,22 +567,52 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
 
             doc.add_paragraph("_" * 50)
 
-            # Each scene = 1 paragraph
+            # Each scene = heading + images + prompt
             for scene in self.scenes:
                 scene_num = scene['scene_id'] + 1
                 duration = scene['duration']
                 timestamp_str = f"{scene['start_time']:.1f}s - {scene['end_time']:.1f}s"
                 prompt = scene.get('sora_prompt', 'No prompt generated')
 
-                # Scene header + prompt in same paragraph
-                p = doc.add_paragraph()
-                run_header = p.add_run(f"SCENE {scene_num} ({duration:.1f}s | {timestamp_str}): ")
-                run_header.bold = True
-                run_header.font.size = Pt(11)
-                run_prompt = p.add_run(prompt)
+                # Scene heading
+                scene_heading = doc.add_heading(
+                    f"SCENE {scene_num} ({duration:.1f}s | {timestamp_str})",
+                    level=2
+                )
+
+                # Add FIRST frame image
+                frame_first = scene.get('frame_first')
+                if frame_first and os.path.exists(frame_first):
+                    # Copy image to output folder
+                    first_dest = output_folder / f"scene_{scene_num:04d}_FIRST.jpg"
+                    shutil.copy(frame_first, first_dest)
+
+                    # Add to Word
+                    p_first = doc.add_paragraph()
+                    p_first.add_run("Frame đầu: ").bold = True
+                    doc.add_picture(frame_first, width=Inches(4))
+
+                # Add LAST frame image
+                frame_last = scene.get('frame_last')
+                if frame_last and os.path.exists(frame_last):
+                    # Copy image to output folder
+                    last_dest = output_folder / f"scene_{scene_num:04d}_LAST.jpg"
+                    shutil.copy(frame_last, last_dest)
+
+                    # Add to Word
+                    p_last = doc.add_paragraph()
+                    p_last.add_run("Frame cuối: ").bold = True
+                    doc.add_picture(frame_last, width=Inches(4))
+
+                # Add prompt (1 line)
+                p_prompt = doc.add_paragraph()
+                p_prompt.add_run("PROMPT: ").bold = True
+                run_prompt = p_prompt.add_run(prompt)
                 run_prompt.font.size = Pt(10)
 
-                # Add spacing between scenes
+                # Spacing
+                doc.add_paragraph()
+                doc.add_paragraph("─" * 50)
                 doc.add_paragraph()
 
             doc.save(str(docx_file))
@@ -591,13 +621,14 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
 
             print()
             print("="*70)
-            print("📄 FILE WORD ĐÃ TẠO XONG!".center(70))
+            print("📄 FILE WORD + ẢNH ĐÃ TẠO XONG!".center(70))
             print("="*70)
             print(f"\n📁 Folder: {output_folder.absolute()}")
             print(f"📝 File TXT: {txt_file.name}")
-            print(f"📄 File WORD: {docx_file.name}")
+            print(f"📄 File WORD: {docx_file.name} (có nhúng ảnh)")
+            print(f"🖼️  Ảnh: {len(self.scenes) * 2} files (FIRST + LAST cho mỗi scene)")
             print(f"\n✓ Tổng: {len(self.scenes)} scenes")
-            print(f"✓ Mỗi scene = 1 dòng prompt (250-350 words)\n")
+            print(f"✓ Mỗi scene = ảnh đầu + ảnh cuối + prompt (250-350 words)\n")
 
             return str(output_folder)
 
