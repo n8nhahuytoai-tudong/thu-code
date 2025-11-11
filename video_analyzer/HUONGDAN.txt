@@ -1,0 +1,148 @@
+# HUONG DAN SU DUNG - VIDEO ANALYZER
+
+## QUAN TRONG: Chon dung option!
+
+### Voi URL YouTube / Vimeo:
+- Chon [2] hoac [4] (KHONG PHAI [1])
+- [2] = URL + AI
+- [4] = URL + KHONG AI (nhanh, khong can API key)
+
+### Voi file local tren may tinh:
+- Chon [1] hoac [3]
+- [1] = File + AI
+- [3] = File + KHONG AI (nhanh)
+
+---
+
+## CACH DUNG:
+
+### 1. CAI DAT LAN DAU (chi lam 1 lan):
+
+```
+install.bat
+```
+
+Hoac:
+
+```
+start.bat
+→ Chon [5]
+```
+
+### 2. CHAY TOOL:
+
+#### Cach 1: Dung Menu
+
+```
+start.bat
+```
+
+**Voi YouTube:**
+```
+→ Chon [4] (URL khong AI - nhanh nhat)
+→ Nhap: https://www.youtube.com/watch?v=xxx
+```
+
+**Voi file local:**
+```
+→ Chon [3] (File khong AI)
+→ Nhap: F:\video.mp4
+```
+
+#### Cach 2: Command Line
+
+**YouTube:**
+```
+python video_analyzer.py --url https://youtube.com/watch?v=xxx --no-ai
+```
+
+**File local:**
+```
+python video_analyzer.py --input "F:\video.mp4" --no-ai
+```
+
+#### Cach 3: File run.bat (nhanh)
+
+```
+run.bat https://youtube.com/watch?v=xxx --no-ai
+run.bat "F:\video.mp4" --no-ai
+```
+
+---
+
+## LOI THUONG GAP:
+
+### Loi: "File khong ton tai" voi URL
+
+**Nguyen nhan:** Chon sai option
+
+**Sua:** Dung [2] hoac [4] cho URL, KHONG dung [1]
+
+### Loi: anthropic client error
+
+**Sua:**
+```
+pip uninstall anthropic -y
+pip install anthropic==0.39.0
+```
+
+### Loi: Missing dependencies
+
+**Sua:**
+```
+install.bat
+```
+
+Hoac:
+```
+pip install opencv-python scenedetect yt-dlp tqdm python-dotenv
+```
+
+---
+
+## KET QUA:
+
+```
+video_analyzer/
+├── output/
+│   ├── frames/       ← Anh cac canh
+│   └── reports/      ← Bao cao HTML, JSON
+└── temp/             ← Video tai tu YouTube
+```
+
+---
+
+## TUY CHON:
+
+### Dieu chinh threshold (video dai):
+
+```
+python video_analyzer.py --input video.mp4 --no-ai --threshold 35
+```
+
+Threshold cao = it canh hon
+Threshold thap = nhieu canh hon
+
+### Chon format bao cao:
+
+```
+python video_analyzer.py --input video.mp4 --no-ai --formats html json
+```
+
+---
+
+## TEST NHANH:
+
+```
+# Test don gian nhat
+run.bat https://youtube.com/watch?v=xxx --no-ai
+
+# Hoac
+start.bat
+→ [4]
+→ Nhap URL
+```
+
+---
+
+Neu van loi, gui thong bao loi chi tiet!

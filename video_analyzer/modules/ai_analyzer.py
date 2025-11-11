@@ -29,8 +29,27 @@ class AIAnalyzer:
                 "Vui lòng set environment variable hoặc truyền vào constructor"
             )
 
-        # Khởi tạo client với error handling cho các version khác nhau
-        self.client = anthropic.Anthropic(api_key=self.api_key)
+        # Khởi tạo client - hỗ trợ nhiều version anthropic
+        try:
+            # Thử version mới (0.18+)
+            self.client = anthropic.Anthropic(api_key=self.api_key)
+        except TypeError as e:
+            # Nếu lỗi về arguments, thử cách khác
+            if 'proxies' in str(e) or 'unexpected keyword' in str(e):
+                try:
+                    # Thử khởi tạo đơn giản hơn
+                    import anthropic
+                    self.client = anthropic.Client(self.api_key)
+                except:
+                    # Fallback cuối cùng
+                    raise ValueError(
+                        f"Không thể khởi tạo Anthropic client. "
+                        f"Vui lòng update: pip install --upgrade anthropic\n"
+                        f"Lỗi: {e}"
+                    )
+            else:
+                raise
+
         self.model = model
 
     def analyze_scene(
