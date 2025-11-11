@@ -1,22 +1,21 @@
 @echo off
-chcp 65001 >nul
+chcp 65001 >nul 2>&1
 :MENU
 cls
 echo ========================================
 echo    VIDEO ANALYZER TOOL
-echo    Phân tích video tự động với AI
 echo ========================================
 echo.
-echo Chọn chế độ:
+echo Chon che do:
 echo.
-echo [1] Phân tích video local (có AI)
-echo [2] Phân tích từ URL YouTube (có AI)
-echo [3] Phân tích video local (KHÔNG AI - nhanh)
-echo [4] Phân tích từ URL (KHÔNG AI - nhanh)
-echo [5] Cài đặt dependencies
-echo [0] Thoát
+echo [1] Phan tich video local (co AI)
+echo [2] Phan tich tu URL YouTube (co AI)
+echo [3] Phan tich video local (KHONG AI - nhanh)
+echo [4] Phan tich tu URL (KHONG AI - nhanh)
+echo [5] Cai dat dependencies
+echo [0] Thoat
 echo.
-set /p choice=Nhập lựa chọn (0-5):
+set /p choice=Nhap lua chon (0-5):
 
 if "%choice%"=="1" goto LOCAL_AI
 if "%choice%"=="2" goto URL_AI
@@ -28,50 +27,50 @@ goto MENU
 
 :LOCAL_AI
 echo.
-echo 📁 Nhập đường dẫn file video:
-set /p VIDEO_PATH=^>
+echo Nhap duong dan file video:
+set /p VIDEO_PATH=
 set VIDEO_PATH=%VIDEO_PATH:"=%
 echo.
-echo 🎬 Đang phân tích với AI...
+echo Dang phan tich voi AI...
 python video_analyzer.py --input "%VIDEO_PATH%"
 goto DONE
 
 :URL_AI
 echo.
-echo 🌐 Nhập URL video (YouTube, Vimeo, etc):
-set /p VIDEO_URL=^>
+echo Nhap URL video (YouTube, Vimeo, etc):
+set /p VIDEO_URL=
 echo.
-echo 🎬 Đang tải và phân tích với AI...
+echo Dang tai va phan tich voi AI...
 python video_analyzer.py --url "%VIDEO_URL%"
 goto DONE
 
 :LOCAL_NO_AI
 echo.
-echo 📁 Nhập đường dẫn file video:
-set /p VIDEO_PATH=^>
+echo Nhap duong dan file video:
+set /p VIDEO_PATH=
 set VIDEO_PATH=%VIDEO_PATH:"=%
 echo.
-echo ⚡ Đang phân tích nhanh (không AI)...
+echo Dang phan tich nhanh (khong AI)...
 python video_analyzer.py --input "%VIDEO_PATH%" --no-ai
 goto DONE
 
 :URL_NO_AI
 echo.
-echo 🌐 Nhập URL video:
-set /p VIDEO_URL=^>
+echo Nhap URL video:
+set /p VIDEO_URL=
 echo.
-echo ⚡ Đang tải và phân tích nhanh (không AI)...
+echo Dang tai va phan tich nhanh (khong AI)...
 python video_analyzer.py --url "%VIDEO_URL%" --no-ai
 goto DONE
 
 :INSTALL
 echo.
-echo 📦 Đang cài đặt dependencies...
+echo Dang cai dat dependencies...
 cd ..
 pip install -r requirements.txt
 cd video_analyzer
 echo.
-echo ✅ Hoàn tất cài đặt!
+echo Hoan tat cai dat!
 echo.
 pause
 goto MENU
@@ -79,11 +78,11 @@ goto MENU
 :DONE
 echo.
 echo ========================================
-echo ✅ HOÀN TẤT!
+echo HOAN TAT!
 echo ========================================
 echo.
-echo 📊 Báo cáo: output\reports\
-echo 🖼️  Frames: output\frames\
+echo Bao cao: output\reports\
+echo Frames: output\frames\
 echo.
 pause
 goto MENU
