@@ -31,29 +31,134 @@ class VideoDownloader:
 
         output_path = self.output_dir / output_filename
 
+        # Cấu hình yt-dlp với nhiều format fallback
         ydl_opts = {
-            'format': 'best[ext=mp4]/best',
-            'outtmpl': str(output_path),
+            # Thử nhiều format khác nhau
+            'format': (
+                'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/'
+                'bestvideo+bestaudio/best'
+            ),
+            'outtmpl': str(output_path.with_suffix('')),  # Không thêm .mp4 ở đây
             'quiet': False,
             'no_warnings': False,
             'progress_hooks': [self._progress_hook],
+            'merge_output_format': 'mp4',  # Merge thành mp4
+            # Thêm options để bypass một số giới hạn
+            'nocheckcertificate': True,
+            'ignoreerrors': False,
+            'no_color': True,
+            'extract_flat': False,
         }
 
         print(f"Đang tải video từ: {url}")
 
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([url])
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                # Get info trước để check
+                info = ydl.extract_info(url, download=False)
+                print(f"   Tiêu đề: {info.get('title', 'N/A')}")
+                print(f"   Thời lượng: {info.get('duration', 0):.0f}s")
 
-        # yt-dlp có thể thêm extension, tìm file thực tế
+                # Download
+                ydl.download([url])
+
+        except yt_dlp.utils.DownloadError as e:
+            error_msg = str(e)
+
+            # Nếu lỗi format, thử cách khác
+            if "Requested format is not available" in error_msg or "nsig extraction failed" in error_msg:
+                print("\n⚠ Lỗi format, đang thử cách khác...")
+                return self._download_fallback(url, output_path)
+            else:
+                raise Exception(f"Lỗi download: {error_msg}")
+
+        # Tìm file đã download
+        # yt-dlp có thể tạo file với tên khác
+        downloaded_file = self._find_downloaded_file(output_path)
+
+        if downloaded_file:
+            return downloaded_file
+
+        raise FileNotFoundError(f"Không tìm thấy file sau khi download: {output_path}")
+
+    def _download_fallback(self, url: str, output_path: Path) -> str:
+        """
+        Fallback download với options đơn giản hơn
+        """
+        print("   Đang thử download với format đơn giản hơn...")
+
+        ydl_opts = {
+            'format': 'worst',  # Lấy quality thấp nhất nhưng chắc chắn có
+            'outtmpl': str(output_path.with_suffix('')),
+            'quiet': True,
+            'no_warnings': True,
+            'progress_hooks': [self._progress_hook],
+            'merge_output_format': 'mp4',
+            'nocheckcertificate': True,
+        }
+
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+
+            downloaded_file = self._find_downloaded_file(output_path)
+
+            if downloaded_file:
+                print(f"✓ Download thành công (quality thấp)")
+                return downloaded_file
+
+        except Exception as e:
+            print(f"⚠ Fallback cũng thất bại: {e}")
+
+        # Fallback cuối cùng: thử format 18 (360p mp4)
+        print("   Đang thử format 360p...")
+
+        ydl_opts = {
+            'format': '18',  # 360p mp4
+            'outtmpl': str(output_path.with_suffix('')),
+            'quiet': True,
+            'progress_hooks': [self._progress_hook],
+            'nocheckcertificate': True,
+        }
+
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+
+            downloaded_file = self._find_downloaded_file(output_path)
+
+            if downloaded_file:
+                print(f"✓ Download thành công (360p)")
+                return downloaded_file
+
+        except Exception as e:
+            raise Exception(
+                f"Không thể download video.\n"
+                f"Lỗi: {e}\n"
+                f"Vui lòng:\n"
+                f"1. Update yt-dlp: pip install --upgrade yt-dlp\n"
+                f"2. Hoặc download video thủ công rồi dùng --input"
+            )
+
+    def _find_downloaded_file(self, output_path: Path) -> Optional[str]:
+        """
+        Tìm file đã download (yt-dlp có thể đặt tên khác)
+        """
+        # Thử path gốc với .mp4
+        if output_path.with_suffix('.mp4').exists():
+            return str(output_path.with_suffix('.mp4'))
+
+        # Thử path gốc
         if output_path.exists():
             return str(output_path)
 
         # Tìm file với pattern
-        for file in self.output_dir.glob(f"{output_path.stem}*"):
-            if file.is_file():
+        base_name = output_path.stem
+        for file in self.output_dir.glob(f"{base_name}*"):
+            if file.is_file() and file.suffix.lower() in ['.mp4', '.mkv', '.webm', '.avi']:
                 return str(file)
 
-        raise FileNotFoundError(f"Không tìm thấy file sau khi download: {output_path}")
+        return None
 
     def _progress_hook(self, d):
         """Hook để hiển thị progress khi download"""
