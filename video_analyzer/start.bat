@@ -14,9 +14,10 @@ echo [3] Phan tich video local (KHONG AI - nhanh)
 echo [4] Phan tich tu URL (KHONG AI - nhanh)
 echo [5] Cai dat dependencies
 echo [6] Update yt-dlp (fix YouTube errors)
+echo [7] Setup API key (de dung AI)
 echo [0] Thoat
 echo.
-set /p choice=Nhap lua chon (0-6):
+set /p choice=Nhap lua chon (0-7):
 
 if "%choice%"=="1" goto LOCAL_AI
 if "%choice%"=="2" goto URL_AI
@@ -24,6 +25,7 @@ if "%choice%"=="3" goto LOCAL_NO_AI
 if "%choice%"=="4" goto URL_NO_AI
 if "%choice%"=="5" goto INSTALL
 if "%choice%"=="6" goto UPDATE_YTDLP
+if "%choice%"=="7" goto SETUP_API
 if "%choice%"=="0" exit
 goto MENU
 
@@ -108,6 +110,16 @@ echo.
 echo You can now try downloading YouTube videos again
 echo.
 pause
+goto MENU
+
+:SETUP_API
+echo.
+echo ========================================
+echo    SETUP API KEY
+echo ========================================
+echo.
+echo Chay script setup API key...
+call setup_api_key.bat
 goto MENU
 
 :DONE

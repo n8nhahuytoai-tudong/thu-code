@@ -1,0 +1,155 @@
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║        HƯỚNG DẪN LẤY API KEY ĐỂ SỬ DỤNG AI (5 PHÚT)          ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  BƯỚC 1: ĐĂNG KÝ TÀI KHOẢN ANTHROPIC (MIỄN PHÍ)            │
+└─────────────────────────────────────────────────────────────┘
+
+1. Mở trình duyệt web
+2. Truy cập: https://console.anthropic.com/
+3. Click "Sign Up" (Đăng ký)
+4. Điền email và tạo mật khẩu
+5. Xác nhận email (check hộp thư)
+
+💡 Bonus: Bạn được MIỄN PHÍ $5 credit khi đăng ký!
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  BƯỚC 2: TẠO API KEY                                        │
+└─────────────────────────────────────────────────────────────┘
+
+1. Đăng nhập vào https://console.anthropic.com/
+2. Click vào menu "Settings" (⚙️)
+3. Chọn "API Keys"
+4. Click nút "Create Key"
+5. Đặt tên cho key (ví dụ: "Video Analyzer")
+6. Click "Create"
+7. **QUAN TRỌNG:** Copy key ngay! (chỉ hiện 1 lần)
+
+   Key sẽ có dạng:
+   sk-ant-api03-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+8. Save key vào Notepad tạm thời
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  BƯỚC 3: CẤU HÌNH API KEY CHO TOOL                          │
+└─────────────────────────────────────────────────────────────┘
+
+╔═══════════════════════════════════════════════════════════╗
+║  CÁCH 1: TỰ ĐỘNG (KHUYẾN NGHỊ)                           ║
+╚═══════════════════════════════════════════════════════════╝
+
+1. Chạy file: setup_api_key.bat
+2. File .env sẽ tự động mở
+3. Tìm dòng: ANTHROPIC_API_KEY=YOUR_API_KEY_HERE
+4. Thay YOUR_API_KEY_HERE bằng key bạn vừa copy
+5. Save file (Ctrl+S)
+6. Đóng Notepad
+
+
+╔═══════════════════════════════════════════════════════════╗
+║  CÁCH 2: THỦ CÔNG                                         ║
+╚═══════════════════════════════════════════════════════════╝
+
+1. Copy file .env.example thành .env:
+   
+   copy .env.example .env
+
+2. Mở file .env bằng Notepad:
+   
+   notepad .env
+
+3. Tìm dòng: ANTHROPIC_API_KEY=YOUR_API_KEY_HERE
+
+4. Thay thành (ví dụ):
+   
+   ANTHROPIC_API_KEY=sk-ant-api03-Ab3dEf9Gh1jKlMnOpQrStUvWx...
+
+5. Save và đóng file
+
+
+┌─────────────────────────────────────────────────────────────┐
+│  BƯỚC 4: CHẠY TOOL VỚI AI                                   │
+└─────────────────────────────────────────────────────────────┘
+
+1. Chạy: start.bat
+
+2. Chọn option có AI:
+   [1] - Phân tích video local (có AI)
+   [2] - Phân tích từ URL YouTube (có AI)
+
+3. Nhập đường dẫn video hoặc URL
+
+4. Chờ tool phân tích (tùy độ dài video)
+
+5. Xem kết quả:
+   - output/reports/video_name_report.docx  ← File Word
+   - output/reports/video_name_report.html
+   - output/reports/video_name_report.md
+
+
+╔════════════════════════════════════════════════════════════════╗
+║  KIỂM TRA XEM ĐÃ SETUP ĐÚNG CHƯA?                             ║
+╚════════════════════════════════════════════════════════════════╝
+
+Chạy lệnh này để test:
+
+    python video_analyzer.py --help
+
+Nếu KHÔNG có lỗi "ANTHROPIC_API_KEY not found" → ĐÃ ĐÚNG! ✓
+
+
+╔════════════════════════════════════════════════════════════════╗
+║  CHI PHÍ SỬ DỤNG                                               ║
+╚════════════════════════════════════════════════════════════════╝
+
+Ước tính cho video 2-5 phút:
+  • Brief mode (ngắn gọn):    ~$0.10 - $0.20
+  • Detailed mode (chi tiết): ~$0.30 - $0.50
+
+Tips tiết kiệm:
+  ✓ Dùng --detail-level brief cho video dài
+  ✓ Tăng --threshold để giảm số cảnh
+  ✓ Test với --no-ai trước (miễn phí)
+
+
+╔════════════════════════════════════════════════════════════════╗
+║  CÂU HỎI THƯỜNG GẶP                                            ║
+╚════════════════════════════════════════════════════════════════╝
+
+Q: Tôi không muốn tốn tiền, có cách nào khác?
+A: Dùng option [3] hoặc [4] (KHÔNG AI) - hoàn toàn miễn phí
+   Nhưng báo cáo sẽ không có mô tả chi tiết.
+
+Q: Lỗi "ANTHROPIC_API_KEY not found"?
+A: File .env chưa được tạo hoặc chưa điền đúng key
+   → Chạy lại: setup_api_key.bat
+
+Q: Key bị lộ ra ngoài, nguy hiểm không?
+A: Có! Người khác có thể dùng key → tốn tiền của bạn
+   → Vào console.anthropic.com → Revoke key → Tạo key mới
+
+Q: Có thể dùng chung 1 key cho nhiều máy không?
+A: Được! Nhưng chi phí sẽ cộng dồn từ tất cả các máy
+
+
+╔════════════════════════════════════════════════════════════════╗
+║  HỖ TRỢ                                                         ║
+╚════════════════════════════════════════════════════════════════╝
+
+File hướng dẫn chi tiết:
+  • HUONG_DAN_AI.md - Hướng dẫn đầy đủ về AI
+  • QUICKFIX.md - Sửa lỗi thường gặp
+  • README.md - Tài liệu đầy đủ
+
+
+════════════════════════════════════════════════════════════════
+
+               🎉 CHÚC BẠN SỬ DỤNG THÀNH CÔNG! 🎉
+
+════════════════════════════════════════════════════════════════
