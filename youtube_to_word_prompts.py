@@ -121,6 +121,36 @@ def print_error(msg: str):
 class SceneBySceneWordExporter:
     """Phân tích và xuất mỗi scene thành 1 dòng prompt siêu chi tiết"""
 
+    DESCRIPTION_PROMPT = """Analyze this {duration:.1f}s scene and provide a detailed description in Vietnamese.
+
+You are viewing 2 frames: FIRST FRAME and LAST FRAME of this scene.
+
+Provide analysis in the following 7 categories IN VIETNAMESE:
+
+1. **Hành động**: Describe what is happening in the scene, the main action or movement
+2. **Nhân vật/Đối tượng**: Describe characters, objects, or creatures visible in the scene
+3. **Cảm xúc**: Describe the emotional atmosphere and mood of the scene
+4. **Bối cảnh**: Describe the setting, location, and environment
+5. **Camera**: Describe camera movement, angle, and shot type
+6. **Ánh sáng**: Describe lighting setup, color temperature, and quality
+7. **Composition**: Describe frame composition, subject placement, and visual balance
+
+Format your response EXACTLY like this (use numbered list):
+
+1. **Hành động**: [your description here]
+
+2. **Nhân vật/Đối tượng**: [your description here]
+
+3. **Cảm xúc**: [your description here]
+
+4. **Bối cảnh**: [your description here]
+
+5. **Camera**: [your description here]
+
+6. **Ánh sáng**: [your description here]
+
+7. **Composition**: [your description here]"""
+
     ULTRA_DETAILED_PROMPT = """Analyze this {duration:.1f}s scene and create ONE CONTINUOUS LINE PROMPT (NO LINE BREAKS) for Sora 2, following HOLLYWOOD BLOCKBUSTER STANDARDS.
 
 You are viewing 2 frames: FIRST FRAME and LAST FRAME of this scene.
@@ -505,23 +535,10 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
                     return None
         return None
 
-    def _analyze_scene_ultra_detailed(self, scene: Dict) -> Optional[Dict]:
-        """Phân tích scene siêu chi tiết"""
-        scene_id = scene['scene_id']
-        frame_first = scene.get('frame_first')
-        frame_last = scene.get('frame_last')
+    def _get_frames_content(self, frame_first: str, frame_last: str) -> List[Dict]:
+        """Prepare frames content for API"""
+        content = []
 
-        if not frame_first or not frame_last:
-            return None
-
-        print_progress(f"Analyzing scene {scene_id + 1}...", scene_id + 1, len(self.scenes))
-
-        content = [{
-            "type": "text",
-            "text": self.ULTRA_DETAILED_PROMPT.format(duration=scene['duration'])
-        }]
-
-        # Add frames
         try:
             base64_first = self._encode_image_base64(frame_first)
             content.append({
@@ -545,6 +562,55 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
             })
         except:
             pass
+
+        return content
+
+    def _analyze_scene_description(self, scene: Dict) -> Optional[str]:
+        """Phân tích scene để lấy miêu tả 7 mục"""
+        scene_id = scene['scene_id']
+        frame_first = scene.get('frame_first')
+        frame_last = scene.get('frame_last')
+
+        if not frame_first or not frame_last:
+            return None
+
+        content = [{
+            "type": "text",
+            "text": self.DESCRIPTION_PROMPT.format(duration=scene['duration'])
+        }]
+        content.extend(self._get_frames_content(frame_first, frame_last))
+
+        description = self._call_vision_api(
+            messages=[{"role": "user", "content": content}],
+            max_tokens=600
+        )
+
+        return description.strip() if description else None
+
+    def _analyze_scene_ultra_detailed(self, scene: Dict) -> Optional[Dict]:
+        """Phân tích scene siêu chi tiết"""
+        scene_id = scene['scene_id']
+        frame_first = scene.get('frame_first')
+        frame_last = scene.get('frame_last')
+
+        if not frame_first or not frame_last:
+            return None
+
+        print_progress(f"Analyzing scene {scene_id + 1}...", scene_id + 1, len(self.scenes))
+
+        # Step 1: Get 7-point description
+        description = self._analyze_scene_description(scene)
+        if description:
+            scene['description'] = description
+        else:
+            scene['description'] = "[ERROR] Failed to generate description"
+
+        # Step 2: Get ultra-detailed prompt
+        content = [{
+            "type": "text",
+            "text": self.ULTRA_DETAILED_PROMPT.format(duration=scene['duration'])
+        }]
+        content.extend(self._get_frames_content(frame_first, frame_last))
 
         prompt = self._call_vision_api(
             messages=[{"role": "user", "content": content}],
@@ -617,10 +683,21 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
                     scene_num = scene['scene_id'] + 1
                     duration = scene['duration']
                     timestamp_str = f"{scene['start_time']:.1f}s - {scene['end_time']:.1f}s"
+                    description = scene.get('description', 'No description')
                     prompt = scene.get('sora_prompt', 'No prompt generated')
 
-                    # Mỗi scene = 1 paragraph (không xuống dòng trong prompt)
-                    f.write(f"SCENE {scene_num} ({duration:.1f}s | {timestamp_str}): {prompt}\n\n")
+                    # Scene header
+                    f.write(f"SCENE {scene_num} ({duration:.1f}s | {timestamp_str})\n")
+                    f.write(f"{'-'*70}\n\n")
+
+                    # Description (7 mục)
+                    f.write(f"MÔ TẢ CHI TIẾT:\n")
+                    f.write(f"{description}\n\n")
+
+                    # Prompt (1 dòng)
+                    f.write(f"PROMPT (1 DÒNG):\n")
+                    f.write(f"{prompt}\n\n")
+                    f.write(f"{'='*70}\n\n")
 
             print_success(f"✓ Saved TXT: {txt_file.name}")
 
@@ -664,11 +741,12 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
                 doc.add_paragraph("_" * 50)
                 doc.add_paragraph()
 
-            # Each scene = heading + images + prompt
+            # Each scene = heading + images + description + prompt
             for scene in self.scenes:
                 scene_num = scene['scene_id'] + 1
                 duration = scene['duration']
                 timestamp_str = f"{scene['start_time']:.1f}s - {scene['end_time']:.1f}s"
+                description = scene.get('description', 'No description')
                 prompt = scene.get('sora_prompt', 'No prompt generated')
 
                 # Scene heading
@@ -701,9 +779,21 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
                     p_last.add_run("Frame cuối: ").bold = True
                     doc.add_picture(frame_last, width=Inches(4))
 
+                # Add description (7 mục)
+                doc.add_paragraph()
+                desc_heading = doc.add_paragraph()
+                desc_heading.add_run("MÔ TẢ CHI TIẾT:").bold = True
+
+                p_desc = doc.add_paragraph()
+                run_desc = p_desc.add_run(description)
+                run_desc.font.size = Pt(10)
+
                 # Add prompt (1 line)
+                doc.add_paragraph()
+                prompt_heading = doc.add_paragraph()
+                prompt_heading.add_run("PROMPT (1 DÒNG):").bold = True
+
                 p_prompt = doc.add_paragraph()
-                p_prompt.add_run("PROMPT: ").bold = True
                 run_prompt = p_prompt.add_run(prompt)
                 run_prompt.font.size = Pt(10)
 
@@ -726,7 +816,7 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
             print(f"\n📁 Folder ảnh đầu: {first_frames_folder.name}/ ({len(self.scenes)} ảnh: 0.jpg, 1.jpg, ...)")
             print(f"📁 Folder ảnh cuối: {last_frames_folder.name}/ ({len(self.scenes)} ảnh: 0.jpg, 1.jpg, ...)")
             print(f"\n✓ Tổng: {len(self.scenes)} scenes")
-            print(f"✓ Mỗi scene = ảnh đầu + ảnh cuối + prompt (250-350 words)\n")
+            print(f"✓ Mỗi scene = ảnh đầu + ảnh cuối + miêu tả 7 mục + prompt 1 dòng (250-350 words)\n")
 
             return str(output_folder)
 
@@ -784,7 +874,8 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
             print(f"📁 Kết quả: {output_path}/")
             print(f"📊 Tổng: {len(self.scenes)} scenes")
             print(f"📝 Files: .docx (Word) + .txt (Text)")
-            print(f"📄 Mỗi scene = 1 dòng prompt (250-350 words)\n")
+            print(f"🖼️  Ảnh: 2 folders riêng (FIRST + LAST)")
+            print(f"📄 Mỗi scene = miêu tả 7 mục + prompt 1 dòng (250-350 words)\n")
 
         return output_path
 
