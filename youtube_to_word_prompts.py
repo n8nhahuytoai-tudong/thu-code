@@ -51,8 +51,9 @@ class Config:
     MAX_VIDEO_HEIGHT = 1080
 
     VISION_MODEL = "gpt-4o"
-    MAX_RETRIES = 3
-    RETRY_DELAY = 2
+    WHISPER_MODEL = "whisper-1"
+    MAX_RETRIES = 5
+    RETRY_DELAY = 3
 
     CACHE_DIR = "cache"
     OUTPUT_DIR = "output_scenes"
@@ -261,10 +262,12 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
         ensure_directories()
 
         self.video_path: Optional[str] = None
+        self.audio_path: Optional[str] = None
         self.youtube_url: Optional[str] = None
         self.video_title: str = ""
         self.video_metadata: Dict = {}
         self.scenes: List[Dict] = []
+        self.transcript: Optional[Dict] = None
 
     # ========== VIDEO DOWNLOAD ==========
 
@@ -318,6 +321,56 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
             return True
         except Exception as e:
             print_error(f"Lỗi: {e}")
+            return False
+
+    def _download_audio(self, url: str) -> bool:
+        """Download audio from video"""
+        print_progress("Đang tải audio...")
+        try:
+            audio_output = "temp_audio.m4a"
+            result = subprocess.run(
+                ["yt-dlp", "-f", "bestaudio[ext=m4a]", "-o", audio_output, url],
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+            if result.returncode == 0 and os.path.exists(audio_output):
+                self.audio_path = audio_output
+                print_success("Audio đã tải xong")
+                return True
+            else:
+                print_error("Không thể tải audio (sẽ bỏ qua transcript)")
+                return False
+        except Exception as e:
+            print_error(f"Lỗi tải audio: {e}")
+            return False
+
+    def _transcribe_audio(self) -> bool:
+        """Transcribe audio using Whisper"""
+        if not self.audio_path or not os.path.exists(self.audio_path):
+            print_error("Không có file audio để transcribe")
+            return False
+
+        print_progress("Đang transcribe audio...")
+        try:
+            with open(self.audio_path, "rb") as audio_file:
+                transcript = self.client.audio.transcriptions.create(
+                    model=Config.WHISPER_MODEL,
+                    file=audio_file,
+                    response_format="verbose_json"
+                )
+
+            self.transcript = {
+                'text': transcript.text,
+                'language': getattr(transcript, 'language', 'unknown'),
+                'duration': getattr(transcript, 'duration', 0),
+            }
+
+            print_success(f"Transcript: {len(self.transcript['text'])} ký tự, ngôn ngữ: {self.transcript['language']}")
+            return True
+
+        except Exception as e:
+            print_error(f"Lỗi transcribe: {e}")
             return False
 
     # ========== SCENE DETECTION ==========
@@ -499,15 +552,27 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
         )
 
         if not prompt:
-            return None
+            # API failed after retries - set error message
+            error_msg = f"[ERROR] Failed to analyze scene {scene_id + 1} after {Config.MAX_RETRIES} retries. API may be unavailable or rate limited. Please retry later."
+            print_error(f"Scene {scene_id + 1} analysis failed!")
+            scene['sora_prompt'] = error_msg
+            scene['analysis_failed'] = True
+            return scene
 
         # Extract prompt
         prompt_text = prompt.strip()
         if prompt_text.startswith("PROMPT:"):
             prompt_text = prompt_text[7:].strip()
 
-        scene['sora_prompt'] = prompt_text
+        # Validate prompt length
+        word_count = len(prompt_text.split())
+        if word_count < 100:
+            print_error(f"Scene {scene_id + 1}: Prompt too short ({word_count} words), may be incomplete")
+            scene['sora_prompt'] = f"[WARNING: Short prompt - {word_count} words only] {prompt_text}"
+        else:
+            scene['sora_prompt'] = prompt_text
 
+        scene['analysis_failed'] = False
         return scene
 
     # ========== EXPORT TO WORD ==========
@@ -532,6 +597,15 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
                 f.write(f"TOTAL SCENES: {len(self.scenes)}\n")
                 f.write(f"DATE: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
                 f.write(f"{'='*70}\n\n")
+
+                # Add transcript if available
+                if self.transcript:
+                    f.write(f"TRANSCRIPT:\n")
+                    f.write(f"Language: {self.transcript.get('language', 'unknown')}\n")
+                    f.write(f"Duration: {self.transcript.get('duration', 0):.1f}s\n")
+                    f.write(f"{'-'*70}\n")
+                    f.write(f"{self.transcript.get('text', '')}\n")
+                    f.write(f"{'='*70}\n\n")
 
                 for scene in self.scenes:
                     scene_num = scene['scene_id'] + 1
@@ -566,6 +640,23 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
             meta.add_run(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 
             doc.add_paragraph("_" * 50)
+
+            # Add transcript section if available
+            if self.transcript:
+                doc.add_heading("Video Transcript", level=2)
+
+                trans_meta = doc.add_paragraph()
+                trans_meta.add_run("Language: ").bold = True
+                trans_meta.add_run(f"{self.transcript.get('language', 'unknown')}\n")
+                trans_meta.add_run("Duration: ").bold = True
+                trans_meta.add_run(f"{self.transcript.get('duration', 0):.1f}s\n")
+
+                trans_text = doc.add_paragraph()
+                trans_run = trans_text.add_run(self.transcript.get('text', ''))
+                trans_run.font.size = Pt(10)
+
+                doc.add_paragraph("_" * 50)
+                doc.add_paragraph()
 
             # Each scene = heading + images + prompt
             for scene in self.scenes:
@@ -652,6 +743,13 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
 
         if not self._download_video(youtube_url):
             return None
+
+        # Download and transcribe audio
+        print_header("AUDIO TRANSCRIPTION")
+        if self._download_audio(youtube_url):
+            self._transcribe_audio()
+        else:
+            print_progress("Bỏ qua transcript (không có audio)")
 
         if not self._detect_scenes():
             cleanup_temp()
