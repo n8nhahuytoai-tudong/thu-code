@@ -60,23 +60,29 @@ class VideoDownloader:
 
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                # Get info trước để check
-                info = ydl.extract_info(url, download=False)
-                print(f"   Tiêu đề: {info.get('title', 'N/A')}")
-                print(f"   Thời lượng: {info.get('duration', 0):.0f}s")
+                # Get info trước để check (nếu được)
+                try:
+                    info = ydl.extract_info(url, download=False)
+                    if info:
+                        print(f"   Tiêu đề: {info.get('title', 'N/A')}")
+                        print(f"   Thời lượng: {info.get('duration', 0):.0f}s")
+                except:
+                    # Nếu không get được info, bỏ qua và thử download trực tiếp
+                    print("   (Không lấy được thông tin video, đang thử download...)")
 
                 # Download
                 ydl.download([url])
 
-        except yt_dlp.utils.DownloadError as e:
+        except Exception as e:
             error_msg = str(e)
 
             # Nếu lỗi format hoặc file empty, thử cách khác
-            if any(keyword in error_msg for keyword in [
-                "Requested format is not available",
+            if any(keyword in error_msg.lower() for keyword in [
+                "requested format is not available",
                 "nsig extraction failed",
                 "downloaded file is empty",
-                "fragment not found"
+                "fragment not found",
+                "signature extraction failed"
             ]):
                 print("\n⚠ Lỗi download, đang thử cách khác...")
                 return self._download_fallback(url, output_path)
