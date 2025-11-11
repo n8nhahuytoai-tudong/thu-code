@@ -4,51 +4,51 @@ title YouTube Scene Analyzer - Installer
 color 0E
 
 echo.
-echo ╔════════════════════════════════════════════════════════════════╗
-echo ║           YOUTUBE SCENE ANALYZER - AUTO INSTALLER             ║
-echo ║           Cài đặt tự động tất cả dependencies                 ║
-echo ╚════════════════════════════════════════════════════════════════╝
+echo ================================================================
+echo      YOUTUBE SCENE ANALYZER - AUTO INSTALLER
+echo      Installing all dependencies automatically
+echo ================================================================
 echo.
 
-echo [1/4] Kiểm tra Python...
+echo [1/4] Checking Python...
 python --version
 if errorlevel 1 (
     echo.
-    echo [ERROR] Python chưa được cài đặt!
+    echo [ERROR] Python not installed!
     echo.
-    echo Vui lòng tải và cài Python 3.8+ từ:
+    echo Please download and install Python 3.8+ from:
     echo https://www.python.org/downloads/
     echo.
-    echo QUAN TRỌNG: Nhớ tick "Add Python to PATH" khi cài!
+    echo IMPORTANT: Check "Add Python to PATH" during installation!
     echo.
     pause
     exit /b 1
 )
-echo [OK] Python đã cài
+echo [OK] Python installed
 echo.
 
-echo [2/4] Kiểm tra pip...
+echo [2/4] Checking pip...
 pip --version
 if errorlevel 1 (
-    echo [ERROR] pip không tìm thấy!
+    echo [ERROR] pip not found!
     pause
     exit /b 1
 )
-echo [OK] pip sẵn sàng
+echo [OK] pip ready
 echo.
 
-echo [3/4] Cài đặt Python packages...
-echo Đang cài đặt: opencv-python, numpy, openai, yt-dlp
-echo (Có thể mất 2-5 phút tùy tốc độ mạng)
+echo [3/4] Installing Python packages...
+echo Installing: opencv-python, numpy, openai, yt-dlp
+echo (This may take 2-5 minutes depending on internet speed)
 echo.
 
 pip install -r requirements.txt
 
 if errorlevel 1 (
     echo.
-    echo [ERROR] Cài đặt thất bại!
+    echo [ERROR] Installation failed!
     echo.
-    echo Thử cài thủ công:
+    echo Try manual installation:
     echo   pip install opencv-python numpy openai yt-dlp
     echo.
     pause
@@ -56,49 +56,49 @@ if errorlevel 1 (
 )
 
 echo.
-echo [OK] Packages đã cài xong!
+echo [OK] Packages installed successfully!
 echo.
 
-echo [4/4] Kiểm tra cài đặt...
+echo [4/4] Checking installation...
 python test_installation.py
 
 echo.
-echo ════════════════════════════════════════════════════════════════
-echo [INFO] Cần thiết lập API Key
-echo ════════════════════════════════════════════════════════════════
+echo ================================================================
+echo [INFO] API Key Setup Required
+echo ================================================================
 echo.
 
 if exist ".env" (
-    echo [OK] File .env đã tồn tại
+    echo [OK] .env file already exists
 ) else (
-    echo File .env chưa có. Bạn có thể:
-    echo   1. Tạo file .env với nội dung: OPENAI_API_KEY=sk-your-key
-    echo   2. Hoặc nhập API key khi chạy script
+    echo .env file not found. You can:
+    echo   1. Create .env file with: OPENAI_API_KEY=sk-your-key
+    echo   2. Or enter API key when running the script
     echo.
-    echo Lấy API key tại: https://platform.openai.com/api-keys
+    echo Get API key from: https://platform.openai.com/api-keys
     echo.
 
-    set /p CREATE_ENV="Tạo file .env ngay bây giờ? (Y/N): "
+    set /p CREATE_ENV="Create .env file now? (Y/N): "
     if /i "%CREATE_ENV%"=="Y" (
         echo.
-        set /p API_KEY="Nhập OpenAI API Key của bạn: "
+        set /p API_KEY="Enter your OpenAI API Key: "
         if not "!API_KEY!"=="" (
             echo OPENAI_API_KEY=!API_KEY!>.env
             echo.
-            echo [OK] Đã tạo file .env
+            echo [OK] Created .env file
         )
     )
 )
 
 echo.
-echo ════════════════════════════════════════════════════════════════
-echo ✓ CÀI ĐẶT HOÀN TẤT!
-echo ════════════════════════════════════════════════════════════════
+echo ================================================================
+echo INSTALLATION COMPLETE!
+echo ================================================================
 echo.
-echo Bạn có thể chạy analyzer bằng:
-echo   - Chạy RUN.bat (giao diện nhập URL)
-echo   - Kéo thả URL/video vào DRAG_VIDEO_HERE.bat
-echo   - Hoặc: python youtube_scene_by_scene_analyzer.py
+echo You can now run the analyzer by:
+echo   - Run RUN.bat (interactive mode)
+echo   - Drag video/URL to DRAG_VIDEO_HERE.bat
+echo   - Or: python youtube_scene_by_scene_analyzer.py
 echo.
 echo.
 pause

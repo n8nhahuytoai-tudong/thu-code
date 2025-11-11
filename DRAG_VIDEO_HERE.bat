@@ -1,22 +1,22 @@
 @echo off
 chcp 65001 >nul
-title YouTube Scene Analyzer - Drag & Drop Mode
+title YouTube Scene Analyzer - Drag and Drop
 color 0B
 
 echo.
-echo ╔════════════════════════════════════════════════════════════════╗
-echo ║     KÉO THẢ VIDEO/URL VÀO ĐÂY ĐỂ PHÂN TÍCH                    ║
-echo ╚════════════════════════════════════════════════════════════════╝
+echo ================================================================
+echo      DRAG VIDEO OR URL HERE TO ANALYZE
+echo ================================================================
 echo.
 
 REM Check if file/URL was dragged
 if "%~1"=="" (
-    echo [ERROR] Bạn chưa kéo thả file hoặc URL vào đây!
+    echo [ERROR] No file or URL provided!
     echo.
-    echo HƯỚNG DẪN:
-    echo   1. Kéo file video (.mp4) vào icon file .bat này
-    echo   2. Hoặc tạo shortcut với URL làm argument
-    echo   3. Hoặc chạy RUN.bat để nhập URL thủ công
+    echo HOW TO USE:
+    echo   1. Drag video file (.mp4) onto this .bat icon
+    echo   2. Or create shortcut with URL as parameter
+    echo   3. Or run RUN.bat to enter URL manually
     echo.
     pause
     exit /b 1
@@ -24,45 +24,45 @@ if "%~1"=="" (
 
 set VIDEO_INPUT=%~1
 
-echo [INFO] Đang xử lý: %VIDEO_INPUT%
+echo [INFO] Processing: %VIDEO_INPUT%
 echo.
 
 REM Check Python
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Python chưa cài đặt!
+    echo [ERROR] Python not installed!
     pause
     exit /b 1
 )
 
 REM Check .env
 if not exist ".env" (
-    echo [WARNING] Chưa có file .env!
+    echo [WARNING] No .env file!
     echo.
-    set /p API_KEY="Nhập OpenAI API Key: "
+    set /p API_KEY="Enter OpenAI API Key: "
     if not "!API_KEY!"=="" (
         echo OPENAI_API_KEY=!API_KEY!>.env
-        echo [OK] Đã tạo .env
+        echo [OK] Created .env file
         echo.
     )
 )
 
-echo ════════════════════════════════════════════════════════════════
-echo [START] Bắt đầu phân tích...
-echo ════════════════════════════════════════════════════════════════
+echo ================================================================
+echo [START] Starting analysis...
+echo ================================================================
 echo.
 
 python youtube_scene_by_scene_analyzer.py "%VIDEO_INPUT%"
 
 echo.
-echo ════════════════════════════════════════════════════════════════
-echo [DONE] Hoàn tất!
-echo ════════════════════════════════════════════════════════════════
+echo ================================================================
+echo [DONE] Complete!
+echo ================================================================
 echo.
 
 REM Auto open output folder
 if exist "output_scenes" (
-    echo Đang mở thư mục kết quả...
+    echo Opening output folder...
     start "" "output_scenes"
 )
 
