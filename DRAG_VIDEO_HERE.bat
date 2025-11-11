@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 chcp 65001 >nul
 title YouTube Scene Analyzer - Drag and Drop
 color 0B
@@ -22,7 +23,7 @@ if "%~1"=="" (
     exit /b 1
 )
 
-set VIDEO_INPUT=%~1
+set "VIDEO_INPUT=%~1"
 
 echo [INFO] Processing: %VIDEO_INPUT%
 echo.
@@ -39,7 +40,7 @@ REM Check .env
 if not exist ".env" (
     echo [WARNING] No .env file!
     echo.
-    set /p API_KEY="Enter OpenAI API Key: "
+    set /p "API_KEY=Enter OpenAI API Key: "
     if not "!API_KEY!"=="" (
         echo OPENAI_API_KEY=!API_KEY!>.env
         echo [OK] Created .env file

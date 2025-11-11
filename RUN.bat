@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 chcp 65001 >nul
 title YouTube Scene Analyzer
 color 0A
@@ -37,7 +38,7 @@ REM Check .env
 if not exist ".env" (
     echo [WARNING] No .env file found!
     echo.
-    set /p API_KEY="Enter OpenAI API Key (or press Enter to skip): "
+    set /p "API_KEY=Enter OpenAI API Key (or press Enter to skip): "
     if not "!API_KEY!"=="" (
         echo OPENAI_API_KEY=!API_KEY!>.env
         echo [OK] Created .env file
@@ -52,7 +53,7 @@ if errorlevel 1 (
     echo.
     echo [WARNING] Some packages not installed!
     echo.
-    set /p INSTALL="Install dependencies now? (Y/N): "
+    set /p "INSTALL=Install dependencies now? (Y/N): "
     if /i "!INSTALL!"=="Y" (
         echo Installing...
         pip install -r requirements.txt
@@ -71,10 +72,10 @@ echo.
 echo ================================================================
 echo.
 
-set /p VIDEO_INPUT="Enter YouTube URL or drag video file here: "
+set /p "VIDEO_INPUT=Enter YouTube URL or drag video file here: "
 
 REM Remove quotes
-set VIDEO_INPUT=%VIDEO_INPUT:"=%
+set "VIDEO_INPUT=%VIDEO_INPUT:"=%"
 
 if "%VIDEO_INPUT%"=="" (
     echo.
@@ -100,7 +101,7 @@ echo.
 echo Results saved in: output_scenes\
 echo.
 
-set /p OPEN_FOLDER="Open output folder? (Y/N): "
+set /p "OPEN_FOLDER=Open output folder? (Y/N): "
 if /i "%OPEN_FOLDER%"=="Y" (
     start "" "output_scenes"
 )

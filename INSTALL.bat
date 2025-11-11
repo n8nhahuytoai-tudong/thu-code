@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 chcp 65001 >nul
 title YouTube Scene Analyzer - Installer
 color 0E
@@ -78,10 +79,10 @@ if exist ".env" (
     echo Get API key from: https://platform.openai.com/api-keys
     echo.
 
-    set /p CREATE_ENV="Create .env file now? (Y/N): "
-    if /i "%CREATE_ENV%"=="Y" (
+    set /p "CREATE_ENV=Create .env file now? (Y/N): "
+    if /i "!CREATE_ENV!"=="Y" (
         echo.
-        set /p API_KEY="Enter your OpenAI API Key: "
+        set /p "API_KEY=Enter your OpenAI API Key: "
         if not "!API_KEY!"=="" (
             echo OPENAI_API_KEY=!API_KEY!>.env
             echo.
