@@ -175,11 +175,18 @@ class VideoDownloader:
         if output_path.exists():
             return str(output_path)
 
-        # Tìm file với pattern
+        # Thử path không có extension (yt-dlp thường save không extension)
+        path_no_ext = output_path.with_suffix('')
+        if path_no_ext.exists() and path_no_ext.is_file():
+            return str(path_no_ext)
+
+        # Tìm file với pattern (bao gồm cả file không có extension)
         base_name = output_path.stem
         for file in self.output_dir.glob(f"{base_name}*"):
-            if file.is_file() and file.suffix.lower() in ['.mp4', '.mkv', '.webm', '.avi']:
-                return str(file)
+            if file.is_file():
+                # Chấp nhận file có extension video HOẶC không có extension
+                if file.suffix.lower() in ['.mp4', '.mkv', '.webm', '.avi', '.flv', '.mov'] or file.suffix == '':
+                    return str(file)
 
         return None
 

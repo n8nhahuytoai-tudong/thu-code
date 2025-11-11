@@ -208,9 +208,10 @@ Xem thêm:
 
 ---
 
-**Version: 1.0.1 Final**
+**Version: 1.0.2 Final**
 **Updated: 2025-01-11**
 **Latest fixes:**
+- ✅ Fixed file finding after download (handles files without extensions)
 - ✅ Fixed NoneType error when extracting video info
 - ✅ Fixed fragment loss and HLS issues
 - ✅ Fixed YouTube signature extraction failures
