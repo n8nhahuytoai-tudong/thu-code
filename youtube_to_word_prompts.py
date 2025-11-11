@@ -589,6 +589,12 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
             output_folder = Path(Config.OUTPUT_DIR)
             output_folder.mkdir(exist_ok=True, parents=True)
 
+            # Create separate folders for FIRST and LAST frames
+            first_frames_folder = output_folder / f"{base_name}_FIRST"
+            last_frames_folder = output_folder / f"{base_name}_LAST"
+            first_frames_folder.mkdir(exist_ok=True)
+            last_frames_folder.mkdir(exist_ok=True)
+
             # ========== TEXT FILE ==========
             txt_file = output_folder / f"{base_name}_PROMPTS.txt"
             with open(txt_file, 'w', encoding='utf-8') as f:
@@ -674,8 +680,8 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
                 # Add FIRST frame image
                 frame_first = scene.get('frame_first')
                 if frame_first and os.path.exists(frame_first):
-                    # Copy image to output folder
-                    first_dest = output_folder / f"scene_{scene_num:04d}_FIRST.jpg"
+                    # Copy image to FIRST frames folder (numbered from 0)
+                    first_dest = first_frames_folder / f"{scene['scene_id']}.jpg"
                     shutil.copy(frame_first, first_dest)
 
                     # Add to Word
@@ -686,8 +692,8 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
                 # Add LAST frame image
                 frame_last = scene.get('frame_last')
                 if frame_last and os.path.exists(frame_last):
-                    # Copy image to output folder
-                    last_dest = output_folder / f"scene_{scene_num:04d}_LAST.jpg"
+                    # Copy image to LAST frames folder (numbered from 0)
+                    last_dest = last_frames_folder / f"{scene['scene_id']}.jpg"
                     shutil.copy(frame_last, last_dest)
 
                     # Add to Word
@@ -714,10 +720,11 @@ PROMPT: [Start with camera specs, flow into characters if present, then animals 
             print("="*70)
             print("📄 FILE WORD + ẢNH ĐÃ TẠO XONG!".center(70))
             print("="*70)
-            print(f"\n📁 Folder: {output_folder.absolute()}")
+            print(f"\n📁 Folder chính: {output_folder.absolute()}")
             print(f"📝 File TXT: {txt_file.name}")
             print(f"📄 File WORD: {docx_file.name} (có nhúng ảnh)")
-            print(f"🖼️  Ảnh: {len(self.scenes) * 2} files (FIRST + LAST cho mỗi scene)")
+            print(f"\n📁 Folder ảnh đầu: {first_frames_folder.name}/ ({len(self.scenes)} ảnh: 0.jpg, 1.jpg, ...)")
+            print(f"📁 Folder ảnh cuối: {last_frames_folder.name}/ ({len(self.scenes)} ảnh: 0.jpg, 1.jpg, ...)")
             print(f"\n✓ Tổng: {len(self.scenes)} scenes")
             print(f"✓ Mỗi scene = ảnh đầu + ảnh cuối + prompt (250-350 words)\n")
 
