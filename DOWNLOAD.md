@@ -173,14 +173,34 @@ output/reports/
 pip install opencv-python
 ```
 
-### Lỗi: YouTube download failed
+### Lỗi: YouTube download failed - "nsig extraction failed"
 
+**⚠️ LỖI PHỔ BIẾN NHẤT - BẮT BUỘC PHẢI UPDATE YT-DLP!**
+
+**Cách 1: Dùng file update tự động (Windows)**
+```bash
+update_ytdlp.bat
+```
+
+**Cách 2: Update thủ công**
+```bash
+pip uninstall yt-dlp -y
+pip install yt-dlp
+```
+
+**Hoặc:**
 ```bash
 pip install --upgrade yt-dlp
 ```
 
-Hoặc tải video thủ công rồi:
+**Sau khi update, thử lại:**
+```bash
+start.bat
+# Chọn [4] - URL không AI
+```
 
+**Nếu vẫn lỗi:**
+Tải video thủ công rồi:
 ```bash
 python video_analyzer.py --input downloaded_video.mp4 --no-ai
 ```
@@ -208,13 +228,13 @@ Xem thêm:
 
 ---
 
-**Version: 1.0.3 Final**
+**Version: 1.0.4 Final**
 **Updated: 2025-01-11**
 **Latest fixes:**
-- ✅ Fixed auto-fallback when format not available (nsig extraction failed)
-- ✅ Added 4-level fallback: best → worst → 360p → any format
+- ✅ Added 5-level fallback: best → worst → 360p → any format → bestvideo+bestaudio
+- ✅ Better error messages for nsig extraction failures
+- ✅ Added update_ytdlp.bat for easy yt-dlp updates
+- ✅ Enhanced QUICKFIX.md with nsig error solutions
+- ✅ Fixed auto-fallback when format not available
 - ✅ Fixed file finding after download (handles files without extensions)
-- ✅ Fixed NoneType error when extracting video info
-- ✅ Fixed fragment loss and HLS issues
-- ✅ Fixed YouTube signature extraction failures
 - ✅ All known bugs fixed and tested

@@ -180,12 +180,45 @@ class VideoDownloader:
                 return downloaded_file
 
         except Exception as e:
+            print(f"⚠ Fallback format tự động cũng thất bại: {e}")
+
+        # Fallback cuối cùng: thử với bestvideo+bestaudio
+        print("   Đang thử merge video+audio riêng biệt...")
+
+        ydl_opts = {
+            'format': 'bestvideo+bestaudio/best',
+            'outtmpl': str(output_path.with_suffix('')),
+            'quiet': True,
+            'progress_hooks': [self._progress_hook],
+            'nocheckcertificate': True,
+            'ignoreerrors': False,
+            'merge_output_format': 'mp4',
+        }
+
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+
+            downloaded_file = self._find_downloaded_file(output_path)
+
+            if downloaded_file:
+                print(f"✓ Download thành công (merged)")
+                return downloaded_file
+
+        except Exception as e:
             raise Exception(
                 f"Không thể download video sau tất cả fallback.\n"
                 f"Lỗi cuối: {e}\n"
+                f"\n"
+                f"Video này có thể:\n"
+                f"- Bị giới hạn khu vực (geo-restricted)\n"
+                f"- Yêu cầu đăng nhập\n"
+                f"- Có vấn đề với nsig extraction\n"
+                f"\n"
                 f"Vui lòng:\n"
                 f"1. Update yt-dlp: pip install --upgrade yt-dlp\n"
-                f"2. Hoặc download video thủ công rồi dùng --input"
+                f"2. Hoặc thử video khác\n"
+                f"3. Hoặc download video thủ công rồi dùng --input"
             )
 
     def _find_downloaded_file(self, output_path: Path) -> Optional[str]:

@@ -72,18 +72,43 @@ python video_analyzer.py --input video.mp4 --no-ai
 
 ---
 
-### 5. Download YouTube thất bại
+### 5. Download YouTube thất bại - "nsig extraction failed" / "Requested format is not available"
 
-**Giải pháp 1: Update yt-dlp**
+**⚠️ Đây là lỗi phổ biến nhất với YouTube!**
+
+**Nguyên nhân:**
+- yt-dlp version cũ
+- YouTube thay đổi signature algorithm
+- Video có giới hạn khu vực hoặc yêu cầu đăng nhập
+
+**Giải pháp 1: UPDATE yt-dlp (BẮT BUỘC)**
 ```bash
 pip install --upgrade yt-dlp
 ```
 
-**Giải pháp 2: Download thủ công trước**
+**Nếu vẫn lỗi, GỠ VÀ CÀI LẠI:**
 ```bash
-# Download video trước bằng tool khác
-python video_analyzer.py --input downloaded_video.mp4
+pip uninstall yt-dlp -y
+pip install yt-dlp
 ```
+
+**Giải pháp 2: Thử video khác**
+```bash
+# Test với video public đơn giản
+python video_analyzer.py --url "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --no-ai
+```
+
+**Giải pháp 3: Download thủ công**
+```bash
+# Download bằng web browser hoặc tool khác
+# Sau đó dùng --input
+python video_analyzer.py --input downloaded_video.mp4 --no-ai
+```
+
+**Giải pháp 4: Kiểm tra video có bị giới hạn không**
+- Thử mở video trên browser
+- Nếu yêu cầu đăng nhập → download thủ công
+- Nếu bị chặn khu vực → dùng VPN hoặc video khác
 
 ---
 

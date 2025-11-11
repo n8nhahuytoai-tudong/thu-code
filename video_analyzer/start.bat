@@ -13,15 +13,17 @@ echo [2] Phan tich tu URL YouTube (co AI)
 echo [3] Phan tich video local (KHONG AI - nhanh)
 echo [4] Phan tich tu URL (KHONG AI - nhanh)
 echo [5] Cai dat dependencies
+echo [6] Update yt-dlp (fix YouTube errors)
 echo [0] Thoat
 echo.
-set /p choice=Nhap lua chon (0-5):
+set /p choice=Nhap lua chon (0-6):
 
 if "%choice%"=="1" goto LOCAL_AI
 if "%choice%"=="2" goto URL_AI
 if "%choice%"=="3" goto LOCAL_NO_AI
 if "%choice%"=="4" goto URL_NO_AI
 if "%choice%"=="5" goto INSTALL
+if "%choice%"=="6" goto UPDATE_YTDLP
 if "%choice%"=="0" exit
 goto MENU
 
@@ -71,6 +73,39 @@ pip install -r requirements.txt
 cd video_analyzer
 echo.
 echo Hoan tat cai dat!
+echo.
+pause
+goto MENU
+
+:UPDATE_YTDLP
+echo.
+echo ========================================
+echo    UPDATE YT-DLP
+echo ========================================
+echo.
+echo This will fix YouTube download errors:
+echo - nsig extraction failed
+echo - Requested format is not available
+echo - Signature extraction failed
+echo.
+pause
+echo.
+echo Uninstalling old version...
+pip uninstall yt-dlp -y
+echo.
+echo Installing latest version...
+pip install yt-dlp
+echo.
+if errorlevel 1 (
+    echo [ERROR] Update failed!
+    pause
+    goto MENU
+)
+echo ========================================
+echo [SUCCESS] yt-dlp updated successfully!
+echo ========================================
+echo.
+echo You can now try downloading YouTube videos again
 echo.
 pause
 goto MENU
