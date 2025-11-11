@@ -10,8 +10,8 @@ https://github.com/n8nhahuytoai-tudong/thu-code/raw/claude/write-content-011CV1J
 **Hoặc click vào đây:**
 [📦 Download youtube_scene_analyzer_complete.zip](https://github.com/n8nhahuytoai-tudong/thu-code/raw/claude/write-content-011CV1JeX9QX12CT5UswAVpz/youtube_scene_analyzer_complete.zip)
 
-**Kích thước:** ~13KB
-**Bao gồm:** 6 files cần thiết
+**Kích thước:** ~20KB
+**Bao gồm:** 11 files (bao gồm 3 file .bat cho Windows)
 
 ---
 
@@ -42,19 +42,50 @@ git checkout claude/write-content-011CV1JeX9QX12CT5UswAVpz
 
 ## 📦 Nội dung ZIP:
 
+**Python Scripts:**
 ✅ `youtube_scene_by_scene_analyzer.py` - Main script
+✅ `test_installation.py` - Kiểm tra cài đặt
+
+**Windows Batch Files:**
+✅ `INSTALL.bat` - Auto-installer (chạy lần đầu)
+✅ `RUN.bat` - Launcher với UI (nhập URL)
+✅ `DRAG_VIDEO_HERE.bat` - Kéo thả video vào đây
+
+**Configuration:**
 ✅ `requirements.txt` - Python dependencies
 ✅ `.env.example` - Template API key
+
+**Documentation:**
 ✅ `README.md` - Hướng dẫn đầy đủ
-✅ `QUICKSTART.md` - Hướng dẫn nhanh
-✅ `test_installation.py` - Kiểm tra cài đặt
+✅ `QUICKSTART.md` - Hướng dẫn nhanh 3 phút
+✅ `DOWNLOAD.md` - Hướng dẫn download (file này)
+✅ `WINDOWS_GUIDE.txt` - Hướng dẫn Windows chi tiết
 
 ---
 
 ## ⚡ Sau khi Download:
 
+### 🪟 **Trên Windows (CỰC DỄ):**
+
+```
+1. Giải nén file ZIP
+2. Double-click INSTALL.bat (lần đầu tiên)
+3. Double-click RUN.bat (mỗi lần dùng)
+4. Nhập YouTube URL
+5. Chờ kết quả!
+```
+
+**Hoặc kéo thả:**
+- Kéo video file (.mp4) vào icon `DRAG_VIDEO_HERE.bat`
+
+**Đọc thêm:** Mở file `WINDOWS_GUIDE.txt`
+
+---
+
+### 🐧 **Trên Linux/Mac:**
+
 ```bash
-# Giải nén (nếu tải file ZIP)
+# Giải nén
 unzip youtube_scene_analyzer_complete.zip
 cd youtube_scene_analyzer_complete
 
