@@ -2,7 +2,12 @@
 opencv-python==4.10.0.84
 scenedetect[opencv]==0.6.4
 yt-dlp==2024.12.23
+
+# AI providers (chọn 1 trong 2 hoặc cả 2)
 anthropic==0.39.0
+openai==1.54.5
+
+# Utilities
 tqdm==4.67.1
 python-dotenv==1.0.1
 python-docx==1.1.2

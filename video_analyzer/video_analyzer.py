@@ -19,6 +19,12 @@ from modules import (
     ReportGenerator
 )
 
+try:
+    from modules.ai_analyzer_openai import OpenAIAnalyzer
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+
 
 class VideoAnalyzer:
     """Main Video Analyzer class"""
@@ -29,7 +35,8 @@ class VideoAnalyzer:
         min_scene_len: int = 15,
         use_ai: bool = True,
         detail_level: str = "detailed",
-        language: str = "vi"
+        language: str = "vi",
+        ai_provider: str = "anthropic"
     ):
         self.downloader = VideoDownloader(output_dir="./temp")
         self.scene_detector = SceneDetector(threshold=threshold, min_scene_len=min_scene_len)
@@ -39,10 +46,18 @@ class VideoAnalyzer:
         self.use_ai = use_ai
         self.detail_level = detail_level
         self.language = language
+        self.ai_provider = ai_provider
 
         if use_ai:
             try:
-                self.ai_analyzer = AIAnalyzer()
+                if ai_provider == "openai":
+                    if not OPENAI_AVAILABLE:
+                        raise ImportError("OpenAI module not available. Run: pip install openai")
+                    self.ai_analyzer = OpenAIAnalyzer()
+                    print(f"✓ Sử dụng OpenAI GPT-4 Vision")
+                else:  # anthropic (default)
+                    self.ai_analyzer = AIAnalyzer()
+                    print(f"✓ Sử dụng Anthropic Claude Vision")
             except Exception as e:
                 print(f"⚠️  Không thể khởi tạo AI Analyzer: {e}")
                 print("   → Chạy ở chế độ không có AI")
@@ -136,12 +151,20 @@ class VideoAnalyzer:
         if self.use_ai and hasattr(self, 'ai_analyzer'):
             print(f"\n[5/6] Đang phân tích nội dung cảnh bằng AI (mức độ: {self.detail_level})...")
             try:
-                analyzed_scenes = self.ai_analyzer.analyze_all_scenes(
-                    scenes_with_frames,
-                    language=self.language,
-                    detail_level=self.detail_level,
-                    delay=0.5
-                )
+                if self.ai_provider == "openai":
+                    # OpenAI uses analyze_scenes method
+                    analyzed_scenes = self.ai_analyzer.analyze_scenes(
+                        scenes_with_frames,
+                        detail_level=self.detail_level
+                    )
+                else:
+                    # Anthropic uses analyze_all_scenes method
+                    analyzed_scenes = self.ai_analyzer.analyze_all_scenes(
+                        scenes_with_frames,
+                        language=self.language,
+                        detail_level=self.detail_level,
+                        delay=0.5
+                    )
             except Exception as e:
                 print(f"⚠️  Lỗi khi phân tích AI: {e}")
                 print("   → Tiếp tục mà không có mô tả AI")
@@ -207,24 +230,37 @@ Ví dụ:
     parser.add_argument('--threshold', '-t', type=float, default=27.0, help='Ngưỡng phát hiện cảnh (mặc định: 27.0)')
     parser.add_argument('--min-scene-len', type=int, default=15, help='Độ dài tối thiểu cảnh (frames, mặc định: 15)')
     parser.add_argument('--no-ai', action='store_true', help='Không sử dụng AI')
-    parser.add_argument('--detail-level', choices=['brief', 'detailed', 'very_detailed'], default='detailed', help='Mức độ chi tiết')
+    parser.add_argument('--ai-provider', choices=['anthropic', 'openai'], default='anthropic', help='AI provider: anthropic (Claude) hoặc openai (GPT-4)')
+    parser.add_argument('--detail-level', choices=['brief', 'normal', 'detailed', 'comprehensive'], default='detailed', help='Mức độ chi tiết')
     parser.add_argument('--language', '-l', choices=['vi', 'en'], default='vi', help='Ngôn ngữ')
-    parser.add_argument('--formats', '-f', nargs='+', choices=['json', 'html', 'markdown'], default=['json', 'html', 'markdown'], help='Format báo cáo')
+    parser.add_argument('--formats', '-f', nargs='+', choices=['json', 'html', 'markdown', 'docx'], default=['json', 'html', 'markdown', 'docx'], help='Format báo cáo')
 
     args = parser.parse_args()
 
     # Kiểm tra API key nếu dùng AI
     if not args.no_ai:
-        api_key = os.getenv('ANTHROPIC_API_KEY')
-        if not api_key:
-            print("⚠️  Không tìm thấy ANTHROPIC_API_KEY")
-            print("   Vui lòng tạo file .env và thêm: ANTHROPIC_API_KEY=your_key")
-            print("   hoặc chạy với --no-ai\n")
+        if args.ai_provider == "openai":
+            api_key = os.getenv('OPENAI_API_KEY')
+            if not api_key:
+                print("⚠️  Không tìm thấy OPENAI_API_KEY")
+                print("   Vui lòng tạo file .env và thêm: OPENAI_API_KEY=your_key")
+                print("   hoặc chạy với --no-ai hoặc --ai-provider anthropic\n")
 
-            use_ai = input("Tiếp tục không có AI? (y/n): ").lower() == 'y'
-            if not use_ai:
-                sys.exit(1)
-            args.no_ai = True
+                use_ai = input("Tiếp tục không có AI? (y/n): ").lower() == 'y'
+                if not use_ai:
+                    sys.exit(1)
+                args.no_ai = True
+        else:  # anthropic
+            api_key = os.getenv('ANTHROPIC_API_KEY')
+            if not api_key:
+                print("⚠️  Không tìm thấy ANTHROPIC_API_KEY")
+                print("   Vui lòng tạo file .env và thêm: ANTHROPIC_API_KEY=your_key")
+                print("   hoặc chạy với --no-ai hoặc --ai-provider openai\n")
+
+                use_ai = input("Tiếp tục không có AI? (y/n): ").lower() == 'y'
+                if not use_ai:
+                    sys.exit(1)
+                args.no_ai = True
 
     # Khởi tạo analyzer
     analyzer = VideoAnalyzer(
@@ -232,7 +268,8 @@ Ví dụ:
         min_scene_len=args.min_scene_len,
         use_ai=not args.no_ai,
         detail_level=args.detail_level,
-        language=args.language
+        language=args.language,
+        ai_provider=args.ai_provider
     )
 
     # Phân tích video
