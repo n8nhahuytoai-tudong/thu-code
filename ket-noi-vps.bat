@@ -6,5 +6,5 @@ echo ====================================
 echo.
 echo Port forward: http://localhost:8080
 echo.
-ssh -p 56254 root@115.231.176.132 -L 8080:localhost:8080
+ssh -p 56254 root@47.74.34.39 -L 8080:localhost:8080
 pause

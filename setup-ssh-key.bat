@@ -98,7 +98,7 @@ echo.
 echo Đang kết nối...
 echo.
 
-ssh -p 56254 root@115.231.176.132 -L 8080:localhost:8080 -o ConnectTimeout=10
+ssh -p 56254 root@47.74.34.39 -L 8080:localhost:8080 -o ConnectTimeout=10
 
 echo.
 if %errorlevel%==0 (
