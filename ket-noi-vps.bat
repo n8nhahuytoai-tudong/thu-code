@@ -4,5 +4,7 @@ echo ====================================
 echo    Dang ket noi den VPS...
 echo ====================================
 echo.
-ssh -p 30195 root@ssh6.vast.ai -L 8080:localhost:8080
+echo Port forward: http://localhost:8080
+echo.
+ssh -p 56254 root@115.231.176.132 -L 8080:localhost:8080
 pause

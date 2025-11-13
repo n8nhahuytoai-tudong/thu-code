@@ -35,12 +35,12 @@ echo ====================================
 echo.
 
 REM ═══════════════════════════════════════════════════════════
-REM  THAY ĐỔI THÔNG TIN SSH CỦA BẠN Ở ĐÂY:
-REM  - Thay XXXXX bằng port SSH (ví dụ: 30195, 41234)
-REM  - Thay sshX.vast.ai bằng host (ví dụ: ssh6.vast.ai)
+REM  Thông tin SSH đã được cập nhật
+REM  Port: 56254
+REM  Host: 115.231.176.132
 REM ═══════════════════════════════════════════════════════════
 
-ssh -p XXXXX root@sshX.vast.ai -L 8188:localhost:8188 -L 6006:localhost:6006
+ssh -p 56254 root@115.231.176.132 -L 8080:localhost:8080 -L 8188:localhost:8188
 
 REM ═══════════════════════════════════════════════════════════
 
