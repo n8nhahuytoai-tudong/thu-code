@@ -1,0 +1,21 @@
+# Character Replacement Tool Requirements
+# Thư viện cần thiết cho ứng dụng thay thế nhân vật trong video
+
+# Core dependencies
+opencv-python==4.10.0.84
+numpy==1.26.4
+Pillow==12.0.0
+
+# GUI dependencies (PyQt5)
+PyQt5==5.15.11
+
+# Optional: Advanced AI/ML dependencies (uncomment nếu cần)
+# mediapipe==0.10.14  # Cho face mesh và pose detection nâng cao
+# torch==2.4.0  # Cho deep learning models
+# torchvision==0.19.0  # Cho pretrained models
+# ultralytics==8.3.0  # YOLOv8 cho object detection tốt hơn
+# insightface==0.7.3  # Cho face recognition và swapping
+# onnxruntime==1.19.0  # Cho inference nhanh hơn
+
+# Utilities
+requests==2.32.5
